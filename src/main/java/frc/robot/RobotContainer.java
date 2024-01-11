@@ -4,35 +4,18 @@
 
 package frc.robot;
 
-import com.revrobotics.CANSparkMax;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
+
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import frc.robot.commands.AutoToteCrashLeft;
-import frc.robot.commands.AutoToteCrashRight;
-import frc.robot.commands.AutoNothing;
-import frc.robot.commands.AutoRabbit;
-import frc.robot.commands.BallIntakeCommand;
-import frc.robot.commands.BallShooterCommand;
 import frc.robot.commands.DriveFromControllerCommand;
-import frc.robot.commands.RabbitDeployCommand;
-import frc.robot.commands.RabbitIntakeCommand;
+
 import frc.robot.constants.IDs;
-import frc.robot.subsystems.BallDeploySubsystem;
-import frc.robot.subsystems.BallIntakeSubsystem;
-import frc.robot.subsystems.BallShooterSubsystem;
-import frc.robot.subsystems.RabbitDeploySubsystem;
-import frc.robot.subsystems.RabbitIntakeSubsystem;
+
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.commands.BallDeployCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -63,26 +46,10 @@ public class RobotContainer {
       driverController::getRightTriggerAxis,
       driverController::getPOV);
 
-  private final RabbitIntakeSubsystem rabbitIntakeSubsystem = new RabbitIntakeSubsystem();
-  private final RabbitDeploySubsystem rabbitDeploySubsystem = new RabbitDeploySubsystem();
-  // private final BallIntakeSubsystem ballIntakeSubsystem = new BallIntakeSubsystem();
-  // private final BallDeploySubsystem ballDeploySubsystem = new BallDeploySubsystem();
-  // private final BallShooterSubsystem ballShooterSubsystem = new BallShooterSubsystem();
-
-  private final RabbitIntakeCommand rabbitIntakeCommand = new RabbitIntakeCommand(rabbitIntakeSubsystem, operatorController::getLeftY);
-  // private final BallIntakeCommand ballIntakeCommand = new BallIntakeCommand(ballIntakeSubsystem, operatorController::getLeftTriggerAxis, operatorController::getRightTriggerAxis);
-  // TO-DO find correct position and speed
-  // private final BallDeployCommand BallDeployUpCommand = new BallDeployCommand(ballDeploySubsystem, 15, 0.1);
-  // private final BallDeployCommand BallDeployDownCommand = new BallDeployCommand(ballDeploySubsystem, 5, 0.1);
-  private final RabbitDeployCommand RabbitDeployGroundCommand = new RabbitDeployCommand(rabbitDeploySubsystem, -34.0);
-  private final RabbitDeployCommand RabbitDeployBinCommand = new RabbitDeployCommand(rabbitDeploySubsystem, -18.1); // -18.16
-  private final RabbitDeployCommand RabbitDeployUpCommand = new RabbitDeployCommand(rabbitDeploySubsystem, 0);
-  // private final BallShooterCommand ballShooterCommand = new BallShooterCommand(ballShooterSubsystem, 50);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
-    rabbitIntakeSubsystem.setDefaultCommand(rabbitIntakeCommand);
     // ballIntakeSubsystem.setDefaultCommand(ballIntakeCommand);
     configureAutoChooser();
     SmartDashboard.putData(chooser);
@@ -101,10 +68,7 @@ public class RobotContainer {
     swerveSubsystem.zeroHeading();
   }
   private void configureAutoChooser() {
-    chooser.setDefaultOption("Get Rabbit", new AutoRabbit(swerveSubsystem, rabbitDeploySubsystem, rabbitIntakeSubsystem));
-    chooser.addOption("Nothing", new AutoNothing(swerveSubsystem));
-    chooser.addOption("Tote Crash Left", new AutoToteCrashLeft(swerveSubsystem));
-    chooser.addOption("Tote Crash Right", new AutoToteCrashRight(swerveSubsystem));
+
   }
   /** Will run once any time the robot is disabled. */
   public void onDisable() {
@@ -120,19 +84,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // JoystickButton ballDeployUpButton = new JoystickButton(operatorController, XboxController.Button.kRightBumper.value);
-    // JoystickButton ballDeployDownButton = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
-    JoystickButton rabbitDeployGroundButton = new JoystickButton(operatorController, XboxController.Button.kA.value);
-    JoystickButton rabbitDeployBinButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
-    JoystickButton rabbitDeployUpButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
-    // POVButton dPadUpButton = new POVButton(operatorController, 0);
-    
-    // ballDeployUpButton.onTrue(BallDeployUpCommand);
-    // ballDeployDownButton.onTrue(BallDeployDownCommand);
-    rabbitDeployGroundButton.onTrue(RabbitDeployGroundCommand);
-    rabbitDeployBinButton.onTrue(RabbitDeployBinCommand);
-    rabbitDeployUpButton.onTrue(RabbitDeployUpCommand);
-    // dPadUpButton.onTrue(ballShooterCommand);
+
   }
 
   /**
