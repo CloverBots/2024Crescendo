@@ -9,9 +9,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveFromControllerCommand;
+import frc.robot.commands.RotateTag;
 
 import frc.robot.constants.IDs;
 
@@ -45,6 +47,8 @@ public class RobotContainer {
       driverController::getLeftTriggerAxis,
       driverController::getRightTriggerAxis,
       driverController::getPOV);
+
+  private final RotateTag rotateTag = new RotateTag(swerveSubsystem);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -84,7 +88,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
+        JoystickButton followTag = new JoystickButton(operatorController, XboxController.Button.kA.value);
+        followTag.onTrue(rotateTag);
   }
 
   /**

@@ -161,12 +161,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     @Override
     public void periodic() {
-        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
-        SmartDashboard.putNumber("tx", table.getEntry("tx").getDouble(0.0));
-        SmartDashboard.putNumber("ty", table.getEntry("ty").getDouble(0.0));
-        SmartDashboard.putNumber("ta", table.getEntry("ta").getDouble(0.0));
-        
         // Updates the odometer with the current rotation and distance travelled on each module.
         odometer.update(getRotation2d(), getModulePositions());
         
