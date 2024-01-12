@@ -9,6 +9,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -159,6 +161,12 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     @Override
     public void periodic() {
+        NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+
+        SmartDashboard.putNumber("tx", table.getEntry("tx").getDouble(0.0));
+        SmartDashboard.putNumber("ty", table.getEntry("ty").getDouble(0.0));
+        SmartDashboard.putNumber("ta", table.getEntry("ta").getDouble(0.0));
+        
         // Updates the odometer with the current rotation and distance travelled on each module.
         odometer.update(getRotation2d(), getModulePositions());
         
