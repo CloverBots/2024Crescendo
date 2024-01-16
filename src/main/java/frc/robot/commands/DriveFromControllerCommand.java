@@ -6,14 +6,14 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.SwerveDriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /**
  * Drives the robot using input from the controller.
  */
-public class DriveFromControllerCommand extends CommandBase {
+public class DriveFromControllerCommand extends Command {
 
     private final SwerveSubsystem swerveSubsystem;
     private final Supplier<Double> leftStickX, leftStickY, rightStickX, rightStickY, crawlTrigger, slowRotate;

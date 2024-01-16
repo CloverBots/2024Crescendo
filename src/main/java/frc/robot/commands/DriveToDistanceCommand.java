@@ -8,14 +8,14 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.SwerveDriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /**
  * Drives the robot to a given X / Y position, and angle. This is relative to the robot's initial position.
  */
-public class DriveToDistanceCommand extends CommandBase {
+public class DriveToDistanceCommand extends Command {
   private SwerveSubsystem swerveSubsystem;
 
   private PIDController driveDistanceControllerX = new PIDController(7.0, 0.25, 0.1);

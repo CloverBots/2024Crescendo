@@ -10,6 +10,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class LimelightVision {
     private static NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
+    
     public static double getTX() {
         return limelight.getEntry("tx").getDouble(0.0);
     }
