@@ -38,7 +38,7 @@ public class SwerveDriveConstants {
     /** The maximum acceleration for the robot's X and Y movement. */
     public static final double teleOpMaxAccelerationMetersPerSecond = 5;
 
-    public static final double AUTO_MAX_SPEED = 3;
+    public static final double AUTO_MAX_SPEED = 2;
 
     /** Multiply the output of {@code getSelectedSensorPosition()} by this to get the total distance travelled, in meters, on a swerve module. */
     public static final double DRIVE_ENCODER_TO_METERS = (WHEEL_CIRCUMFERENCE / (DRIVE_GEAR_RATIO * 2048.0));

@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
@@ -10,7 +11,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class LimelightVision {
     private static NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
-    
     public static double getTX() {
         return limelight.getEntry("tx").getDouble(0.0);
     }

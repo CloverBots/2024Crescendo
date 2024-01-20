@@ -18,8 +18,8 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class DriveToDistanceCommand extends Command {
   private SwerveSubsystem swerveSubsystem;
 
-  private PIDController driveDistanceControllerX = new PIDController(7.0, 0.25, 0.1);
-  private PIDController driveDistanceControllerY = new PIDController(7.0, 0.25, 0.1);
+  private PIDController driveDistanceControllerX = new PIDController(7.0, 0.45, 0.2); // 0.1 for Kd. Ki 0.25
+  private PIDController driveDistanceControllerY = new PIDController(7.0, 0.45, 0.2); // 0.1 for Kd. Ki 0.25
   private PIDController rotationController = new PIDController(Math.PI, 0, 0);
 
   private Timer timer;
@@ -38,11 +38,11 @@ public class DriveToDistanceCommand extends Command {
     this.timeout = timeout;
     this.swerveSubsystem = swerveSubsystem;
     driveDistanceControllerX.setSetpoint(xPos);
-    driveDistanceControllerX.setTolerance(0.005);
+    driveDistanceControllerX.setTolerance(0.05);
     driveDistanceControllerY.setSetpoint(yPos);
-    driveDistanceControllerY.setTolerance(0.005);
+    driveDistanceControllerY.setTolerance(0.05);
     rotationController.setSetpoint(angle);
-    rotationController.setTolerance(0.005);
+    rotationController.setTolerance(0.05);
     rotationController.enableContinuousInput(0, 2*Math.PI); // Sets the PID to treat zero and 2 pi as the same value.
   }
 
@@ -63,6 +63,7 @@ public class DriveToDistanceCommand extends Command {
     ySpeed = Math.copySign(Math.min(Math.abs(ySpeed), SwerveDriveConstants.AUTO_MAX_SPEED), ySpeed);
 
     double dTheta = rotationController.calculate(Units.degreesToRadians(swerveSubsystem.getHeading()));
+    SmartDashboard.putNumber("Rotation", dTheta);
     dTheta = Math.copySign(Math.min(Math.abs(dTheta),2), dTheta);
     swerveSubsystem.setSpeed(xSpeed, ySpeed, -dTheta, true);
   }
