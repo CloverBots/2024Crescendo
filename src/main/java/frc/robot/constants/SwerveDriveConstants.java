@@ -59,6 +59,7 @@ public class SwerveDriveConstants {
      * Contains the configuration info for each swerve module.
      */
     public static enum SwerveModuleConfigurations {
+        //driveMotorId, turnMotorID, CANCoderId, encoder offset, driveInverted
         FRONT_LEFT(10, 14, 18, -62.92, true),
         FRONT_RIGHT(11, 15, 19, -241.35, false),
         BACK_RIGHT(12, 16, 20, -112.58, false),

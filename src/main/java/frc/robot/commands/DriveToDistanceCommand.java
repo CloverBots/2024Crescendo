@@ -38,11 +38,11 @@ public class DriveToDistanceCommand extends Command {
     this.timeout = timeout;
     this.swerveSubsystem = swerveSubsystem;
     driveDistanceControllerX.setSetpoint(xPos);
-    driveDistanceControllerX.setTolerance(0.05);
+    driveDistanceControllerX.setTolerance(0.05); // 0.05 meters = 2 inches
     driveDistanceControllerY.setSetpoint(yPos);
-    driveDistanceControllerY.setTolerance(0.05);
+    driveDistanceControllerY.setTolerance(0.05); // 0.05 meters = 2 inches
     rotationController.setSetpoint(angle);
-    rotationController.setTolerance(0.05);
+    rotationController.setTolerance(0.05); // 3 degrees, 0.05 radians
     rotationController.enableContinuousInput(0, 2*Math.PI); // Sets the PID to treat zero and 2 pi as the same value.
   }
 
