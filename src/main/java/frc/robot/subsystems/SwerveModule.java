@@ -127,7 +127,7 @@ public class SwerveModule {
     public void setDesiredState(SwerveModuleState state) {
         
         // Prevent the wheel from moving at very low speeds.
-        if (Math.abs(state.speedMetersPerSecond) < 0.001) {
+        if (Math.abs(state.speedMetersPerSecond) <0.01) {
             stop();
             return;
         }

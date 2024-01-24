@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+//TODO:
+// use degrees everywhere, no radians
+// get rid of button for non-field oriented
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,7 +37,7 @@ public class RobotContainer {
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
 
   private final XboxController driverController = new XboxController(IDs.CONTROLLER_DRIVE_PORT);
-  private final XboxController operatorController = new XboxController(IDs.CONTROLLER_OPERATOR_PORT);
+  //private final XboxController operatorController = new XboxController(IDs.CONTROLLER_OPERATOR_PORT);
   private final SendableChooser<Command> chooser = new SendableChooser<>();
 
   private final DriveFromControllerCommand driveFromControllerCommand = new DriveFromControllerCommand(
@@ -105,8 +109,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    JoystickButton followTag = new JoystickButton(operatorController, XboxController.Button.kA.value);
-    followTag.onTrue(rotateTag);
+    //JoystickButton followTag = new JoystickButton(operatorController, XboxController.Button.kA.value);
+    //followTag.onTrue(rotateTag);
   }
 
   /**

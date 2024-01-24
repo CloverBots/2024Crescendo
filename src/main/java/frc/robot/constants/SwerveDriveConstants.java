@@ -60,10 +60,10 @@ public class SwerveDriveConstants {
      */
     public static enum SwerveModuleConfigurations {
         //driveMotorId, turnMotorID, CANCoderId, encoder offset, driveInverted
-        FRONT_LEFT(10, 14, 18, -62.92, true),
-        FRONT_RIGHT(11, 15, 19, -241.35, false),
-        BACK_RIGHT(12, 16, 20, -112.58, false),
-        BACK_LEFT(13, 17, 21, -3.69, true);
+        FRONT_LEFT(10, 14, 18, 27.08, true), //-62.92
+        FRONT_RIGHT(11, 15, 19, -151.35, false), //-241.35
+        BACK_RIGHT(12, 16, 20, -22.58, false), //-112.58
+        BACK_LEFT(13, 17, 21, 86.31, true); //-3.69
 
         public int driveMotorID;
         public int turnMotorID;
@@ -83,10 +83,10 @@ public class SwerveDriveConstants {
     /**
      * This calculates the exact speed and rotation of every swerve module needed to make the robot go in a specific direction and rotation.
      */
-    public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
-        new Translation2d(wheelBase / 2, trackWidth / 2),
-        new Translation2d(wheelBase / 2, -trackWidth / 2),
-        new Translation2d(-wheelBase / 2, -trackWidth / 2),
-        new Translation2d(-wheelBase / 2, trackWidth / 2)
-    );
+     public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
+         new Translation2d(wheelBase / 2, trackWidth / 2), // FL
+         new Translation2d(wheelBase / 2, -trackWidth / 2), // BL
+         new Translation2d(-wheelBase / 2, -trackWidth / 2), // BR
+         new Translation2d(-wheelBase / 2, trackWidth / 2) // FR
+     );
 }

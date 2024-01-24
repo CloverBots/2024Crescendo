@@ -20,7 +20,7 @@ public class DriveToDistanceCommand extends Command {
 
   private PIDController driveDistanceControllerX = new PIDController(7.0, 0.45, 0.2); // 0.1 for Kd. Ki 0.25
   private PIDController driveDistanceControllerY = new PIDController(7.0, 0.45, 0.2); // 0.1 for Kd. Ki 0.25
-  private PIDController rotationController = new PIDController(Math.PI, 0, 0);
+  private PIDController rotationController = new PIDController(Math.PI, 0, 0); // in radians
 
   private Timer timer;
   private double timeout;
@@ -78,7 +78,7 @@ public class DriveToDistanceCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (driveDistanceControllerX.atSetpoint() && driveDistanceControllerY.atSetpoint()) 
+    return (driveDistanceControllerX.atSetpoint() && driveDistanceControllerY.atSetpoint() && rotationController.atSetpoint()) 
     || (timer.get() >= timeout);
   
   }

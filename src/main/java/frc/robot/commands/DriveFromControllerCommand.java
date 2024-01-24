@@ -61,6 +61,7 @@ public class DriveFromControllerCommand extends Command {
         this.translationLimiter = new SlewRateLimiter(SwerveDriveConstants.teleOpMaxAccelerationMetersPerSecond);
         this.turningLimiter = new SlewRateLimiter(SwerveDriveConstants.teleOpMaxAngularAccelerationUnitsPerSecond);
 
+        //using degrees
         this.rotationController = new PIDController(0.065, 0.03, 0.005); // 0.017, 0, 0
         this.rotationController.enableContinuousInput(0, 360);
         

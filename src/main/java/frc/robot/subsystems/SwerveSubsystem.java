@@ -215,19 +215,19 @@ public class SwerveSubsystem extends SubsystemBase {
             resetTurnEncoders();
         }
         // Monitor absolute encoder values for configuration
-        for (int i=0; i<modules.length; i++) {
-            SmartDashboard.putNumber("abs "+SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
-                modules[i].getAbsolutePosition());
-        }
-        // Monitor encoder values for configuration
-        for (int i=0; i<modules.length; i++) {
-            SmartDashboard.putNumber(SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
-                Units.radiansToDegrees(modules[i].getTurningPosition()));
-        }
-        for (int i=0; i<modules.length; i++) {
-            SmartDashboard.putNumber("talon "+SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
-                modules[i].getDriveVelocity());
-        }
+        // for (int i=0; i<modules.length; i++) {
+        //     SmartDashboard.putNumber("abs "+SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
+        //         modules[i].getAbsolutePosition());
+        // }
+        // // Monitor encoder values for configuration
+        // for (int i=0; i<modules.length; i++) {
+        //     SmartDashboard.putNumber(SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
+        //         Units.radiansToDegrees(modules[i].getTurningPosition()));
+        // }
+        // for (int i=0; i<modules.length; i++) {
+        //     SmartDashboard.putNumber("talon "+SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
+        //         modules[i].getDriveVelocity());
+        // }
     }
 
     /**
