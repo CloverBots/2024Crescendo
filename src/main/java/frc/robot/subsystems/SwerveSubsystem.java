@@ -147,8 +147,8 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
-    public void setSpeed(double vx, double vy, double omegaRadsPerSecond, boolean fieldOriented) {
-        setSpeed(new ChassisSpeeds(vx, vy, omegaRadsPerSecond), fieldOriented);
+    public void setSpeed(double vx, double vy, double omegaDegreesPerSecond, boolean fieldOriented) {
+        setSpeed(new ChassisSpeeds(vx, vy,Units.degreesToRadians(omegaDegreesPerSecond)), fieldOriented);
     }
 
     public void setSpeed(ChassisSpeeds chassisSpeeds, boolean fieldOriented) {

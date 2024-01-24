@@ -27,7 +27,7 @@ public class SwerveDriveConstants {
     public static final double PHYSICAL_MAX_SPEED_METERS_PER_SECOND = (1/DRIVE_GEAR_RATIO) * (6380.0/60) * WHEEL_CIRCUMFERENCE;
     
     /** The maximum speed of the robot, in meters per second during TeleOp. Use this to limit the speed when using a controller.*/
-    public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = PHYSICAL_MAX_SPEED_METERS_PER_SECOND; //Max is 5.5435
+    public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = PHYSICAL_MAX_SPEED_METERS_PER_SECOND * 0.5; //Max is 5.5435
     public static final double TELEOP_SLOW_SPEED_METERS_PER_SECOND = 1;
     
     /** Maximum speed for the robot's turning. */

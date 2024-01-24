@@ -20,7 +20,7 @@ public class DriveToDistanceCommand extends Command {
 
   private PIDController driveDistanceControllerX = new PIDController(7.0, 0.45, 0.2); // 0.1 for Kd. Ki 0.25
   private PIDController driveDistanceControllerY = new PIDController(7.0, 0.45, 0.2); // 0.1 for Kd. Ki 0.25
-  private PIDController rotationController = new PIDController(Math.PI, 0, 0); // in radians
+  private PIDController rotationController = new PIDController(1, 0, 0); // in degrees
 
   private Timer timer;
   private double timeout;
@@ -42,8 +42,8 @@ public class DriveToDistanceCommand extends Command {
     driveDistanceControllerY.setSetpoint(yPos);
     driveDistanceControllerY.setTolerance(0.05); // 0.05 meters = 2 inches
     rotationController.setSetpoint(angle);
-    rotationController.setTolerance(0.05); // 3 degrees, 0.05 radians
-    rotationController.enableContinuousInput(0, 2*Math.PI); // Sets the PID to treat zero and 2 pi as the same value.
+    rotationController.setTolerance(3); // 3 degrees, 0.05 radians
+    rotationController.enableContinuousInput(0, 360); // Sets the PID to treat zero and 2 pi as the same value.
   }
 
   // Called when the command is initially scheduled.
@@ -62,9 +62,9 @@ public class DriveToDistanceCommand extends Command {
     double ySpeed = driveDistanceControllerY.calculate(swerveSubsystem.getPose().getY());
     ySpeed = Math.copySign(Math.min(Math.abs(ySpeed), SwerveDriveConstants.AUTO_MAX_SPEED), ySpeed);
 
-    double dTheta = rotationController.calculate(Units.degreesToRadians(swerveSubsystem.getHeading()));
+    double dTheta = rotationController.calculate(swerveSubsystem.getHeading());
     SmartDashboard.putNumber("Rotation", dTheta);
-    dTheta = Math.copySign(Math.min(Math.abs(dTheta),2), dTheta);
+    dTheta = Math.copySign(Math.min(Math.abs(dTheta),100), dTheta);
     swerveSubsystem.setSpeed(xSpeed, ySpeed, -dTheta, true);
   }
 
