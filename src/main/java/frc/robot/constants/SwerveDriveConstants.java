@@ -31,7 +31,7 @@ public class SwerveDriveConstants {
     public static final double TELEOP_SLOW_SPEED_METERS_PER_SECOND = 1;
     
     /** Maximum speed for the robot's turning. */
-    public static final double teleOpMaxAngularSpeed = 3 * (2 * Math.PI);
+    public static final double teleOpMaxAngularSpeed = 2 * (2 * Math.PI);
     public static final double teleOpSlowAngularSpeed = 1 * (2 * Math.PI);
     /** The maximum angular acceleration for the robot's turning. */
     public static final double teleOpMaxAngularAccelerationUnitsPerSecond = 5;

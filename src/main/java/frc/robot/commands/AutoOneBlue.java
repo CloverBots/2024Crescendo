@@ -21,26 +21,26 @@ public class AutoOneBlue extends SequentialCommandGroup {
         new WaitCommand(1),
 
         // Get 3
-        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(55), Units.inchesToMeters(57), 0, 10.0), //67, 57
+        new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(0), Units.inchesToMeters(60), 0, 10.0),//-57, 60, -20
 
         // Shoot Position
-        new DriveToDistanceCommand(swerveSubsystem, 0, 0, 0, 10.0),
+        new DriveToDistanceCommand(swerveSubsystem, 0, 0, 0, 10.0)
 
         // Shoot ring
-        new WaitCommand(1),
+        // new WaitCommand(1),
 
         // Get 8
-        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(100), Units.inchesToMeters(40), 0, 20.0),
-        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(201), Units.inchesToMeters(284), 0, 10.0),
+        // new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(40), Units.inchesToMeters(100), 0, 10.0),
+        // new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(284), Units.inchesToMeters(200), 0, 10.0) //201
 
         // Throw Position
-        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(201), Units.inchesToMeters(180), 0, 10.0),
+        //new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(201), Units.inchesToMeters(180), 0, 10.0),
 
         // Shoot ring
-        new WaitCommand(1),
+        //new WaitCommand(1),
 
         // Get 7
-        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(135), -Units.inchesToMeters(284), 0, 10.0)
+        //new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(135), -Units.inchesToMeters(284), 0, 10.0)
 
         // Throw Position
         // new DriveToDistanceCommand(swerveSubsystem, 0, 0, 0, 1.5),

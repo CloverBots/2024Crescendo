@@ -13,14 +13,14 @@ import frc.robot.constants.SwerveDriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /**
- * Drives the robot to a given X / Y position, and angle. This is relative to the robot's initial position.
+ * Drives the robot to a given X / Y position, and angle. This is relative to the robot's initial position. Positive X is back, Positive Y is Right
  */
 public class DriveToDistanceCommand extends Command {
   private SwerveSubsystem swerveSubsystem;
 
-  private PIDController driveDistanceControllerX = new PIDController(7.0, 0.45, 0.2); // 0.1 for Kd. Ki 0.25
-  private PIDController driveDistanceControllerY = new PIDController(7.0, 0.45, 0.2); // 0.1 for Kd. Ki 0.25
-  private PIDController rotationController = new PIDController(1, 0, 0); // in degrees
+  private PIDController driveDistanceControllerX = new PIDController(25.0, 0.0, 1.5); // p-25, i-0, d-1.5
+  private PIDController driveDistanceControllerY = new PIDController(25.0, 0.0, 1.5); // same as above
+  private PIDController rotationController = new PIDController(5.0, 0.0, 0.005); // in degrees
 
   private Timer timer;
   private double timeout;
@@ -38,11 +38,11 @@ public class DriveToDistanceCommand extends Command {
     this.timeout = timeout;
     this.swerveSubsystem = swerveSubsystem;
     driveDistanceControllerX.setSetpoint(xPos);
-    driveDistanceControllerX.setTolerance(0.05); // 0.05 meters = 2 inches
+    driveDistanceControllerX.setTolerance(0.01); // 0.05 meters = 2 inches
     driveDistanceControllerY.setSetpoint(yPos);
-    driveDistanceControllerY.setTolerance(0.05); // 0.05 meters = 2 inches
+    driveDistanceControllerY.setTolerance(0.01); // 0.05 meters = 2 inches
     rotationController.setSetpoint(angle);
-    rotationController.setTolerance(3); // 3 degrees, 0.05 radians
+    rotationController.setTolerance(1); // 3 degrees, 0.05 radians
     rotationController.enableContinuousInput(0, 360); // Sets the PID to treat zero and 2 pi as the same value.
   }
 
