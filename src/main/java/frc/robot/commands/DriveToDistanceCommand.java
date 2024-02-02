@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,9 +17,9 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class DriveToDistanceCommand extends Command {
   private SwerveSubsystem swerveSubsystem;
 
-  private PIDController driveDistanceControllerX = new PIDController(25.0, 0.0, 1.5); // p-25, i-0, d-1.5
-  private PIDController driveDistanceControllerY = new PIDController(25.0, 0.0, 1.5); // same as above
-  private PIDController rotationController = new PIDController(5.0, 0.0, 0.005); // in degrees
+  private PIDController driveDistanceControllerX = new PIDController(25.0, 0.0, 1.2); // p-25, i-0, d-1.5
+  private PIDController driveDistanceControllerY = new PIDController(25.0, 0.0, 1.2); // same as above
+  private PIDController rotationController = new PIDController(13.0, 0.0, 1.2); // in degrees
 
   private Timer timer;
   private double timeout;
@@ -38,9 +37,9 @@ public class DriveToDistanceCommand extends Command {
     this.timeout = timeout;
     this.swerveSubsystem = swerveSubsystem;
     driveDistanceControllerX.setSetpoint(xPos);
-    driveDistanceControllerX.setTolerance(0.01); // 0.05 meters = 2 inches
+    driveDistanceControllerX.setTolerance(0.025); // 0.05 meters = 2 inches
     driveDistanceControllerY.setSetpoint(yPos);
-    driveDistanceControllerY.setTolerance(0.01); // 0.05 meters = 2 inches
+    driveDistanceControllerY.setTolerance(0.025); // 0.05 meters = 2 inches
     rotationController.setSetpoint(angle);
     rotationController.setTolerance(1); // 3 degrees, 0.05 radians
     rotationController.enableContinuousInput(0, 360); // Sets the PID to treat zero and 2 pi as the same value.
@@ -58,11 +57,12 @@ public class DriveToDistanceCommand extends Command {
   public void execute() {
     double xSpeed = driveDistanceControllerX.calculate(swerveSubsystem.getPose().getX());
     xSpeed = Math.copySign(Math.min(Math.abs(xSpeed), SwerveDriveConstants.AUTO_MAX_SPEED), xSpeed);
-
+  
     double ySpeed = driveDistanceControllerY.calculate(swerveSubsystem.getPose().getY());
     ySpeed = Math.copySign(Math.min(Math.abs(ySpeed), SwerveDriveConstants.AUTO_MAX_SPEED), ySpeed);
 
     double dTheta = rotationController.calculate(swerveSubsystem.getHeading());
+    System.out.println(swerveSubsystem.getHeading());
     SmartDashboard.putNumber("Rotation", dTheta);
     dTheta = Math.copySign(Math.min(Math.abs(dTheta),100), dTheta);
     swerveSubsystem.setSpeed(xSpeed, ySpeed, -dTheta, true);
