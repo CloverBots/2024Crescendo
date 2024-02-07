@@ -23,6 +23,8 @@ public class PivotSubsystem extends SubsystemBase {
   private final CANCoder pivotEncoder;
   private PIDController pivotPIDController;
 
+  private final int CURRENT_LIMIT = 10;
+
   public PivotSubsystem() {
     this.pivotLeadMotor = new CANSparkMax(IDs.PIVOT_LEAD_MOTOR, MotorType.kBrushless);
     this.pivotFollowMotor = new CANSparkMax(IDs.PIVOT_FOLLOW_MOTOR, MotorType.kBrushless);
@@ -35,6 +37,9 @@ public class PivotSubsystem extends SubsystemBase {
     pivotFollowMotor.setInverted(false);
     pivotLeadMotor.setIdleMode(IdleMode.kBrake);
     pivotFollowMotor.setIdleMode(IdleMode.kBrake);
+
+    pivotLeadMotor.setSmartCurrentLimit(CURRENT_LIMIT);
+    pivotFollowMotor.setSmartCurrentLimit(CURRENT_LIMIT);
   }
 
   public double getPivotAbsolutePosition() {

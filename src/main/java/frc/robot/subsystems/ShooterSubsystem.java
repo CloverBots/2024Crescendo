@@ -24,19 +24,19 @@ public class ShooterSubsystem extends SubsystemBase {
     private static final double SHOOTER_MIN_OUTPUT = -1;
 
     private CANSparkMax motorLeft = new CANSparkMax(IDs.SHOOTER_LEFT_MOTOR_ID, MotorType.kBrushless);
-
     private CANSparkMax motorRight = new CANSparkMax(IDs.SHOOTER_RIGHT_MOTOR_ID, MotorType.kBrushless);
 
     // private final MotorControllerGroup shooterMotors = new
     // MotorControllerGroup(shooterLeadMotor, shooterFollowMotor1);
 
     private final RelativeEncoder encoderLeft = motorLeft.getEncoder();
-
     private final RelativeEncoder encoderRight = motorRight.getEncoder();
 
     private SparkPIDController pidControllerLeft;
-
     private SparkPIDController pidControllerRight;
+
+    private double targetRpmRight;
+    private double targetRpmLeft;
 
     /** Creates a new Shooter. */
     public ShooterSubsystem() {
@@ -102,6 +102,7 @@ public class ShooterSubsystem extends SubsystemBase {
         if (rpm > MAX_RPM) {
             rpm = MAX_RPM;
         }
+        targetRpmLeft = rpm;
 
         pidControllerLeft.setReference(rpm, CANSparkMax.ControlType.kVelocity);
     }
@@ -111,7 +112,18 @@ public class ShooterSubsystem extends SubsystemBase {
             rpm = MAX_RPM;
         }
         
+        targetRpmRight = rpm;
+
         pidControllerRight.setReference(rpm, CANSparkMax.ControlType.kVelocity);
     }
 
+    public boolean isShooterAtTargetRpm() {
+        // If both are within 95% of the target, return true
+        if (encoderLeft.getVelocity() > (targetRpmLeft * 0.95)
+             && encoderRight.getVelocity() > (targetRpmRight * 0.95)) {
+            return true;
+        } 
+
+        return false;
+    }
 }

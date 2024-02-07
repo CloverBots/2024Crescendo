@@ -24,5 +24,19 @@ public class IntakeSubsystem extends SubsystemBase {
         motor.set(speed);
     }
 
+    public boolean isIntakeRunningForward() {
+        if (motor.get() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
    
+    public boolean isIntakeRunningBackward() {
+        if (motor.get() < 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

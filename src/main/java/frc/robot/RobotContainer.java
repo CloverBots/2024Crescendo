@@ -17,10 +17,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoOneBlue;
 import frc.robot.commands.DriveFromControllerCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.RotateTag;
 
 import frc.robot.constants.IDs;
-
+import frc.robot.subsystems.FeederDistanceSensorSubsystem;
+import frc.robot.subsystems.FeederSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 /**
@@ -35,9 +38,12 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class RobotContainer {
 
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
+  private final FeederSubsystem feederSubsystem = new FeederSubsystem();
+  private final FeederDistanceSensorSubsystem feederDistanceSensorSubsystem = new FeederDistanceSensorSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
   private final XboxController driverController = new XboxController(IDs.CONTROLLER_DRIVE_PORT);
-  //private final XboxController operatorController = new XboxController(IDs.CONTROLLER_OPERATOR_PORT);
+  private final XboxController operatorController = new XboxController(IDs.CONTROLLER_OPERATOR_PORT);
   private final SendableChooser<Command> chooser = new SendableChooser<>();
 
   private final DriveFromControllerCommand driveFromControllerCommand = new DriveFromControllerCommand(
@@ -54,6 +60,9 @@ public class RobotContainer {
       driverController::getRightTriggerAxis,
       driverController::getPOV);
 
+  private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, feederSubsystem,
+      feederDistanceSensorSubsystem, operatorController::getXButton, operatorController::getAButton);
+
   private final RotateTag rotateTag = new RotateTag(swerveSubsystem);
 
   /**
@@ -61,9 +70,11 @@ public class RobotContainer {
    */
   public RobotContainer() {
     swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
-    // ballIntakeSubsystem.setDefaultCommand(ballIntakeCommand);
+    intakeSubsystem.setDefaultCommand(intakeCommand);
+
     configureAutoChooser();
     SmartDashboard.putData(chooser);
+    
     // Configure the trigger bindings
     configureBindings();
   }
@@ -113,8 +124,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    //JoystickButton followTag = new JoystickButton(operatorController, XboxController.Button.kA.value);
-    //followTag.onTrue(rotateTag);
+    // JoystickButton followTag = new JoystickButton(operatorController,
+    // XboxController.Button.kA.value);
+    // followTag.onTrue(rotateTag);
   }
 
   /**

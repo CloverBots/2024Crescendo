@@ -42,7 +42,10 @@ public class DriveToDistanceCommand extends Command {
     this.swerveSubsystem = swerveSubsystem;
 
     driveDistanceControllerX.setSetpoint(xPos);
-
+    //TODO: is the slew rate stuff correct, given that xPos and yPos are not relative to where the robot is
+    // at the beginning of this call but relative to where the robot was turned on at?
+    // I think we may need to feed in both the current position and the desired position so we can tell what direction
+    // we are moving. Ferris
     if (xPos >= 0) xLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ACCELERATION, Integer.MIN_VALUE, 0);
     else xLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ACCELERATION, 0);
 
