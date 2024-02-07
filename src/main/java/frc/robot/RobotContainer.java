@@ -80,6 +80,10 @@ public class RobotContainer {
   public void teleopPeriodic() {
   }
 
+  public void onAutonomousEnable() {
+    swerveSubsystem.setBrakeMode(false);
+  }
+
   public void resetGyro() {
     swerveSubsystem.zeroHeading();
   }
