@@ -20,4 +20,8 @@ public final class IDs {
   public static final int PIVOT_LEAD_MOTOR = 11;
   public static final int PIVOT_FOLLOW_MOTOR = 12;
   public static final int PIVOT_ENCODER = 13;
+
+  public static final int INTAKE_MOTOR_ID = -1;
+  public static final int SHOOTER_LEFT_MOTOR_ID = -1;
+  public static final int SHOOTER_RIGHT_MOTOR_ID = -1;
 }
