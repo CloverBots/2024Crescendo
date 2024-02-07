@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,6 +23,8 @@ public class DriveToDistanceCommand extends Command {
   private PIDController driveDistanceControllerY = new PIDController(7.0, 0.25, 0.1); // same as above
   private PIDController rotationController = new PIDController(13.0, 0.0, 1.2); // in degrees
 
+  SlewRateLimiter xLimiter, yLimiter, rotationLimiter;
+
   private Timer timer;
   private double timeout;
   /**
@@ -37,7 +40,18 @@ public class DriveToDistanceCommand extends Command {
     this.timer = new Timer();
     this.timeout = timeout;
     this.swerveSubsystem = swerveSubsystem;
+
     driveDistanceControllerX.setSetpoint(xPos);
+    if (xPos >= 0) xLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ACCELERATION, Integer.MIN_VALUE, 0);
+    else xLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ACCELERATION, 0);
+
+    if (yPos >= 0) yLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ACCELERATION, Integer.MIN_VALUE, 0);
+    else yLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ACCELERATION, 0);
+
+    if (angle >= 0) rotationLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ANGULAR_ACCELERATION, Integer.MIN_VALUE, 0);
+    else rotationLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ANGULAR_ACCELERATION, 0);
+    
+
     driveDistanceControllerX.setTolerance(0.025); // 0.05 meters = 2 inches
     driveDistanceControllerY.setSetpoint(yPos);
     driveDistanceControllerY.setTolerance(0.025); // 0.05 meters = 2 inches
@@ -57,12 +71,15 @@ public class DriveToDistanceCommand extends Command {
   @Override
   public void execute() {
     double xSpeed = driveDistanceControllerX.calculate(swerveSubsystem.getPose().getX());
+    xSpeed = xLimiter.calculate(xSpeed);
     xSpeed = MathUtil.clamp(xSpeed, -SwerveDriveConstants.AUTO_MAX_SPEED, SwerveDriveConstants.AUTO_MAX_SPEED);
   
     double ySpeed = driveDistanceControllerY.calculate(swerveSubsystem.getPose().getY());
+    ySpeed = yLimiter.calculate(ySpeed);
     ySpeed = MathUtil.clamp(ySpeed, -SwerveDriveConstants.AUTO_MAX_SPEED, SwerveDriveConstants.AUTO_MAX_SPEED);
 
     double dTheta = rotationController.calculate(swerveSubsystem.getHeading());
+    dTheta = rotationLimiter.calculate(dTheta);
     dTheta = MathUtil.clamp(dTheta, -100, 100);
     
     swerveSubsystem.setSpeed(xSpeed, ySpeed, -dTheta, true);
