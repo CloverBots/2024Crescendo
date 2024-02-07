@@ -42,6 +42,7 @@ public class DriveToDistanceCommand extends Command {
     this.swerveSubsystem = swerveSubsystem;
 
     driveDistanceControllerX.setSetpoint(xPos);
+
     if (xPos >= 0) xLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ACCELERATION, Integer.MIN_VALUE, 0);
     else xLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ACCELERATION, 0);
 
@@ -50,7 +51,6 @@ public class DriveToDistanceCommand extends Command {
 
     if (angle >= 0) rotationLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ANGULAR_ACCELERATION, Integer.MIN_VALUE, 0);
     else rotationLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ANGULAR_ACCELERATION, 0);
-    
 
     driveDistanceControllerX.setTolerance(0.025); // 0.05 meters = 2 inches
     driveDistanceControllerY.setSetpoint(yPos);
@@ -63,6 +63,9 @@ public class DriveToDistanceCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    driveDistanceControllerX.reset();
+    driveDistanceControllerY.reset();
+    rotationController.reset();
     SmartDashboard.putBoolean("Status", true);
     timer.start();
   }
