@@ -16,4 +16,11 @@ public final class IDs {
   // Port IDs for the controllers
   public static final int CONTROLLER_DRIVE_PORT = 0;
   public static final int CONTROLLER_OPERATOR_PORT = 1;
+
+  public static final int INTAKE_MOTOR_ID = -1;
+
+   public static final int SHOOTER_LEFT_MOTOR_ID = -1;
+
+   public static final int SHOOTER_RIGHT_MOTOR_ID = -1;
+
 }
