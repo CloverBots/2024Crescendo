@@ -16,4 +16,8 @@ public final class IDs {
   // Port IDs for the controllers
   public static final int CONTROLLER_DRIVE_PORT = 0;
   public static final int CONTROLLER_OPERATOR_PORT = 1;
+  public static final int FEEDER_MOTOR = 10;
+  public static final int PIVOT_LEAD_MOTOR = 11;
+  public static final int PIVOT_FOLLOW_MOTOR = 12;
+  public static final int PIVOT_ENCODER = 13;
 }
