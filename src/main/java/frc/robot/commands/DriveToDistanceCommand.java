@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -56,15 +57,14 @@ public class DriveToDistanceCommand extends Command {
   @Override
   public void execute() {
     double xSpeed = driveDistanceControllerX.calculate(swerveSubsystem.getPose().getX());
-    xSpeed = Math.copySign(Math.min(Math.abs(xSpeed), SwerveDriveConstants.AUTO_MAX_SPEED), xSpeed);
+    xSpeed = MathUtil.clamp(xSpeed, -SwerveDriveConstants.AUTO_MAX_SPEED, SwerveDriveConstants.AUTO_MAX_SPEED);
   
     double ySpeed = driveDistanceControllerY.calculate(swerveSubsystem.getPose().getY());
-    ySpeed = Math.copySign(Math.min(Math.abs(ySpeed), SwerveDriveConstants.AUTO_MAX_SPEED), ySpeed);
+    ySpeed = MathUtil.clamp(ySpeed, -SwerveDriveConstants.AUTO_MAX_SPEED, SwerveDriveConstants.AUTO_MAX_SPEED);
 
     double dTheta = rotationController.calculate(swerveSubsystem.getHeading());
-    System.out.println(swerveSubsystem.getHeading());
-    SmartDashboard.putNumber("Rotation", dTheta);
-    dTheta = Math.copySign(Math.min(Math.abs(dTheta),100), dTheta);
+    dTheta = MathUtil.clamp(dTheta, -100, 100);
+    
     swerveSubsystem.setSpeed(xSpeed, ySpeed, -dTheta, true);
   }
 
