@@ -17,8 +17,8 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class DriveToDistanceCommand extends Command {
   private SwerveSubsystem swerveSubsystem;
 
-  private PIDController driveDistanceControllerX = new PIDController(25.0, 0.0, 1.2); // p-25, i-0, d-1.5
-  private PIDController driveDistanceControllerY = new PIDController(25.0, 0.0, 1.2); // same as above
+  private PIDController driveDistanceControllerX = new PIDController(7.0, 0.25, 0.1); // p-25, i-0, d-1.5
+  private PIDController driveDistanceControllerY = new PIDController(7.0, 0.25, 0.1); // same as above
   private PIDController rotationController = new PIDController(13.0, 0.0, 1.2); // in degrees
 
   private Timer timer;
