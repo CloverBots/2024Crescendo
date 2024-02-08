@@ -37,6 +37,7 @@ public class IntakeCommand extends Command {
 
     addRequirements(intakeSubsystem);
     addRequirements(feederSubsystem);
+    addRequirements(feederDistanceSensorSubsystem);
   }
 
   // Called when the command is initially scheduled.

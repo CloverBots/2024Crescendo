@@ -126,4 +126,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
         return false;
     }
+
+    public boolean isShooterRunning() {
+        if (encoderLeft.getVelocity() > 0
+             && encoderRight.getVelocity() > 0) {
+            return true;
+        } 
+
+        return false;
+    }
 }
