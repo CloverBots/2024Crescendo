@@ -15,21 +15,21 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.constants.IDs;
+import frc.robot.subsystems.PivotEncoderSubsystem;
 
 public class PivotSubsystem extends SubsystemBase {
   private final CANSparkMax pivotLeadMotor;
   private final CANSparkMax pivotFollowMotor;
-  private final CANCoder pivotEncoder;
-  private PIDController pivotPIDController;
+
+  PivotEncoderSubsystem pivotEncoderSubsystem = new PivotEncoderSubsystem();
 
   private final int CURRENT_LIMIT = 10;
 
   public PivotSubsystem() {
     this.pivotLeadMotor = new CANSparkMax(IDs.PIVOT_LEAD_MOTOR, MotorType.kBrushless);
     this.pivotFollowMotor = new CANSparkMax(IDs.PIVOT_FOLLOW_MOTOR, MotorType.kBrushless);
-    this.pivotEncoder = new CANCoder(IDs.PIVOT_ENCODER);
-    configureCANCoder(pivotEncoder);
 
     pivotFollowMotor.follow(pivotLeadMotor);
 
@@ -42,38 +42,15 @@ public class PivotSubsystem extends SubsystemBase {
     pivotFollowMotor.setSmartCurrentLimit(CURRENT_LIMIT);
   }
 
-  public double getPivotAbsolutePosition() {
-    return pivotEncoder.getAbsolutePosition();
-  }
-
-  public double getPivotPosition() {
-    double pos = pivotLeadMotor.getEncoder().getPosition();
-    boolean sign = pos < 0;
-    pos = Math.abs(pos);
-    pos = pos % (2*Math.PI);
-    if (sign) pos = (2*Math.PI) - pos;
-    return pos;
-  }
-
   public void resetPivotEncoder() {
-    pivotLeadMotor.getEncoder().setPosition(getPivotAbsolutePosition());
+    pivotLeadMotor.getEncoder().setPosition(pivotEncoderSubsystem.getPivotAbsolutePosition());
   }
 
-  public void setPosition(){
-    pivotFollowMotor.set(pivotPIDController.calculate(getPivotPosition()));
+  public void setSpeed(double speed){
+    pivotLeadMotor.set(speed);
   }
 
-  public void stop(){
-    pivotFollowMotor.set(0);
+  public void stop() {
+    pivotLeadMotor.set(0);
   }
-
-  private void configureCANCoder(CANCoder cancoder) {
-    CANCoderConfiguration encoderConfig = new CANCoderConfiguration();
-    encoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
-    encoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-    encoderConfig.magnetOffsetDegrees = 0; // Need Offset
-    encoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
-    cancoder.configAllSettings(encoderConfig);
-  }
-
 }
