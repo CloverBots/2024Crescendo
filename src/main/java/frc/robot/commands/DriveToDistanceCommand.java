@@ -49,17 +49,6 @@ public class DriveToDistanceCommand extends Command {
     this.angle = angle;
 
     driveDistanceControllerX.setSetpoint(xPos);
-    // TODO: is the slew rate stuff correct? 
-    // May need to swap some things if it behaves in the opposite way.
-    if (xPos >= 0) xLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ACCELERATION, Integer.MIN_VALUE, 0);
-    else xLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ACCELERATION, 0);
-
-    if (yPos >= 0) yLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ACCELERATION, Integer.MIN_VALUE, 0);
-    else yLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ACCELERATION, 0);
-
-    if (angle >= 0) rotationLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ANGULAR_ACCELERATION, Integer.MIN_VALUE, 0);
-    else rotationLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ANGULAR_ACCELERATION, 0);
-
     driveDistanceControllerX.setTolerance(0.025); // 0.05 meters = 2 inches
     driveDistanceControllerY.setSetpoint(yPos);
     driveDistanceControllerY.setTolerance(0.025); // 0.05 meters = 2 inches
@@ -84,7 +73,6 @@ public class DriveToDistanceCommand extends Command {
 
     if (angle - initAngle >= 0) rotationLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ANGULAR_ACCELERATION, Integer.MIN_VALUE, 0);
     else rotationLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ANGULAR_ACCELERATION, 0);
-
 
     driveDistanceControllerX.reset();
     driveDistanceControllerY.reset();
