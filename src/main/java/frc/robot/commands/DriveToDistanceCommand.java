@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,6 +23,8 @@ public class DriveToDistanceCommand extends Command {
   private PIDController driveDistanceControllerX = new PIDController(7.0, 0.25, 0.1); // p-25, i-0, d-1.5
   private PIDController driveDistanceControllerY = new PIDController(7.0, 0.25, 0.1); // same as above
   private PIDController rotationController = new PIDController(13.0, 0.0, 1.2); // in degrees
+
+  double xPos, yPos, angle;
 
   SlewRateLimiter xLimiter, yLimiter, rotationLimiter;
 
@@ -41,20 +44,11 @@ public class DriveToDistanceCommand extends Command {
     this.timeout = timeout;
     this.swerveSubsystem = swerveSubsystem;
 
+    this.xPos = xPos;
+    this.yPos = yPos;
+    this.angle = angle;
+
     driveDistanceControllerX.setSetpoint(xPos);
-    //TODO: is the slew rate stuff correct, given that xPos and yPos are not relative to where the robot is
-    // at the beginning of this call but relative to where the robot was turned on at?
-    // I think we may need to feed in both the current position and the desired position so we can tell what direction
-    // we are moving. Ferris
-    if (xPos >= 0) xLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ACCELERATION, Integer.MIN_VALUE, 0);
-    else xLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ACCELERATION, 0);
-
-    if (yPos >= 0) yLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ACCELERATION, Integer.MIN_VALUE, 0);
-    else yLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ACCELERATION, 0);
-
-    if (angle >= 0) rotationLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ANGULAR_ACCELERATION, Integer.MIN_VALUE, 0);
-    else rotationLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ANGULAR_ACCELERATION, 0);
-
     driveDistanceControllerX.setTolerance(0.025); // 0.05 meters = 2 inches
     driveDistanceControllerY.setSetpoint(yPos);
     driveDistanceControllerY.setTolerance(0.025); // 0.05 meters = 2 inches
@@ -66,6 +60,20 @@ public class DriveToDistanceCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
+    // TODO: is the slew rate stuff correct? 
+    // May need to swap some things if it behaves in the opposite way.
+    Pose2d initPos = swerveSubsystem.getPose();
+    double initAngle = swerveSubsystem.getHeading();
+    if (xPos - initPos.getX() >= 0) xLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ACCELERATION, Integer.MIN_VALUE, 0);
+    else xLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ACCELERATION, 0);
+
+    if (yPos - initPos.getY() >= 0) yLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ACCELERATION, Integer.MIN_VALUE, 0);
+    else yLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ACCELERATION, 0);
+
+    if (angle - initAngle >= 0) rotationLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ANGULAR_ACCELERATION, Integer.MIN_VALUE, 0);
+    else rotationLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ANGULAR_ACCELERATION, 0);
+
     driveDistanceControllerX.reset();
     driveDistanceControllerY.reset();
     rotationController.reset();
