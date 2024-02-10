@@ -122,7 +122,7 @@ public class ShooterSubsystem extends SubsystemBase {
         if (encoderLeft.getVelocity() > (targetRpmLeft * 0.95)
              && encoderRight.getVelocity() > (targetRpmRight * 0.95)) {
             return true;
-        } 
+        }
 
         return false;
     }

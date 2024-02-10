@@ -14,54 +14,55 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.subsystems.PivotEncoderSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 
-public class ClimbCommand extends Command {
-
+public class ClimbManualCommand extends Command {
+  private static final double READY_POSITION = 10;
+  private static final double RAISED_POSITION = 15;
   private final PivotSubsystem pivotSubsystem;
   private final PivotEncoderSubsystem pivotEncoderSubsystem;
+  private final DoubleSupplier leftJoystickY;
   private final double PIVOT_SPEED = 0.2;
   private int direction;
-  private double position;
   private PIDController pivotPIDController;
+
   /** Creates a new PivotCommand. */
-  public ClimbCommand(PivotSubsystem pivotSubsystem, 
-                      PivotEncoderSubsystem pivotEncoderSubsystem, 
-                      double position) {
+  public ClimbManualCommand(PivotSubsystem pivotSubsystem,
+      PivotEncoderSubsystem pivotEncoderSubsystem,
+      DoubleSupplier leftJoystickY) {
     this.pivotSubsystem = pivotSubsystem;
     this.pivotEncoderSubsystem = pivotEncoderSubsystem;
-    this.position = position;
-
+    this.leftJoystickY = leftJoystickY;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(pivotSubsystem);
     addRequirements(pivotEncoderSubsystem);
 
-    if (position > pivotEncoderSubsystem.PIVOT_UPPER_ENDPOINT) {
-      position = (int) pivotEncoderSubsystem.PIVOT_UPPER_ENDPOINT;
-    }
-    if (position < pivotEncoderSubsystem.PIVOT_LOWER_ENDPOINT) {
-      position = (int) pivotEncoderSubsystem.PIVOT_LOWER_ENDPOINT;
-    }
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    direction = 1; // going up
-    if (pivotEncoderSubsystem.getPivotAbsolutePosition() > position) {
-      direction = -1; // going down
-    }
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (pivotSubsystem.getOwner().equals("")) {
-      pivotSubsystem.setOwner(this.getName());
+    if (Math.abs(leftJoystickY.getAsDouble()) > .1) {
+
+      if (pivotSubsystem.getOwner().equals("")) {
+        pivotSubsystem.setOwner(this.getName());
+      }
+      if (pivotSubsystem.getOwner().equals(this.getName())) {
+        if (Math.abs(leftJoystickY.getAsDouble()) > .1) {
+          double pivotSpeed = -leftJoystickY.getAsDouble() * 0.2;
+          pivotSubsystem.setSpeed(pivotSpeed);
+        } else {
+          pivotSubsystem.setSpeed(0);
+          pivotSubsystem.setOwner("");
+        }
+      }
     }
-    if (pivotSubsystem.getOwner().equals(this.getName())) {
-      pivotSubsystem.setSpeed(PIVOT_SPEED * direction);
-    }
+
   }
 
   // Called once the command ends or is interrupted.
@@ -73,13 +74,14 @@ public class ClimbCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if ((direction == 1 && pivotEncoderSubsystem.getPivotAbsolutePosition() > position)
-    || (direction == -1 && pivotEncoderSubsystem.getPivotAbsolutePosition() < position)){
+    if (pivotEncoderSubsystem.getPivotAbsolutePosition() > pivotEncoderSubsystem.PIVOT_UPPER_ENDPOINT) {
       pivotSubsystem.stop();
-      pivotSubsystem.setOwner("");
-      return true;
-    } else {
-      return false;
     }
+
+    if (pivotEncoderSubsystem.getPivotAbsolutePosition() < pivotEncoderSubsystem.PIVOT_LOWER_ENDPOINT) {
+      pivotSubsystem.stop();
+    }
+
+    return false;
   }
 }

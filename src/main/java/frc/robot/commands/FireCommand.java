@@ -11,7 +11,7 @@ import frc.robot.subsystems.PivotEncoderSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class ShooterCommand extends Command {
+public class FireCommand extends Command {
     private final static double PIVOT_SPEED = 0.2;
 
     private final ShooterSubsystem shooterSubsystem;
@@ -19,37 +19,22 @@ public class ShooterCommand extends Command {
     private final FeederDistanceSensorSubsystem feederDistanceSensorSubsystem;
     private final PivotEncoderSubsystem pivotEncoderSubsystem;
     private final PivotSubsystem pivotSubsystem;
-    private double leftShooterRPM;
-    private double rightShooterRPM;
-    private boolean autoAim = false;
-    private double pivotAngle;
-    private int direction;
+    private final double feederRpm;
 
-    public ShooterCommand(FeederSubsystem feederSubsystem,
+    public FireCommand(FeederSubsystem feederSubsystem,
             FeederDistanceSensorSubsystem feederDistanceSensorSubsystem,
             ShooterSubsystem shooterSubsystem,
             PivotEncoderSubsystem pivotEncoderSubsystem,
             PivotSubsystem pivotSubsystem,
-            double leftShooterRPM,
-            double rightShooterRPM,
-            boolean autoAim, double pivotAngle) {
+            double feederRpm) {
 
         this.shooterSubsystem = shooterSubsystem;
         this.feederSubsystem = feederSubsystem;
         this.feederDistanceSensorSubsystem = feederDistanceSensorSubsystem;
         this.pivotEncoderSubsystem = pivotEncoderSubsystem;
         this.pivotSubsystem = pivotSubsystem;
-        this.leftShooterRPM = leftShooterRPM;
-        this.rightShooterRPM = rightShooterRPM;
-        this.autoAim = autoAim;
-        this.pivotAngle = pivotAngle;
+        this.feederRpm = feederRpm; 
 
-        if (pivotAngle > pivotEncoderSubsystem.PIVOT_UPPER_ENDPOINT) {
-            pivotAngle = (int) pivotEncoderSubsystem.PIVOT_UPPER_ENDPOINT;
-        }
-        if (pivotAngle < pivotEncoderSubsystem.PIVOT_LOWER_ENDPOINT) {
-            pivotAngle = (int) pivotEncoderSubsystem.PIVOT_LOWER_ENDPOINT;
-        }
 
         addRequirements(shooterSubsystem);
         addRequirements(feederSubsystem);
@@ -59,24 +44,12 @@ public class ShooterCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        direction = 1; // going up
-        if (pivotEncoderSubsystem.getPivotAbsolutePosition() > pivotAngle) {
-            direction = -1; // going down
-        }
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (feederDistanceSensorSubsystem.isNoteLoaded()) {
-            shooterSubsystem.setShooterLeftRPM(leftShooterRPM);
-            shooterSubsystem.setShooterRightRPM(rightShooterRPM);
-            if (pivotAngle != RobotContainer.AUTO_PIVOT_ANGLE) {
-                pivotSubsystem.setSpeed(PIVOT_SPEED * direction);
-            } else {
-                // TO-DO
-            }
-        }
+        feederSubsystem.setSpeed(feederRpm);
     }
 
     // Called once the command ends or is interrupted.
@@ -88,15 +61,6 @@ public class ShooterCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        if (pivotAngle != RobotContainer.AUTO_PIVOT_ANGLE) {
-            if ((direction == 1 && pivotEncoderSubsystem.getPivotAbsolutePosition() > pivotAngle)
-                    || (direction == -1 && pivotEncoderSubsystem.getPivotAbsolutePosition() < pivotAngle)) {
-                pivotSubsystem.stop();
-                return true;
-            } else {
-                return false;
-            }
-        }
         return false;
     }
 }

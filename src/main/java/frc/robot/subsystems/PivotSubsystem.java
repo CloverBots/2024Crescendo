@@ -26,6 +26,7 @@ public class PivotSubsystem extends SubsystemBase {
   PivotEncoderSubsystem pivotEncoderSubsystem = new PivotEncoderSubsystem();
 
   private final int CURRENT_LIMIT = 10;
+  private String owner = "";
 
   public PivotSubsystem() {
     this.pivotLeadMotor = new CANSparkMax(IDs.PIVOT_LEAD_MOTOR, MotorType.kBrushless);
@@ -52,5 +53,13 @@ public class PivotSubsystem extends SubsystemBase {
 
   public void stop() {
     pivotLeadMotor.set(0);
+  }
+
+  public String getOwner() {
+    return owner;
+  }
+
+  public void setOwner(String owner) {
+    this.owner = owner;
   }
 }

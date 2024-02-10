@@ -20,20 +20,20 @@ public class IntakeCommand extends Command {
   private final FeederSubsystem feederSubsystem;
   private final FeederDistanceSensorSubsystem feederDistanceSensorSubsystem;
 
-  private final Supplier<Boolean> intakeLoadButton, intakeEjectButton;
+  private final Supplier<Double> intakeLoadTrigger, intakeEjectTrigger;
 
   public IntakeCommand(IntakeSubsystem intakeSubsystem,
       FeederSubsystem feederSubsystem,
       FeederDistanceSensorSubsystem feederDistanceSensorSubsystem,
-      Supplier<Boolean> intakeLoadButton,
-      Supplier<Boolean> intakeEjectButton) {
+      Supplier<Double> intakeLoadTrigger,
+      Supplier<Double> intakeEjectTrigger) {
 
     this.intakeSubsystem = intakeSubsystem;
     this.feederSubsystem = feederSubsystem;
     this.feederDistanceSensorSubsystem = feederDistanceSensorSubsystem;
 
-    this.intakeLoadButton = intakeLoadButton;
-    this.intakeEjectButton = intakeEjectButton;
+    this.intakeLoadTrigger = intakeLoadTrigger;
+    this.intakeEjectTrigger = intakeEjectTrigger;
 
     addRequirements(intakeSubsystem);
     addRequirements(feederSubsystem);
@@ -48,10 +48,10 @@ public class IntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (intakeLoadButton.get() && !feederDistanceSensorSubsystem.isNoteLoaded()) {
+    if (intakeLoadTrigger.get() > 0.5 && !feederDistanceSensorSubsystem.isNoteLoaded()) {
       intakeSubsystem.setIntakeSpeed(INTAKE_RPM);
       feederSubsystem.setSpeed(FEEDER_RPM);
-    } else if (intakeEjectButton.get()) {
+    } else if (intakeEjectTrigger.get() > 0.5) {
       intakeSubsystem.setIntakeSpeed(-INTAKE_RPM);
       feederSubsystem.setSpeed(-FEEDER_RPM);
     }
@@ -70,7 +70,7 @@ public class IntakeCommand extends Command {
     if (intakeSubsystem.isIntakeRunningForward() && feederDistanceSensorSubsystem.isNoteLoaded()) {
       intakeSubsystem.setIntakeSpeed(0);
       feederSubsystem.setSpeed(0);
-    } else if (!intakeEjectButton.get() && intakeSubsystem.isIntakeRunningBackward()) {
+    } else if (intakeEjectTrigger.get() < 0.5 && intakeSubsystem.isIntakeRunningBackward()) {
       intakeSubsystem.setIntakeSpeed(0);
       feederSubsystem.setSpeed(0);
     }
