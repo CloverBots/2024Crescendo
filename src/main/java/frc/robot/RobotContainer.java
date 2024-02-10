@@ -89,6 +89,7 @@ public class RobotContainer {
   }
 
   public void teleopPeriodic() {
+    feederDistanceSensorSubsystem.isNoteLoaded();
   }
 
   public void onAutonomousEnable() {
