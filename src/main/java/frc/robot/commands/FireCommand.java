@@ -35,7 +35,7 @@ public class FireCommand extends Command {
 
         timer = new Timer();
 
-        pivotAngle = RobotContainer.SHOOTER_PIVOT_PARKED_ANGLE;
+        pivotAngle = RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE;
         if (pivotAngle > PivotEncoderSubsystem.PIVOT_UPPER_ENDPOINT) {
             pivotAngle = PivotEncoderSubsystem.PIVOT_UPPER_ENDPOINT;
         }

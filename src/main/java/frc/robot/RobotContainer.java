@@ -38,27 +38,35 @@ import frc.robot.subsystems.SwerveSubsystem;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
+  private static final double FEEDER_RPM = 20;
+  public static final double PIVOT_SPEED = 0.2;
+
   private static final double CLIMBER_READY_POSITION = 10;
   private static final double CLIMBER_RAISED_POSITION = 15;
 
-  public static final double SHOOTER_PIVOT_PARKED_ANGLE = 0;
-  // FEEDER RPM
-  private static final double FEEDER_RPM = 20;
-  public static final double PIVOT_SPEED = 0.2;
-  // AMP
+  // PARKED SHOOTER
+  private static final double SHOOTER_PARKED_RIGHT_RPM = 20;
+  private static final double SHOOTER_PARKED_LEFT_RPM = 20;
+  public static final double SHOOTER_PARKED_PIVOT_ANGLE = 0;
+  
+  
+  // AMP SHOOTER
   private static final double SHOOTER_AMP_RIGHT_RPM = 20;
   private static final double SHOOTER_AMP_LEFT_RPM = 20;
   private static final double SHOOTER_AMP_PIVOT_ANGLE = 45;
 
-  // TRAP
+  // TRAP SHOOTER
   private static final double SHOOTER_TRAP_RIGHT_RPM = 20;
   private static final double SHOOTER_TRAP_LEFT_RPM = 20;
   private static final double SHOOTER_TRAP_PIVOT_ANGLE = 45;
 
-  // SPEAKER
+  // SPEAKER SHOOTER
   private static final double SHOOTER_SPEAKER_RIGHT_RPM = 20;
   private static final double SHOOTER_SPEAKER_LEFT_RPM = 20;
   private static final double SHOOTER_SPEAKER_PIVOT_ANGLE = -999; // Automatic
+
+  // Used to indicate auto mode (based on April tag distance) for the shooter pivot angle
   public static final double AUTO_PIVOT_ANGLE = -999;
 
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
@@ -98,16 +106,21 @@ public class RobotContainer {
 
   private final RotateTag rotateTag = new RotateTag(swerveSubsystem);
 
-  private final ShooterCommand ampShootCommand = new ShooterCommand(feederDistanceSensorSubsystem,
+  private final ShooterCommand parkedShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
+      shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem,
+      SHOOTER_PARKED_LEFT_RPM, SHOOTER_PARKED_RIGHT_RPM,
+      false, SHOOTER_PARKED_PIVOT_ANGLE);
+
+  private final ShooterCommand ampShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
       shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem,
       SHOOTER_AMP_LEFT_RPM, SHOOTER_AMP_RIGHT_RPM,
-      false, SHOOTER_AMP_PIVOT_ANGLE); // Need to set the angle
+      false, SHOOTER_AMP_PIVOT_ANGLE);
 
-  private final ShooterCommand trapShootCommand = new ShooterCommand(feederDistanceSensorSubsystem,
+  private final ShooterCommand trapShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
       shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem, SHOOTER_TRAP_LEFT_RPM, SHOOTER_TRAP_RIGHT_RPM, false,
       SHOOTER_TRAP_PIVOT_ANGLE);
 
-  private final ShooterCommand speakerShootCommand = new ShooterCommand(feederDistanceSensorSubsystem,
+  private final ShooterCommand speakerShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
       shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem, SHOOTER_SPEAKER_LEFT_RPM, SHOOTER_SPEAKER_RIGHT_RPM,
       true,
       SHOOTER_SPEAKER_PIVOT_ANGLE);
@@ -184,12 +197,14 @@ public class RobotContainer {
     POVButton climbRaisedButton = new POVButton(operatorController, 180); // Down
     climbRaisedButton.onTrue(climbRaisedCommand);
 
+    JoystickButton parkedButton = new JoystickButton(operatorController, XboxController.Button.kX.value);
+    parkedButton.onTrue(parkedShooterCommand);
     JoystickButton ampButton = new JoystickButton(operatorController, XboxController.Button.kA.value);
-    ampButton.onTrue(ampShootCommand);
+    ampButton.onTrue(ampShooterCommand);
     JoystickButton speakerButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
-    speakerButton.onTrue(speakerShootCommand);
+    speakerButton.onTrue(speakerShooterCommand);
     JoystickButton trapButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
-    trapButton.onTrue(trapShootCommand);
+    trapButton.onTrue(trapShooterCommand);
 
     JoystickButton fireButton = new JoystickButton(operatorController, XboxController.Button.kRightBumper.value);
     fireButton.onTrue(fireCommand);

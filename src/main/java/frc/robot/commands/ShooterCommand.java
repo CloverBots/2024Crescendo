@@ -59,9 +59,15 @@ public class ShooterCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (feederDistanceSensorSubsystem.isNoteLoaded()) {
+        // If note is loaded or going back to parked position
+        if (feederDistanceSensorSubsystem.isNoteLoaded() || 
+                pivotAngle == RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE) {
+
             shooterSubsystem.setShooterLeftRPM(leftShooterRPM);
             shooterSubsystem.setShooterRightRPM(rightShooterRPM);
+
+            //for auto mode (as indicated by pivotAngle equalling the AUTO_PIVOT_ANGLE value),
+            // base the pivot angle on the April tag distance
             if (pivotAngle != RobotContainer.AUTO_PIVOT_ANGLE) {
                 pivotSubsystem.setSpeed(RobotContainer.PIVOT_SPEED * direction);
             } else {
