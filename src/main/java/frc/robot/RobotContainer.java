@@ -4,10 +4,6 @@
 
 package frc.robot;
 
-//TODO:
-// use degrees everywhere, no radians
-// get rid of button for non-field oriented
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoOneBlue;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DriveFromControllerCommand;
+import frc.robot.commands.FireCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.RotateTag;
 import frc.robot.commands.ShooterCommand;
@@ -44,8 +41,10 @@ public class RobotContainer {
   private static final double CLIMBER_READY_POSITION = 10;
   private static final double CLIMBER_RAISED_POSITION = 15;
 
+  public static final double SHOOTER_PIVOT_PARKED_ANGLE = 0;
   // FEEDER RPM
   private static final double FEEDER_RPM = 20;
+  public static final double PIVOT_SPEED = 0.2;
   // AMP
   private static final double SHOOTER_AMP_RIGHT_RPM = 20;
   private static final double SHOOTER_AMP_LEFT_RPM = 20;
@@ -93,22 +92,28 @@ public class RobotContainer {
 
   private final ClimbCommand climbReadyCommand = new ClimbCommand(pivotSubsystem, pivotEncoderSubsystem,
       CLIMBER_READY_POSITION);
+
   private final ClimbCommand climbRaisedCommand = new ClimbCommand(pivotSubsystem, pivotEncoderSubsystem,
       CLIMBER_RAISED_POSITION);
+
   private final RotateTag rotateTag = new RotateTag(swerveSubsystem);
-  private final ShooterCommand ampShootCommand = new ShooterCommand(feederSubsystem, feederDistanceSensorSubsystem,
+
+  private final ShooterCommand ampShootCommand = new ShooterCommand(feederDistanceSensorSubsystem,
       shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem,
       SHOOTER_AMP_LEFT_RPM, SHOOTER_AMP_RIGHT_RPM,
       false, SHOOTER_AMP_PIVOT_ANGLE); // Need to set the angle
 
-  private final ShooterCommand trapShootCommand = new ShooterCommand(feederSubsystem, feederDistanceSensorSubsystem,
+  private final ShooterCommand trapShootCommand = new ShooterCommand(feederDistanceSensorSubsystem,
       shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem, SHOOTER_TRAP_LEFT_RPM, SHOOTER_TRAP_RIGHT_RPM, false,
       SHOOTER_TRAP_PIVOT_ANGLE);
 
-  private final ShooterCommand speakerShootCommand = new ShooterCommand(feederSubsystem, feederDistanceSensorSubsystem,
+  private final ShooterCommand speakerShootCommand = new ShooterCommand(feederDistanceSensorSubsystem,
       shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem, SHOOTER_SPEAKER_LEFT_RPM, SHOOTER_SPEAKER_RIGHT_RPM,
       true,
       SHOOTER_SPEAKER_PIVOT_ANGLE);
+
+  private final FireCommand fireCommand = new FireCommand(feederSubsystem, shooterSubsystem, pivotEncoderSubsystem,
+      pivotSubsystem, FEEDER_RPM);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -173,6 +178,7 @@ public class RobotContainer {
     // JoystickButton followTag = new JoystickButton(operatorController,
     // XboxController.Button.kA.value);
     // followTag.onTrue(rotateTag);
+
     POVButton climbReadyButton = new POVButton(operatorController, 0); // Up
     climbReadyButton.onTrue(climbReadyCommand);
     POVButton climbRaisedButton = new POVButton(operatorController, 180); // Down
@@ -184,6 +190,9 @@ public class RobotContainer {
     speakerButton.onTrue(speakerShootCommand);
     JoystickButton trapButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
     trapButton.onTrue(trapShootCommand);
+
+    JoystickButton fireButton = new JoystickButton(operatorController, XboxController.Button.kRightBumper.value);
+    fireButton.onTrue(fireCommand);
   }
 
   /**

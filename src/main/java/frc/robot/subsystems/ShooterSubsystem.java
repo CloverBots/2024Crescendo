@@ -10,7 +10,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 
 public class ShooterSubsystem extends SubsystemBase {
-    private static final double WHEEL_DIAMETER_METERS = 0.1524;
     private static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;// 0.1 * WHEEL_DIAMETER_METERS * Math.PI;
     private static final double ENCODER_VELOCITY_CONVERSION_FACTOR = 1;// ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
     private static final double MAX_RPM = 5700;

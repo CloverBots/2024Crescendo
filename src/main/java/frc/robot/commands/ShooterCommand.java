@@ -1,21 +1,15 @@
 package frc.robot.commands;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
-import frc.robot.subsystems.FeederSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PivotEncoderSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShooterCommand extends Command {
-    private final static double PIVOT_SPEED = 0.2;
 
     private final ShooterSubsystem shooterSubsystem;
-    private final FeederSubsystem feederSubsystem;
     private final FeederDistanceSensorSubsystem feederDistanceSensorSubsystem;
     private final PivotEncoderSubsystem pivotEncoderSubsystem;
     private final PivotSubsystem pivotSubsystem;
@@ -25,8 +19,7 @@ public class ShooterCommand extends Command {
     private double pivotAngle;
     private int direction;
 
-    public ShooterCommand(FeederSubsystem feederSubsystem,
-            FeederDistanceSensorSubsystem feederDistanceSensorSubsystem,
+    public ShooterCommand(FeederDistanceSensorSubsystem feederDistanceSensorSubsystem,
             ShooterSubsystem shooterSubsystem,
             PivotEncoderSubsystem pivotEncoderSubsystem,
             PivotSubsystem pivotSubsystem,
@@ -35,7 +28,6 @@ public class ShooterCommand extends Command {
             boolean autoAim, double pivotAngle) {
 
         this.shooterSubsystem = shooterSubsystem;
-        this.feederSubsystem = feederSubsystem;
         this.feederDistanceSensorSubsystem = feederDistanceSensorSubsystem;
         this.pivotEncoderSubsystem = pivotEncoderSubsystem;
         this.pivotSubsystem = pivotSubsystem;
@@ -44,15 +36,14 @@ public class ShooterCommand extends Command {
         this.autoAim = autoAim;
         this.pivotAngle = pivotAngle;
 
-        if (pivotAngle > pivotEncoderSubsystem.PIVOT_UPPER_ENDPOINT) {
-            pivotAngle = (int) pivotEncoderSubsystem.PIVOT_UPPER_ENDPOINT;
+        if (pivotAngle > PivotEncoderSubsystem.PIVOT_UPPER_ENDPOINT) {
+            pivotAngle = PivotEncoderSubsystem.PIVOT_UPPER_ENDPOINT;
         }
-        if (pivotAngle < pivotEncoderSubsystem.PIVOT_LOWER_ENDPOINT) {
-            pivotAngle = (int) pivotEncoderSubsystem.PIVOT_LOWER_ENDPOINT;
+        if (pivotAngle < PivotEncoderSubsystem.PIVOT_LOWER_ENDPOINT) {
+            pivotAngle = PivotEncoderSubsystem.PIVOT_LOWER_ENDPOINT;
         }
 
         addRequirements(shooterSubsystem);
-        addRequirements(feederSubsystem);
         addRequirements(feederDistanceSensorSubsystem);
     }
 
@@ -72,7 +63,7 @@ public class ShooterCommand extends Command {
             shooterSubsystem.setShooterLeftRPM(leftShooterRPM);
             shooterSubsystem.setShooterRightRPM(rightShooterRPM);
             if (pivotAngle != RobotContainer.AUTO_PIVOT_ANGLE) {
-                pivotSubsystem.setSpeed(PIVOT_SPEED * direction);
+                pivotSubsystem.setSpeed(RobotContainer.PIVOT_SPEED * direction);
             } else {
                 // TO-DO
             }

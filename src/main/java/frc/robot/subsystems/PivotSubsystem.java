@@ -12,12 +12,8 @@ import com.ctre.phoenix.sensors.SensorTimeBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.constants.IDs;
-import frc.robot.subsystems.PivotEncoderSubsystem;
 
 public class PivotSubsystem extends SubsystemBase {
   private final CANSparkMax pivotLeadMotor;
@@ -26,7 +22,6 @@ public class PivotSubsystem extends SubsystemBase {
   PivotEncoderSubsystem pivotEncoderSubsystem = new PivotEncoderSubsystem();
 
   private final int CURRENT_LIMIT = 10;
-  private String owner = "";
 
   public PivotSubsystem() {
     this.pivotLeadMotor = new CANSparkMax(IDs.PIVOT_LEAD_MOTOR, MotorType.kBrushless);
@@ -47,19 +42,11 @@ public class PivotSubsystem extends SubsystemBase {
     pivotLeadMotor.getEncoder().setPosition(pivotEncoderSubsystem.getPivotAbsolutePosition());
   }
 
-  public void setSpeed(double speed){
+  public void setSpeed(double speed) {
     pivotLeadMotor.set(speed);
   }
 
   public void stop() {
     pivotLeadMotor.set(0);
-  }
-
-  public String getOwner() {
-    return owner;
-  }
-
-  public void setOwner(String owner) {
-    this.owner = owner;
   }
 }
