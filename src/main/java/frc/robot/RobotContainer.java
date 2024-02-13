@@ -39,6 +39,17 @@ import frc.robot.subsystems.SwerveSubsystem;
  */
 public class RobotContainer {
 
+  private static final double VISION_TARGET_HEIGHT = 78.5; // on test robot
+  private static final double CAMERA_HEIGHT = 43.7; // on test robot
+  private static final double CAMERA_PITCH = 22.0;
+
+  private final VisionConfiguration visionConfiguration = new VisionConfiguration(
+      VISION_TARGET_HEIGHT,
+      CAMERA_HEIGHT,
+      CAMERA_PITCH);
+
+  private final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
+
   private static final double FEEDER_RPM = 20;
   public static final double PIVOT_SPEED = 0.2;
 
@@ -49,8 +60,7 @@ public class RobotContainer {
   private static final double SHOOTER_PARKED_RIGHT_RPM = 20;
   private static final double SHOOTER_PARKED_LEFT_RPM = 20;
   public static final double SHOOTER_PARKED_PIVOT_ANGLE = 0;
-  
-  
+
   // AMP SHOOTER
   private static final double SHOOTER_AMP_RIGHT_RPM = 20;
   private static final double SHOOTER_AMP_LEFT_RPM = 20;
@@ -66,7 +76,8 @@ public class RobotContainer {
   private static final double SHOOTER_SPEAKER_LEFT_RPM = 20;
   private static final double SHOOTER_SPEAKER_PIVOT_ANGLE = -999; // Automatic
 
-  // Used to indicate auto mode (based on April tag distance) for the shooter pivot angle
+  // Used to indicate auto mode (based on April tag distance) for the shooter
+  // pivot angle
   public static final double AUTO_PIVOT_ANGLE = -999;
 
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
@@ -104,25 +115,26 @@ public class RobotContainer {
   private final ClimbCommand climbRaisedCommand = new ClimbCommand(pivotSubsystem, pivotEncoderSubsystem,
       CLIMBER_RAISED_POSITION);
 
-  private final RotateTag rotateTag = new RotateTag(swerveSubsystem);
+  private final RotateTag rotateTag = new RotateTag(swerveSubsystem, visionTargetTracker);
 
   private final ShooterCommand parkedShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
-      shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem,
+      shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem, visionTargetTracker,
       SHOOTER_PARKED_LEFT_RPM, SHOOTER_PARKED_RIGHT_RPM,
       false, SHOOTER_PARKED_PIVOT_ANGLE);
 
   private final ShooterCommand ampShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
-      shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem,
+      shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem, visionTargetTracker,
       SHOOTER_AMP_LEFT_RPM, SHOOTER_AMP_RIGHT_RPM,
       false, SHOOTER_AMP_PIVOT_ANGLE);
 
   private final ShooterCommand trapShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
-      shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem, SHOOTER_TRAP_LEFT_RPM, SHOOTER_TRAP_RIGHT_RPM, false,
+      shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem, visionTargetTracker,
+      SHOOTER_TRAP_LEFT_RPM, SHOOTER_TRAP_RIGHT_RPM, false,
       SHOOTER_TRAP_PIVOT_ANGLE);
 
   private final ShooterCommand speakerShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
-      shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem, SHOOTER_SPEAKER_LEFT_RPM, SHOOTER_SPEAKER_RIGHT_RPM,
-      true,
+      shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem, visionTargetTracker,
+      SHOOTER_SPEAKER_LEFT_RPM, SHOOTER_SPEAKER_RIGHT_RPM, true,
       SHOOTER_SPEAKER_PIVOT_ANGLE);
 
   private final FireCommand fireCommand = new FireCommand(feederSubsystem, shooterSubsystem, pivotEncoderSubsystem,

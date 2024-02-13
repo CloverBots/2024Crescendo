@@ -7,17 +7,20 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.LimelightVision;
+import frc.robot.VisionTargetTracker;
 
 public class RotateTag extends Command {
 
   SwerveSubsystem swerveSubsystem;
   PIDController rotationController;
+  VisionTargetTracker limelightVision;
 
   /** Creates a new RotateTag. */
-  public RotateTag(SwerveSubsystem swerve) {
-    swerveSubsystem = swerve;
+  public RotateTag(SwerveSubsystem swerveSubsystem, VisionTargetTracker limelightVision) {
+    this.swerveSubsystem = swerveSubsystem;
     rotationController = new PIDController(0.5, 0, 0);
+    this.limelightVision = limelightVision;
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(swerveSubsystem);
   }
@@ -30,7 +33,7 @@ public class RotateTag extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = rotationController.calculate(LimelightVision.getTX());
+    double speed = rotationController.calculate(limelightVision.getTx());
     swerveSubsystem.setSpeed(0, 0, speed, true);
   }
 
