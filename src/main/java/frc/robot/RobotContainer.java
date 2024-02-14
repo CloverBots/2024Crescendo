@@ -51,13 +51,14 @@ public class RobotContainer {
 
   private static final double FEEDER_RPM = 20;
   public static final double PIVOT_SPEED = 0.2;
+  public static final double DEFAULT_SPEAKER_PIVOT_ANGLE = 20;
 
   private static final double CLIMBER_READY_POSITION = 10;
   private static final double CLIMBER_RAISED_POSITION = 15;
 
   // PARKED SHOOTER
-  private static final double SHOOTER_PARKED_RIGHT_RPM = 20;
-  private static final double SHOOTER_PARKED_LEFT_RPM = 20;
+  private static final double SHOOTER_PARKED_RIGHT_RPM = 0;
+  private static final double SHOOTER_PARKED_LEFT_RPM = 0;
   public static final double SHOOTER_PARKED_PIVOT_ANGLE = 0;
 
   // AMP SHOOTER
