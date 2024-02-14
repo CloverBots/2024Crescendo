@@ -17,7 +17,6 @@ import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.FireCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.RotateTag;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.constants.IDs;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
@@ -104,7 +103,8 @@ public class RobotContainer {
       driverController::getXButton,
       driverController::getLeftTriggerAxis,
       driverController::getRightTriggerAxis,
-      driverController::getPOV);
+      driverController::getPOV,
+      visionTargetTracker);
 
   private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, feederSubsystem,
       feederDistanceSensorSubsystem, operatorController::getLeftTriggerAxis, operatorController::getRightTriggerAxis);
@@ -114,8 +114,6 @@ public class RobotContainer {
 
   private final ClimbCommand climbRaisedCommand = new ClimbCommand(pivotSubsystem, pivotEncoderSubsystem,
       CLIMBER_RAISED_POSITION);
-
-  private final RotateTag rotateTag = new RotateTag(swerveSubsystem, visionTargetTracker);
 
   private final ShooterCommand parkedShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
       shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem, visionTargetTracker,

@@ -64,6 +64,7 @@ public class ShooterCommand extends Command {
         if (pivotEncoderSubsystem.getPivotAbsolutePosition() > pivotAngle) {
             direction = -1; // going down
         }
+        if (autoAim) DriveFromControllerCommand.lockOnMode = true;
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -96,7 +97,7 @@ public class ShooterCommand extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-
+        if (autoAim) DriveFromControllerCommand.lockOnMode = false;
     }
 
     // Returns true when the command should end.

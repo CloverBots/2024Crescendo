@@ -2,11 +2,13 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.VisionTargetTracker;
 import frc.robot.constants.SwerveDriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -16,12 +18,14 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class DriveFromControllerCommand extends Command {
 
     private final SwerveSubsystem swerveSubsystem;
+    static VisionTargetTracker limelight;
     private final Supplier<Double> leftStickX, leftStickY, rightStickX, rightStickY, crawlTrigger, slowRotate;
     private final Supplier<Boolean> yButton, bButton, aButton, xButton;
     private final Supplier<Integer> dPad;
     private final SlewRateLimiter translationLimiter, turningLimiter;
     private boolean fieldOriented = true;
     private boolean pointedTurning = false;
+    public static boolean lockOnMode = false;
 
     private final double JOYSTICK_DEADZONE = 0.05;
     private final double POINTED_JOYSTICK_DEADZONE = 0.5;
@@ -41,8 +45,10 @@ public class DriveFromControllerCommand extends Command {
             Supplier<Boolean> xButton,
             Supplier<Double> crawlTrigger,
             Supplier<Double> slowRotate,
-            Supplier<Integer> dPad) {
+            Supplier<Integer> dPad,
+            VisionTargetTracker limelight) {
         this.swerveSubsystem = swerveSubsystem;
+        DriveFromControllerCommand.limelight = limelight;
 
         this.leftStickX = leftStickX;
         this.leftStickY = leftStickY;
@@ -110,14 +116,18 @@ public class DriveFromControllerCommand extends Command {
     private ChassisSpeeds calculateSpeeds() {
         double rotationSpeed;
 
+
         // Uses the ABYX buttons if any of them are pressed
         if (isTurnButtonPressed()) rotationSpeed = calculateTurningSpeedHotkey();
         
+        // Locks on if no rotation stick input
+        else if (lockOnMode && Math.abs(rightStickX.get()) < JOYSTICK_DEADZONE) {
+            rotationSpeed = TagLocker.calculateRotationSpeed();
+        }
         // If none of those buttons are pressed, check to see if pointed turning is enabled.
         else if (pointedTurning) {
             rotationSpeed = calculateTurningSpeedPointed(rightStickX.get(), rightStickY.get());
         }
-
         // If none of those above are true, use the normal controls.
         else rotationSpeed = calculateTurningSpeedsNormal(rightStickX.get());
         
@@ -259,5 +269,12 @@ public class DriveFromControllerCommand extends Command {
     @Override
     public boolean isFinished() {
         return false;
+    }
+
+    private static class TagLocker {
+        private static PIDController lockToTagXController = new PIDController(0.5, 0, 0);
+        public static double calculateRotationSpeed() {
+            return lockToTagXController.calculate(DriveFromControllerCommand.limelight.getTx());
+        }
     }
 }
