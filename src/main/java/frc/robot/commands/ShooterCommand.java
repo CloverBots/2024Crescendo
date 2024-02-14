@@ -81,16 +81,25 @@ public class ShooterCommand extends Command {
             if (autoPivotAngle) {
                 double targetDistance = visionTargetTracker.computeTargetDistance();
                 Boolean isTargetValid = visionTargetTracker.isValid();
+                computedPivotAngle = RobotContainer.DEFAULT_SPEAKER_PIVOT_ANGLE;
                 if (isTargetValid) {
                     computedPivotAngle = computePivotAngle(targetDistance);
-                    //TO-DO move pivot (determine direction, move)
+                }
+                double currentAngle = pivotEncoderSubsystem.getPivotAbsolutePosition();
+                if (Math.abs(currentAngle - computedPivotAngle) < 0.5) {
+                    pivotSubsystem.setSpeed(0);
                 } else {
-                    //TO-DO some default setting?
+                    direction = 1; // going up
+                    if (currentAngle > computedPivotAngle) {
+                        direction = -1; // going down
+                    }
+                    pivotSubsystem.setSpeed(direction * RobotContainer.PIVOT_SPEED);
                 }
             } else {
                 pivotSubsystem.setSpeed(RobotContainer.PIVOT_SPEED * direction);
             }
         }
+
     }
 
     // Called once the command ends or is interrupted.
@@ -102,7 +111,8 @@ public class ShooterCommand extends Command {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        //For autoPivotAngle == true, keep running command so the angle will continuously update
+        // For autoPivotAngle == true, keep running command so the angle will
+        // continuously update
         if (!autoPivotAngle) {
             if ((direction == 1 && pivotEncoderSubsystem.getPivotAbsolutePosition() > pivotAngle)
                     || (direction == -1 && pivotEncoderSubsystem.getPivotAbsolutePosition() < pivotAngle)) {
@@ -116,6 +126,6 @@ public class ShooterCommand extends Command {
     }
 
     private double computePivotAngle(double distance) {
-        return 46.7 * distance + 1793; //TO-DO determine proper formula
+        return 46.7 * distance + 1793; // TO-DO determine proper formula
     }
 }
