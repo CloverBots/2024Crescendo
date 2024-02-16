@@ -7,14 +7,14 @@ package frc.robot.commands;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeCommand extends Command {
 
-  private static final double INTAKE_RPM = 20;
-  private static final double FEEDER_RPM = 20;
+  private static final double INTAKE_SPEED = 0.20;
 
   private final IntakeSubsystem intakeSubsystem;
   private final FeederSubsystem feederSubsystem;
@@ -49,11 +49,11 @@ public class IntakeCommand extends Command {
   @Override
   public void execute() {
     if (intakeLoadTrigger.get() > 0.5 && !feederDistanceSensorSubsystem.isNoteLoaded()) {
-      intakeSubsystem.setIntakeSpeed(INTAKE_RPM);
-      feederSubsystem.setSpeed(FEEDER_RPM);
+      intakeSubsystem.setIntakeSpeed(INTAKE_SPEED);
+      feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED);
     } else if (intakeEjectTrigger.get() > 0.5) {
-      intakeSubsystem.setIntakeSpeed(-INTAKE_RPM);
-      feederSubsystem.setSpeed(-FEEDER_RPM);
+      intakeSubsystem.setIntakeSpeed(-INTAKE_SPEED);
+      feederSubsystem.setSpeed(-RobotContainer.FEEDER_SPEED);
     }
   }
 

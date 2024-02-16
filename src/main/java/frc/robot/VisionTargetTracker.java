@@ -14,7 +14,7 @@ public class VisionTargetTracker {
     private static final String LIMELIGHT_TABLE_NAME = "limelight";
     private static final String LIMELIGHT_TABLE_ENTRY_X = "tx";
     private static final String LIMELIGHT_TABLE_ENTRY_Y = "ty";
-    private static final String LIMELIGHT_TABLE_ENTRY_A = "ta";
+
     // tv = 0 if no valid targets identified, tv = 1 for valid target
     private static final String LIMELIGHT_TABLE_ENTRY_VALID = "tv";
 
@@ -22,9 +22,7 @@ public class VisionTargetTracker {
     private final NetworkTable table;
     private final NetworkTableEntry tx;
     private final NetworkTableEntry ty;
-    private final NetworkTableEntry ta;
     private final NetworkTableEntry tv;
-    private static NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
     public VisionTargetTracker(VisionConfiguration configuration) {
         this.configuration = configuration;
@@ -32,7 +30,6 @@ public class VisionTargetTracker {
         table = NetworkTableInstance.getDefault().getTable(LIMELIGHT_TABLE_NAME);
         tx = table.getEntry(LIMELIGHT_TABLE_ENTRY_X);
         ty = table.getEntry(LIMELIGHT_TABLE_ENTRY_Y);
-        ta = table.getEntry(LIMELIGHT_TABLE_ENTRY_A);
         tv = table.getEntry(LIMELIGHT_TABLE_ENTRY_VALID);
     }
 

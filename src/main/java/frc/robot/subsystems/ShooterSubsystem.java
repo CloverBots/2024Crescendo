@@ -8,6 +8,7 @@ import frc.robot.constants.IDs;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 public class ShooterSubsystem extends SubsystemBase {
     private static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;// 0.1 * WHEEL_DIAMETER_METERS * Math.PI;
@@ -63,6 +64,9 @@ public class ShooterSubsystem extends SubsystemBase {
         pidControllerRight.setIZone(SHOOTER_Iz);
         pidControllerRight.setFF(SHOOTER_FF);
         pidControllerRight.setOutputRange(SHOOTER_MIN_OUTPUT, SHOOTER_MAX_OUTPUT);
+
+        motorLeft.setIdleMode(IdleMode.kCoast);
+        motorRight.setIdleMode(IdleMode.kCoast);
 
     }
 

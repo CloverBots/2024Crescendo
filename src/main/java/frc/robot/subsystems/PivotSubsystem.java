@@ -19,9 +19,11 @@ public class PivotSubsystem extends SubsystemBase {
   private final CANSparkMax pivotLeadMotor;
   private final CANSparkMax pivotFollowMotor;
 
-  PivotEncoderSubsystem pivotEncoderSubsystem = new PivotEncoderSubsystem();
+  private final CANCoder pivotEncoder;
+  public final static double PIVOT_LOWER_ENDPOINT = 0;
+  public final static double PIVOT_UPPER_ENDPOINT = 1;
 
-  private final int CURRENT_LIMIT = 10;
+    private final int CURRENT_LIMIT = 10;
 
   public PivotSubsystem() {
     this.pivotLeadMotor = new CANSparkMax(IDs.PIVOT_LEAD_MOTOR, MotorType.kBrushless);
@@ -36,10 +38,13 @@ public class PivotSubsystem extends SubsystemBase {
 
     pivotLeadMotor.setSmartCurrentLimit(CURRENT_LIMIT);
     pivotFollowMotor.setSmartCurrentLimit(CURRENT_LIMIT);
+
+    this.pivotEncoder = new CANCoder(IDs.PIVOT_ENCODER);
+    configureCANCoder(pivotEncoder);
   }
 
   public void resetPivotEncoder() {
-    pivotLeadMotor.getEncoder().setPosition(pivotEncoderSubsystem.getPivotAbsolutePosition());
+    pivotLeadMotor.getEncoder().setPosition(getPivotAbsolutePosition());
   }
 
   public void setSpeed(double speed) {
@@ -48,5 +53,18 @@ public class PivotSubsystem extends SubsystemBase {
 
   public void stop() {
     pivotLeadMotor.set(0);
+  }
+
+  public double getPivotAbsolutePosition() {
+    return pivotEncoder.getAbsolutePosition();
+  }
+
+  private void configureCANCoder(CANCoder cancoder) {
+    CANCoderConfiguration encoderConfig = new CANCoderConfiguration();
+    encoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
+    encoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
+    encoderConfig.magnetOffsetDegrees = 0; // Need Offset
+    encoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
+    cancoder.configAllSettings(encoderConfig);
   }
 }

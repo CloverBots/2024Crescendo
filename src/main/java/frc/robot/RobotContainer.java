@@ -15,14 +15,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoOneBlue;
 import frc.robot.commands.ClimbCommand;
 import frc.robot.commands.DriveFromControllerCommand;
-import frc.robot.commands.FireCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.constants.IDs;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.PivotEncoderSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -49,7 +47,7 @@ public class RobotContainer {
 
   private final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
 
-  private static final double FEEDER_RPM = 20;
+  public static final double FEEDER_SPEED = 0.2;
   public static final double PIVOT_SPEED = 0.2;
   public static final double DEFAULT_SPEAKER_PIVOT_ANGLE = 20;
 
@@ -85,7 +83,6 @@ public class RobotContainer {
   private final FeederDistanceSensorSubsystem feederDistanceSensorSubsystem = new FeederDistanceSensorSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final PivotSubsystem pivotSubsystem = new PivotSubsystem();
-  private final PivotEncoderSubsystem pivotEncoderSubsystem = new PivotEncoderSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 
   private final XboxController driverController = new XboxController(IDs.CONTROLLER_DRIVE_PORT);
@@ -110,34 +107,37 @@ public class RobotContainer {
   private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, feederSubsystem,
       feederDistanceSensorSubsystem, operatorController::getLeftTriggerAxis, operatorController::getRightTriggerAxis);
 
-  private final ClimbCommand climbReadyCommand = new ClimbCommand(pivotSubsystem, pivotEncoderSubsystem,
+  private final ClimbCommand climbReadyCommand = new ClimbCommand(pivotSubsystem,
       CLIMBER_READY_POSITION);
 
-  private final ClimbCommand climbRaisedCommand = new ClimbCommand(pivotSubsystem, pivotEncoderSubsystem,
+  private final ClimbCommand climbRaisedCommand = new ClimbCommand(pivotSubsystem,
       CLIMBER_RAISED_POSITION);
 
   private final ShooterCommand parkedShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
-      shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem, visionTargetTracker,
-      SHOOTER_PARKED_LEFT_RPM, SHOOTER_PARKED_RIGHT_RPM,
+      shooterSubsystem, pivotSubsystem, feederSubsystem, visionTargetTracker, driverController::getRightBumper,
+      SHOOTER_PARKED_LEFT_RPM, SHOOTER_PARKED_RIGHT_RPM, FEEDER_SPEED,
       false, SHOOTER_PARKED_PIVOT_ANGLE);
 
   private final ShooterCommand ampShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
-      shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem, visionTargetTracker,
-      SHOOTER_AMP_LEFT_RPM, SHOOTER_AMP_RIGHT_RPM,
+      shooterSubsystem, pivotSubsystem, feederSubsystem, visionTargetTracker, driverController::getRightBumper,
+      SHOOTER_AMP_LEFT_RPM, SHOOTER_AMP_RIGHT_RPM, FEEDER_SPEED,
       false, SHOOTER_AMP_PIVOT_ANGLE);
 
   private final ShooterCommand trapShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
-      shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem, visionTargetTracker,
-      SHOOTER_TRAP_LEFT_RPM, SHOOTER_TRAP_RIGHT_RPM, false,
+      shooterSubsystem, pivotSubsystem, feederSubsystem, visionTargetTracker, driverController::getRightBumper,
+      SHOOTER_TRAP_LEFT_RPM, SHOOTER_TRAP_RIGHT_RPM, FEEDER_SPEED, false,
       SHOOTER_TRAP_PIVOT_ANGLE);
 
   private final ShooterCommand speakerShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
-      shooterSubsystem, pivotEncoderSubsystem, pivotSubsystem, visionTargetTracker,
-      SHOOTER_SPEAKER_LEFT_RPM, SHOOTER_SPEAKER_RIGHT_RPM, true,
+      shooterSubsystem, pivotSubsystem, feederSubsystem, visionTargetTracker, driverController::getRightBumper,
+      SHOOTER_SPEAKER_LEFT_RPM, SHOOTER_SPEAKER_RIGHT_RPM, FEEDER_SPEED, true,
       SHOOTER_SPEAKER_PIVOT_ANGLE);
 
-  private final FireCommand fireCommand = new FireCommand(feederSubsystem, shooterSubsystem, pivotEncoderSubsystem,
-      pivotSubsystem, FEEDER_RPM);
+  private final ShooterCommand tuningShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
+      shooterSubsystem, pivotSubsystem, feederSubsystem, visionTargetTracker, driverController::getRightBumper,
+      -1, 0, 0, false,
+      0);
+
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -151,6 +151,7 @@ public class RobotContainer {
 
     // Configure the trigger bindings
     configureBindings();
+
   }
 
   /**
@@ -217,8 +218,8 @@ public class RobotContainer {
     JoystickButton trapButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
     trapButton.onTrue(trapShooterCommand);
 
-    JoystickButton fireButton = new JoystickButton(operatorController, XboxController.Button.kRightBumper.value);
-    fireButton.onTrue(fireCommand);
+    JoystickButton tuningButton = new JoystickButton(operatorController, XboxController.Button.kStart.value);
+    tuningButton.onTrue(tuningShooterCommand);
   }
 
   /**
