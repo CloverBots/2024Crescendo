@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -11,6 +13,8 @@ public class IntakeSubsystem extends SubsystemBase {
     private final int CURRENT_LIMIT = 10;
 
     private final CANSparkMax motor = new CANSparkMax(IDs.INTAKE_MOTOR_ID, MotorType.kBrushless);
+    private final TalonSRX centerMotor1 = new TalonSRX(IDs.CENTER_MOTOR_1);
+    private final TalonSRX centerMotor2 = new TalonSRX(IDs.CENTER_MOTOR_1);
 
     public IntakeSubsystem() {
         motor.setSmartCurrentLimit(CURRENT_LIMIT);
@@ -22,6 +26,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void setIntakeSpeed(double speed) {
         motor.set(speed);
+        centerMotor1.set(TalonSRXControlMode.PercentOutput, speed / 2);
+        centerMotor2.set(TalonSRXControlMode.PercentOutput, -speed / 2); // One may be inverted
     }
 
     public boolean isIntakeRunningForward() {
