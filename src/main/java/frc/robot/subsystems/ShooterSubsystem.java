@@ -8,9 +8,9 @@ import frc.robot.constants.IDs;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 public class ShooterSubsystem extends SubsystemBase {
-    private static final double WHEEL_DIAMETER_METERS = 0.1524;
     private static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;// 0.1 * WHEEL_DIAMETER_METERS * Math.PI;
     private static final double ENCODER_VELOCITY_CONVERSION_FACTOR = 1;// ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
     private static final double MAX_RPM = 5700;
@@ -24,19 +24,19 @@ public class ShooterSubsystem extends SubsystemBase {
     private static final double SHOOTER_MIN_OUTPUT = -1;
 
     private CANSparkMax motorLeft = new CANSparkMax(IDs.SHOOTER_LEFT_MOTOR_ID, MotorType.kBrushless);
-
     private CANSparkMax motorRight = new CANSparkMax(IDs.SHOOTER_RIGHT_MOTOR_ID, MotorType.kBrushless);
 
     // private final MotorControllerGroup shooterMotors = new
     // MotorControllerGroup(shooterLeadMotor, shooterFollowMotor1);
 
     private final RelativeEncoder encoderLeft = motorLeft.getEncoder();
-
     private final RelativeEncoder encoderRight = motorRight.getEncoder();
 
     private SparkPIDController pidControllerLeft;
-
     private SparkPIDController pidControllerRight;
+
+    private double targetRpmRight;
+    private double targetRpmLeft;
 
     /** Creates a new Shooter. */
     public ShooterSubsystem() {
@@ -65,6 +65,8 @@ public class ShooterSubsystem extends SubsystemBase {
         pidControllerRight.setFF(SHOOTER_FF);
         pidControllerRight.setOutputRange(SHOOTER_MIN_OUTPUT, SHOOTER_MAX_OUTPUT);
 
+        motorLeft.setIdleMode(IdleMode.kCoast);
+        motorRight.setIdleMode(IdleMode.kCoast);
     }
 
     @Override
@@ -102,6 +104,7 @@ public class ShooterSubsystem extends SubsystemBase {
         if (rpm > MAX_RPM) {
             rpm = MAX_RPM;
         }
+        targetRpmLeft = rpm;
 
         pidControllerLeft.setReference(rpm, CANSparkMax.ControlType.kVelocity);
     }
@@ -111,7 +114,27 @@ public class ShooterSubsystem extends SubsystemBase {
             rpm = MAX_RPM;
         }
         
+        targetRpmRight = rpm;
+
         pidControllerRight.setReference(rpm, CANSparkMax.ControlType.kVelocity);
     }
 
+    public boolean isShooterAtTargetRpm() {
+        // If both are within 95% of the target, return true
+        if (encoderLeft.getVelocity() > (targetRpmLeft * 0.95)
+             && encoderRight.getVelocity() > (targetRpmRight * 0.95)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean isShooterRunning() {
+        if (encoderLeft.getVelocity() > 0
+             && encoderRight.getVelocity() > 0) {
+            return true;
+        } 
+
+        return false;
+    }
 }

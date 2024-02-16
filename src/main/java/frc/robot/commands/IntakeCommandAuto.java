@@ -4,15 +4,13 @@
 
 package frc.robot.commands;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 
-public class IntakeCommand extends Command {
+public class IntakeCommandAuto extends Command {
 
   private static final double INTAKE_SPEED = 0.20;
 
@@ -20,20 +18,14 @@ public class IntakeCommand extends Command {
   private final FeederSubsystem feederSubsystem;
   private final FeederDistanceSensorSubsystem feederDistanceSensorSubsystem;
 
-  private final Supplier<Double> intakeLoadTrigger, intakeEjectTrigger;
-
-  public IntakeCommand(IntakeSubsystem intakeSubsystem,
+  public IntakeCommandAuto(IntakeSubsystem intakeSubsystem,
       FeederSubsystem feederSubsystem,
-      FeederDistanceSensorSubsystem feederDistanceSensorSubsystem,
-      Supplier<Double> intakeLoadTrigger,
-      Supplier<Double> intakeEjectTrigger) {
+      FeederDistanceSensorSubsystem feederDistanceSensorSubsystem
+) {
 
     this.intakeSubsystem = intakeSubsystem;
     this.feederSubsystem = feederSubsystem;
     this.feederDistanceSensorSubsystem = feederDistanceSensorSubsystem;
-
-    this.intakeLoadTrigger = intakeLoadTrigger;
-    this.intakeEjectTrigger = intakeEjectTrigger;
 
     addRequirements(intakeSubsystem);
     addRequirements(feederSubsystem);
@@ -48,12 +40,9 @@ public class IntakeCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-     if (intakeLoadTrigger.get() > 0.5 && !feederDistanceSensorSubsystem.isNoteLoaded()) {
+   if (!feederDistanceSensorSubsystem.isNoteLoaded()) {
       intakeSubsystem.setIntakeSpeed(INTAKE_SPEED);
       feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED);
-    } else if (intakeEjectTrigger.get() > 0.5) {
-      intakeSubsystem.setIntakeSpeed(-INTAKE_SPEED);
-      feederSubsystem.setSpeed(-RobotContainer.FEEDER_SPEED);
     }
   }
 
@@ -67,10 +56,7 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (intakeSubsystem.isIntakeRunningForward() && feederDistanceSensorSubsystem.isNoteLoaded()) {
-      intakeSubsystem.setIntakeSpeed(0);
-      feederSubsystem.setSpeed(0);
-    } else if (intakeEjectTrigger.get() < 0.5 && intakeSubsystem.isIntakeRunningBackward()) {
+    if (feederDistanceSensorSubsystem.isNoteLoaded()) {
       intakeSubsystem.setIntakeSpeed(0);
       feederSubsystem.setSpeed(0);
     }

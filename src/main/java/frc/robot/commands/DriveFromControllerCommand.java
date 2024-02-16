@@ -7,6 +7,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.VisionTargetTracker;
 import frc.robot.constants.SwerveDriveConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -16,18 +17,21 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class DriveFromControllerCommand extends Command {
 
     private final SwerveSubsystem swerveSubsystem;
+    private VisionTargetTracker limelight;
     private final Supplier<Double> leftStickX, leftStickY, rightStickX, rightStickY, crawlTrigger, slowRotate;
     private final Supplier<Boolean> yButton, bButton, aButton, xButton;
     private final Supplier<Integer> dPad;
     private final SlewRateLimiter translationLimiter, turningLimiter;
     private boolean fieldOriented = true;
     private boolean pointedTurning = false;
+    public static boolean lockOnMode = false;
 
     private final double JOYSTICK_DEADZONE = 0.05;
     private final double POINTED_JOYSTICK_DEADZONE = 0.5;
 
     private boolean fieldOrientedCache, pointedModeCache = false;
     private PIDController rotationController;
+    private PIDController lockToTagXController;
 
     public DriveFromControllerCommand(
             SwerveSubsystem swerveSubsystem,
@@ -41,8 +45,10 @@ public class DriveFromControllerCommand extends Command {
             Supplier<Boolean> xButton,
             Supplier<Double> crawlTrigger,
             Supplier<Double> slowRotate,
-            Supplier<Integer> dPad) {
+            Supplier<Integer> dPad,
+            VisionTargetTracker limelight) {
         this.swerveSubsystem = swerveSubsystem;
+        this.limelight = limelight;
 
         this.leftStickX = leftStickX;
         this.leftStickY = leftStickY;
@@ -64,7 +70,7 @@ public class DriveFromControllerCommand extends Command {
         //using degrees
         this.rotationController = new PIDController(0.065, 0.03, 0.005); // 0.017, 0, 0
         this.rotationController.enableContinuousInput(0, 360);
-        
+        this.lockToTagXController = new PIDController(0.5, 0, 0);
         // this.pointedRotationController = new PIDController(0.07, 0.02, 0);
         // this.pointedRotationController.enableContinuousInput(0, 360);
 
@@ -113,6 +119,11 @@ public class DriveFromControllerCommand extends Command {
         // Uses the ABYX buttons if any of them are pressed
         if (isTurnButtonPressed()) rotationSpeed = calculateTurningSpeedHotkey();
         
+         // Locks on if no rotation stick input
+         else if (lockOnMode && Math.abs(rightStickX.get()) < JOYSTICK_DEADZONE) {
+            rotationSpeed = calculateLockOnRotationSpeed();
+        }
+
         // If none of those buttons are pressed, check to see if pointed turning is enabled.
         else if (pointedTurning) {
             rotationSpeed = calculateTurningSpeedPointed(rightStickX.get(), rightStickY.get());
@@ -259,5 +270,9 @@ public class DriveFromControllerCommand extends Command {
     @Override
     public boolean isFinished() {
         return false;
+    }
+
+    private double calculateLockOnRotationSpeed() {
+        return lockToTagXController.calculate(limelight.getTx());
     }
 }

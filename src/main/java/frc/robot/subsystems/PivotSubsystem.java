@@ -12,20 +12,23 @@ import com.ctre.phoenix.sensors.SensorTimeBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.IDs;
 
 public class PivotSubsystem extends SubsystemBase {
   private final CANSparkMax pivotLeadMotor;
   private final CANSparkMax pivotFollowMotor;
+
   private final CANCoder pivotEncoder;
-  private PIDController pivotPIDController;
+  public final static double PIVOT_LOWER_ENDPOINT = 0;
+  public final static double PIVOT_UPPER_ENDPOINT = 1;
+
+  private final int CURRENT_LIMIT = 10;
 
   public PivotSubsystem() {
     this.pivotLeadMotor = new CANSparkMax(IDs.PIVOT_LEAD_MOTOR, MotorType.kBrushless);
     this.pivotFollowMotor = new CANSparkMax(IDs.PIVOT_FOLLOW_MOTOR, MotorType.kBrushless);
+
     this.pivotEncoder = new CANCoder(IDs.PIVOT_ENCODER);
     configureCANCoder(pivotEncoder);
 
@@ -35,31 +38,25 @@ public class PivotSubsystem extends SubsystemBase {
     pivotFollowMotor.setInverted(false);
     pivotLeadMotor.setIdleMode(IdleMode.kBrake);
     pivotFollowMotor.setIdleMode(IdleMode.kBrake);
-  }
 
-  public double getPivotAbsolutePosition() {
-    return pivotEncoder.getAbsolutePosition();
-  }
-
-  public double getPivotPosition() {
-    double pos = pivotLeadMotor.getEncoder().getPosition();
-    boolean sign = pos < 0;
-    pos = Math.abs(pos);
-    pos = pos % (2*Math.PI);
-    if (sign) pos = (2*Math.PI) - pos;
-    return pos;
+    pivotLeadMotor.setSmartCurrentLimit(CURRENT_LIMIT);
+    pivotFollowMotor.setSmartCurrentLimit(CURRENT_LIMIT);
   }
 
   public void resetPivotEncoder() {
     pivotLeadMotor.getEncoder().setPosition(getPivotAbsolutePosition());
   }
 
-  public void setPosition(){
-    pivotFollowMotor.set(pivotPIDController.calculate(getPivotPosition()));
+  public void setSpeed(double speed) {
+    pivotLeadMotor.set(speed);
   }
 
-  public void stop(){
-    pivotFollowMotor.set(0);
+  public void stop() {
+    pivotLeadMotor.set(0);
+  }
+
+   public double getPivotAbsolutePosition() {
+    return pivotEncoder.getAbsolutePosition();
   }
 
   private void configureCANCoder(CANCoder cancoder) {
@@ -70,5 +67,4 @@ public class PivotSubsystem extends SubsystemBase {
     encoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
     cancoder.configAllSettings(encoderConfig);
   }
-
 }
