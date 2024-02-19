@@ -10,10 +10,15 @@ public class FeederDistanceSensorSubsystem extends SubsystemBase {
     
     TimeOfFlight distanceSensor = new TimeOfFlight(0);
 
-    public static final double NOTE_LOADED_DISTANCE = 3;
+    public static final double NOTE_LOADED_DISTANCE = 0;// TO-DO 150;
 
     public FeederDistanceSensorSubsystem() {
         distanceSensor.setRangingMode(RangingMode.Short, 33);
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("ToF", distanceSensor.getRange());
     }
 
     public boolean isNoteLoaded() {

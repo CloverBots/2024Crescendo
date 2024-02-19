@@ -14,7 +14,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class IntakeCommand extends Command {
 
-  private static final double INTAKE_SPEED = 0.20;
+  private static final double INTAKE_SPEED = 1;
 
   private final IntakeSubsystem intakeSubsystem;
   private final FeederSubsystem feederSubsystem;
@@ -54,7 +54,7 @@ public class IntakeCommand extends Command {
     } else if (intakeEjectTrigger.get() > 0.5) {
       intakeSubsystem.setIntakeSpeed(-INTAKE_SPEED);
       feederSubsystem.setSpeed(-RobotContainer.FEEDER_SPEED);
-    }
+    } 
   }
 
   // Called once the command ends or is interrupted.
@@ -68,11 +68,11 @@ public class IntakeCommand extends Command {
   @Override
   public boolean isFinished() {
     if (intakeSubsystem.isIntakeRunningForward() && feederDistanceSensorSubsystem.isNoteLoaded()) {
-      intakeSubsystem.setIntakeSpeed(0);
-      feederSubsystem.setSpeed(0);
+      return true;
     } else if (intakeEjectTrigger.get() < 0.5 && intakeSubsystem.isIntakeRunningBackward()) {
-      intakeSubsystem.setIntakeSpeed(0);
-      feederSubsystem.setSpeed(0);
+      return true;
+    } else if (intakeLoadTrigger.get() < 0.5 && intakeSubsystem.isIntakeRunningForward()) {
+      return true;
     }
 
     return false;

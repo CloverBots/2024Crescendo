@@ -11,15 +11,17 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 public class ShooterSubsystem extends SubsystemBase {
-    private static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;// 0.1 * WHEEL_DIAMETER_METERS * Math.PI;
-    private static final double ENCODER_VELOCITY_CONVERSION_FACTOR = 1;// ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
-    private static final double MAX_RPM = 5700;
+    private final int CURRENT_LIMIT = 100;
 
-    private static final double SHOOTER_P = 0.0; // 8e-5;
+    private static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;// 0.1 * WHEEL_DIAMETER_METERS * Math.PI;
+    private static final double ENCODER_VELOCITY_CONVERSION_FACTOR = 1.3;// ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
+    private static final double MAX_RPM = 2500;
+
+    private static final double SHOOTER_P = 0.0004;//0.01; // 8e-5;
     private static final double SHOOTER_I = 0.0;
     private static final double SHOOTER_D = 0.0;
     private static final double SHOOTER_Iz = 0;
-    private static final double SHOOTER_FF = 0.0005;// 0.00017;
+    private static final double SHOOTER_FF = .0002;
     private static final double SHOOTER_MAX_OUTPUT = 1;
     private static final double SHOOTER_MIN_OUTPUT = -1;
 
@@ -40,8 +42,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
     /** Creates a new Shooter. */
     public ShooterSubsystem() {
-        // shooterFollowMotor1.setInverted(true);
 
+        motorLeft.setSmartCurrentLimit(CURRENT_LIMIT);
+        motorRight.setSmartCurrentLimit(CURRENT_LIMIT);
+
+        motorRight.setInverted(true);
         configureEncoder(encoderLeft);
 
         configureEncoder(encoderRight);
@@ -72,13 +77,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // This method will be called once per scheduler run
+        System.out.println(encoderLeft.getVelocity());
     }
 
     public void stop() {
-        pidControllerLeft.setReference(0, CANSparkMax.ControlType.kVelocity);
-
-        pidControllerRight.setReference(0, CANSparkMax.ControlType.kVelocity);
+        motorLeft.set(0);
+        motorRight.set(0);
     }
 
     private void configureEncoder(RelativeEncoder encoder) {
@@ -102,15 +106,19 @@ public class ShooterSubsystem extends SubsystemBase {
          * com.revrobotics.CANSparkMax.ControlType.kVelocity
          * com.revrobotics.CANSparkMax.ControlType.kVoltage
          */
+        
         if (rpm > MAX_RPM) {
             rpm = MAX_RPM;
         }
         targetRpmLeft = rpm;
 
-        pidControllerLeft.setReference(rpm, CANSparkMax.ControlType.kVelocity);
+        pidControllerLeft.setReference(rpm, CANSparkMax.ControlType.kVelocity); 
+        
+         
     }
 
     public void setShooterRightRPM(double rpm) {
+        
         if (rpm > MAX_RPM) {
             rpm = MAX_RPM;
         }
@@ -118,6 +126,7 @@ public class ShooterSubsystem extends SubsystemBase {
         targetRpmRight = rpm;
 
         pidControllerRight.setReference(rpm, CANSparkMax.ControlType.kVelocity);
+        
     }
 
     public boolean isShooterAtTargetRpm() {

@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoOneBlue;
 import frc.robot.commands.ClimbCommand;
+import frc.robot.commands.ClimbManualCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
@@ -40,6 +43,9 @@ public class RobotContainer {
   private static final double CAMERA_HEIGHT = 43.7; // on test robot
   private static final double CAMERA_PITCH = 22.0;
 
+  public final static double PIVOT_LOWER_ENDPOINT = 7;
+  public final static double PIVOT_UPPER_ENDPOINT = 90;
+
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
       VISION_TARGET_HEIGHT,
       CAMERA_HEIGHT,
@@ -47,7 +53,9 @@ public class RobotContainer {
 
   private final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
 
-  public static final double FEEDER_SPEED = 0.2;
+  public static final double INTAKE_SPEED = -1;
+  public static final double FEEDER_SPEED = -.5;
+  public final static double FEEDER_TIME = 2;
   public static final double PIVOT_SPEED = 0.2;
   public static final double DEFAULT_SPEAKER_PIVOT_ANGLE = 20;
 
@@ -55,28 +63,26 @@ public class RobotContainer {
   private static final double CLIMBER_RAISED_POSITION = 15;
 
   // PARKED SHOOTER
-  private static final double SHOOTER_PARKED_RIGHT_RPM = 0;
-  private static final double SHOOTER_PARKED_LEFT_RPM = 0;
-  public static final double SHOOTER_PARKED_PIVOT_ANGLE = 0;
+  public static final double SHOOTER_PARKED_PIVOT_ANGLE = 10;
 
   // AMP SHOOTER
-  private static final double SHOOTER_AMP_RIGHT_RPM = 20;
-  private static final double SHOOTER_AMP_LEFT_RPM = 20;
-  private static final double SHOOTER_AMP_PIVOT_ANGLE = 45;
+  public static final double SHOOTER_AMP_RIGHT_RPM = 2000;
+  public static final double SHOOTER_AMP_LEFT_RPM = 2000;
+  public static final double SHOOTER_AMP_PIVOT_ANGLE = 20;
 
   // TRAP SHOOTER
-  private static final double SHOOTER_TRAP_RIGHT_RPM = 20;
-  private static final double SHOOTER_TRAP_LEFT_RPM = 20;
-  private static final double SHOOTER_TRAP_PIVOT_ANGLE = 45;
+  public static final double SHOOTER_TRAP_RIGHT_RPM = 20;
+  public static final double SHOOTER_TRAP_LEFT_RPM = 20;
+  public static final double SHOOTER_TRAP_PIVOT_ANGLE = 50;
 
   // SPEAKER SHOOTER
-  private static final double SHOOTER_SPEAKER_RIGHT_RPM = 20;
-  private static final double SHOOTER_SPEAKER_LEFT_RPM = 20;
-  private static final double SHOOTER_SPEAKER_PIVOT_ANGLE = -999; // Automatic
+  public static final double SHOOTER_SPEAKER_RIGHT_RPM = 20;
+  public static final double SHOOTER_SPEAKER_LEFT_RPM = 20;
+  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 20; // Automatic
 
   // Used to indicate auto mode (based on April tag distance) for the shooter
   // pivot angle
-  public static final double AUTO_PIVOT_ANGLE = -999;
+  public static final double AUTO_PIVOT_ANGLE = 25;
 
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
   private final FeederSubsystem feederSubsystem = new FeederSubsystem();
@@ -113,38 +119,27 @@ public class RobotContainer {
   private final ClimbCommand climbRaisedCommand = new ClimbCommand(pivotSubsystem,
       CLIMBER_RAISED_POSITION);
 
-  private final ShooterCommand parkedShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
-      shooterSubsystem, pivotSubsystem, feederSubsystem, visionTargetTracker, driverController::getRightBumper,
-      SHOOTER_PARKED_LEFT_RPM, SHOOTER_PARKED_RIGHT_RPM, FEEDER_SPEED,
-      false, SHOOTER_PARKED_PIVOT_ANGLE);
+  private final ClimbManualCommand climbManualCommand = new ClimbManualCommand(pivotSubsystem,
+      operatorController::getLeftY);
 
-  private final ShooterCommand ampShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
-      shooterSubsystem, pivotSubsystem, feederSubsystem, visionTargetTracker, driverController::getRightBumper,
-      SHOOTER_AMP_LEFT_RPM, SHOOTER_AMP_RIGHT_RPM, FEEDER_SPEED,
-      false, SHOOTER_AMP_PIVOT_ANGLE);
+  private final ShooterCommand shooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
+      shooterSubsystem, pivotSubsystem, feederSubsystem, intakeSubsystem, visionTargetTracker,
+      operatorController::getRightTriggerAxis,
+      operatorController::getLeftTriggerAxis,
+      operatorController::getYButton,
+      operatorController::getBButton,
+      operatorController::getAButton,
+      operatorController::getXButton,
+      operatorController::getStartButton,
 
-  private final ShooterCommand trapShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
-      shooterSubsystem, pivotSubsystem, feederSubsystem, visionTargetTracker, driverController::getRightBumper,
-      SHOOTER_TRAP_LEFT_RPM, SHOOTER_TRAP_RIGHT_RPM, FEEDER_SPEED, false,
-      SHOOTER_TRAP_PIVOT_ANGLE);
-
-  private final ShooterCommand speakerShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
-      shooterSubsystem, pivotSubsystem, feederSubsystem, visionTargetTracker, driverController::getRightBumper,
-      SHOOTER_SPEAKER_LEFT_RPM, SHOOTER_SPEAKER_RIGHT_RPM, FEEDER_SPEED, true,
-      SHOOTER_SPEAKER_PIVOT_ANGLE);
-
-  private final ShooterCommand tuningShooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
-      shooterSubsystem, pivotSubsystem, feederSubsystem, visionTargetTracker, driverController::getRightBumper,
-      -1, 0, 0, false,
-      0);
-
+      driverController::getRightBumper);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
-    intakeSubsystem.setDefaultCommand(intakeCommand);
+    shooterSubsystem.setDefaultCommand(shooterCommand);
 
     configureAutoChooser();
     SmartDashboard.putData(chooser);
@@ -168,7 +163,7 @@ public class RobotContainer {
   }
 
   public void onAutonomousEnable() {
-    swerveSubsystem.setBrakeMode(false);
+    swerveSubsystem.setBrakeMode(true);
   }
 
   public void resetGyro() {
@@ -200,26 +195,20 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // JoystickButton followTag = new JoystickButton(operatorController,
-    // XboxController.Button.kA.value);
-    // followTag.onTrue(rotateTag);
+
+    // used during tuning
+    SmartDashboard.putNumber("Shooter right power", 0.5);
+    SmartDashboard.putNumber("Shooter left power", 0.5);
+    SmartDashboard.putNumber("Shooter angle", 25);
+    SmartDashboard.putNumber("Feeder power", 0);
 
     POVButton climbReadyButton = new POVButton(operatorController, 0); // Up
-    climbReadyButton.onTrue(climbReadyCommand);
+    // climbReadyButton.onTrue(climbReadyCommand);
     POVButton climbRaisedButton = new POVButton(operatorController, 180); // Down
-    climbRaisedButton.onTrue(climbRaisedCommand);
+    // climbRaisedButton.onTrue(climbRaisedCommand);
 
-    JoystickButton parkedButton = new JoystickButton(operatorController, XboxController.Button.kX.value);
-    parkedButton.onTrue(parkedShooterCommand);
-    JoystickButton ampButton = new JoystickButton(operatorController, XboxController.Button.kA.value);
-    ampButton.onTrue(ampShooterCommand);
-    JoystickButton speakerButton = new JoystickButton(operatorController, XboxController.Button.kB.value);
-    speakerButton.onTrue(speakerShooterCommand);
-    JoystickButton trapButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
-    trapButton.onTrue(trapShooterCommand);
-
-    JoystickButton tuningButton = new JoystickButton(operatorController, XboxController.Button.kStart.value);
-    tuningButton.onTrue(tuningShooterCommand);
+    JoystickButton climbManualButton = new JoystickButton(operatorController, XboxController.Button.kBack.value);
+    climbManualButton.onTrue(climbManualCommand);
   }
 
   /**

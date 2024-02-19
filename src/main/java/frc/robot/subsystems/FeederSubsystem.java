@@ -15,11 +15,15 @@ public class FeederSubsystem extends SubsystemBase {
 
 private final CANSparkMax feederMotor;
 
+private final int CURRENT_LIMIT = 100;
+
   public FeederSubsystem() {
     this.feederMotor = new CANSparkMax(IDs.FEEDER_MOTOR, MotorType.kBrushless);
 
     feederMotor.setInverted(false);
-    feederMotor.setIdleMode(IdleMode.kBrake);
+    feederMotor.setIdleMode(IdleMode.kCoast);
+    feederMotor.setInverted(true);
+    feederMotor.setSmartCurrentLimit(CURRENT_LIMIT);
   }
 
   public void setSpeed(double speed) {

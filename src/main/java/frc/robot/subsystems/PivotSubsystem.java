@@ -12,6 +12,8 @@ import com.ctre.phoenix.sensors.SensorTimeBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.IDs;
 
@@ -20,21 +22,21 @@ public class PivotSubsystem extends SubsystemBase {
   private final CANSparkMax pivotFollowMotor;
 
   private final CANCoder pivotEncoder;
-  public final static double PIVOT_LOWER_ENDPOINT = 0;
-  public final static double PIVOT_UPPER_ENDPOINT = 1;
+  public final static double PIVOT_LOWER_ENDPOINT = 1;//TO-DO 359
+  public final static double PIVOT_UPPER_ENDPOINT = 100;
 
-    private final int CURRENT_LIMIT = 10;
+  private final int CURRENT_LIMIT = 10;
 
   public PivotSubsystem() {
     this.pivotLeadMotor = new CANSparkMax(IDs.PIVOT_LEAD_MOTOR, MotorType.kBrushless);
     this.pivotFollowMotor = new CANSparkMax(IDs.PIVOT_FOLLOW_MOTOR, MotorType.kBrushless);
 
-    pivotFollowMotor.follow(pivotLeadMotor);
+    pivotFollowMotor.follow(pivotLeadMotor, true);
 
     pivotLeadMotor.setInverted(false);
-    pivotFollowMotor.setInverted(false);
-    pivotLeadMotor.setIdleMode(IdleMode.kBrake);
-    pivotFollowMotor.setIdleMode(IdleMode.kBrake);
+
+    pivotLeadMotor.setIdleMode(IdleMode.kBrake); 
+    pivotFollowMotor.setIdleMode(IdleMode.kBrake); 
 
     pivotLeadMotor.setSmartCurrentLimit(CURRENT_LIMIT);
     pivotFollowMotor.setSmartCurrentLimit(CURRENT_LIMIT);
@@ -55,7 +57,17 @@ public class PivotSubsystem extends SubsystemBase {
     pivotLeadMotor.set(0);
   }
 
+  @Override
+  public void periodic() {
+      if (getPivotAbsolutePosition() < PIVOT_LOWER_ENDPOINT
+        && getPivotAbsolutePosition() > PIVOT_UPPER_ENDPOINT) {
+        pivotLeadMotor.set(0);
+      }
+      
+  }
+
   public double getPivotAbsolutePosition() {
+    SmartDashboard.putNumber("Absolut encoder", pivotEncoder.getAbsolutePosition()); //TO-DO remove
     return pivotEncoder.getAbsolutePosition();
   }
 
@@ -63,8 +75,9 @@ public class PivotSubsystem extends SubsystemBase {
     CANCoderConfiguration encoderConfig = new CANCoderConfiguration();
     encoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
     encoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-    encoderConfig.magnetOffsetDegrees = 0; // Need Offset
+    encoderConfig.magnetOffsetDegrees = -202.84; // Need Offset
     encoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
     cancoder.configAllSettings(encoderConfig);
   }
+
 }

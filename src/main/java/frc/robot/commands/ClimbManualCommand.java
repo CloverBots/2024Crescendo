@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.PivotSubsystem;
 
 public class ClimbManualCommand extends Command {
@@ -31,14 +32,31 @@ public class ClimbManualCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println(pivotSubsystem.getPivotAbsolutePosition());
     if (Math.abs(leftJoystickY.getAsDouble()) > .05) {
-      double pivotSpeed = -leftJoystickY.getAsDouble();
-      pivotSubsystem.setSpeed(pivotSpeed);
+      double pivotSpeed = leftJoystickY.getAsDouble() / 3; //TO-DO remove the 3 or adjust it
+      pivotSpeed = checkSpeed(pivotSpeed);
+      pivotSubsystem.setSpeed(pivotSpeed); 
+      
     } else {
       pivotSubsystem.setSpeed(0);
     }
   }
 
+  private double checkSpeed(double speed) {
+  if (leftJoystickY.getAsDouble() < -.05 &&
+        pivotSubsystem.getPivotAbsolutePosition() > RobotContainer.PIVOT_UPPER_ENDPOINT) {
+          System.out.println("Stopping climber");
+        speed = 0;
+    }
+
+    if (leftJoystickY.getAsDouble() > .05 &&
+        pivotSubsystem.getPivotAbsolutePosition() < RobotContainer.PIVOT_LOWER_ENDPOINT) {
+      speed = 0;
+    }
+
+    return speed;
+  }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
@@ -48,13 +66,7 @@ public class ClimbManualCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (pivotSubsystem.getPivotAbsolutePosition() > PivotSubsystem.PIVOT_UPPER_ENDPOINT) {
-      pivotSubsystem.stop();
-    }
-
-    if (pivotSubsystem.getPivotAbsolutePosition() < PivotSubsystem.PIVOT_LOWER_ENDPOINT) {
-      pivotSubsystem.stop();
-    }
+    
 
     return false;
   }

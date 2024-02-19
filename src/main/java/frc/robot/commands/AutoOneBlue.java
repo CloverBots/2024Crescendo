@@ -21,7 +21,7 @@ public class AutoOneBlue extends SequentialCommandGroup {
         new WaitCommand(1),
 
         // Get 3
-        new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(46), -Units.inchesToMeters(120), -90, 10.0)//-57, 60, -20
+        new DriveToDistanceCommand(swerveSubsystem, -2, 0, 0, 10.0)//-57, 60, -20
 
         // Shoot Position
         // new DriveToDistanceCommand(swerveSubsystem, 0, 0, 0, 10.0)
