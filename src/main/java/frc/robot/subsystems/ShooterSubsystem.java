@@ -77,7 +77,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        System.out.println(encoderLeft.getVelocity());
     }
 
     public void stop() {

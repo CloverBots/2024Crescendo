@@ -54,7 +54,7 @@ public class RobotContainer {
   private final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
 
   public static final double INTAKE_SPEED = -1;
-  public static final double FEEDER_SPEED = -.5;
+  public static final double FEEDER_SPEED = -1;
   public final static double FEEDER_TIME = 2;
   public static final double PIVOT_SPEED = 0.2;
   public static final double DEFAULT_SPEAKER_PIVOT_ANGLE = 20;
@@ -66,9 +66,9 @@ public class RobotContainer {
   public static final double SHOOTER_PARKED_PIVOT_ANGLE = 10;
 
   // AMP SHOOTER
-  public static final double SHOOTER_AMP_RIGHT_RPM = 2000;
-  public static final double SHOOTER_AMP_LEFT_RPM = 2000;
-  public static final double SHOOTER_AMP_PIVOT_ANGLE = 20;
+  public static final double SHOOTER_AMP_RIGHT_RPM = 700;
+  public static final double SHOOTER_AMP_LEFT_RPM = 500;
+  public static final double SHOOTER_AMP_PIVOT_ANGLE = 61;
 
   // TRAP SHOOTER
   public static final double SHOOTER_TRAP_RIGHT_RPM = 20;
@@ -76,8 +76,8 @@ public class RobotContainer {
   public static final double SHOOTER_TRAP_PIVOT_ANGLE = 50;
 
   // SPEAKER SHOOTER
-  public static final double SHOOTER_SPEAKER_RIGHT_RPM = 20;
-  public static final double SHOOTER_SPEAKER_LEFT_RPM = 20;
+  public static final double SHOOTER_SPEAKER_RIGHT_RPM = 2000;
+  public static final double SHOOTER_SPEAKER_LEFT_RPM = 2000;
   public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 20; // Automatic
 
   // Used to indicate auto mode (based on April tag distance) for the shooter

@@ -154,6 +154,7 @@ public class ShooterCommand extends Command {
                     pivotAngle = checkAngleLimits(pivotAngle);
                     pivotController.reset();
                     pivotController.setSetpoint(pivotAngle);
+                    DriveFromControllerCommand.lockOnMode = false;
                     break;
 
                 case AMP:
@@ -167,17 +168,17 @@ public class ShooterCommand extends Command {
                     break;
 
                 case SPEAKER:
-                    shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
+                    /*shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
                     shooterRightRPM = RobotContainer.SHOOTER_SPEAKER_RIGHT_RPM;
                     feederSpeed = RobotContainer.FEEDER_SPEED;
                     pivotAngle = RobotContainer.SHOOTER_SPEAKER_PIVOT_ANGLE;
                     pivotAngle = checkAngleLimits(pivotAngle);
                     previousPivotAngle = pivotAngle;
                     pivotController.reset();
-                    pivotController.setSetpoint(pivotAngle);
+                    pivotController.setSetpoint(pivotAngle); */;
 
-                    //DriveFromControllerCommand.lockOnMode = true; //TO-DO enable
-                    previousPivotAngle = pivotAngle;
+                    DriveFromControllerCommand.lockOnMode = true; //TO-DO enable
+                    // previousPivotAngle = pivotAngle;
 
                     break;
                 case TRAP:
@@ -191,6 +192,8 @@ public class ShooterCommand extends Command {
                     break;
 
                 case FIRE:
+                    feederSpeed = RobotContainer.FEEDER_SPEED;
+
                 case NONE:
 
                     break;
@@ -252,7 +255,7 @@ public class ShooterCommand extends Command {
                 // shooterSubsystem.setShooterLeftRPM(shooterLeftRPM);
                 // shooterSubsystem.setShooterRightRPM(shooterRightRPM);
 
-                double targetDistance = visionTargetTracker.computeTargetDistance();
+                /*double targetDistance = visionTargetTracker.computeTargetDistance();
                 Boolean isTargetValid = visionTargetTracker.isValid();
                 if (isTargetValid) {
                     pivotAngle = computePivotAngle(targetDistance);
@@ -270,13 +273,13 @@ public class ShooterCommand extends Command {
                 pivotSpeed = checkPivotSpeed(pivotSpeed);
                 pivotSpeed = MathUtil.clamp(pivotSpeed, -MAX_PIVOT_POWER, MAX_PIVOT_POWER);
 
-                pivotSubsystem.setSpeed(pivotSpeed);
+                pivotSubsystem.setSpeed(pivotSpeed); */
                 break;
             case FIRE:
-                if (shooterSubsystem.isShooterAtTargetRpm()
-                        && Math.abs(pivotSubsystem.getPivotAbsolutePosition() - pivotAngle) < 1.0 &&
+                if (Math.abs(pivotSubsystem.getPivotAbsolutePosition() - pivotAngle) < 1.0 &&
                         !firing) {
                     firing = true;
+                    timer.reset();
                     timer.start();
                     feederSubsystem.setSpeed(feederSpeed);
                 }

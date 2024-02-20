@@ -71,7 +71,7 @@ public class DriveFromControllerCommand extends Command {
         //using degrees
         this.rotationController = new PIDController(0.065, 0.03, 0.005); // 0.017, 0, 0
         this.rotationController.enableContinuousInput(0, 360);
-        this.lockToTagXController = new PIDController(0.5, 0, 0);
+        this.lockToTagXController = new PIDController(0.075, 0.03, 0.005);
         
         // this.pointedRotationController = new PIDController(0.07, 0.02, 0);
         // this.pointedRotationController.enableContinuousInput(0, 360);
@@ -274,7 +274,7 @@ public class DriveFromControllerCommand extends Command {
     }
 
     private double calculateLockOnRotationSpeed() {
-        return lockToTagXController.calculate(limelight.getTx());
+        return -lockToTagXController.calculate(limelight.getTx());
     }
 }
 
