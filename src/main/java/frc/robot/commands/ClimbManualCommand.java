@@ -32,7 +32,6 @@ public class ClimbManualCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println(pivotSubsystem.getPivotAbsolutePosition());
     if (Math.abs(leftJoystickY.getAsDouble()) > .05) {
       double pivotSpeed = leftJoystickY.getAsDouble() / 3; //TO-DO remove the 3 or adjust it
       pivotSpeed = checkSpeed(pivotSpeed);

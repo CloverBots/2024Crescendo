@@ -4,6 +4,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -16,19 +19,24 @@ public class AutoOneBlue extends SequentialCommandGroup {
   /** Creates a new Auto. */
   public AutoOneBlue(SwerveSubsystem swerveSubsystem) {
     addCommands(
-        new ResetOdometryCommand(swerveSubsystem),
+        new ResetOdometryCommand(swerveSubsystem, new Pose2d(new Translation2d(), new Rotation2d(Units.degreesToRadians(-45)))),
         // Shoot ring
         new WaitCommand(1),
 
         // Get 3
-        new DriveToDistanceCommand(swerveSubsystem, -2, 0, 0, 10.0)//-57, 60, -20
+        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-61), Units.inchesToMeters(7), 0, 3.0), //-57, 60, -20
+
+        new WaitCommand(1),
 
         // Shoot Position
-        // new DriveToDistanceCommand(swerveSubsystem, 0, 0, 0, 10.0)
+        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-61), Units.inchesToMeters(-30), 90, 3.0),
+        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-75), Units.inchesToMeters(-40), 0, 3.0),
 
         // Shoot ring
-        // new WaitCommand(1),
+        new WaitCommand(1),
 
+        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-61), Units.inchesToMeters(-110), 90, 3.0),
+        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-75), Units.inchesToMeters(-120), 0, 3.0)
         // Get 8
         // new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(40), Units.inchesToMeters(100), 0, 10.0),
         // new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(284), Units.inchesToMeters(200), 0, 10.0) //201

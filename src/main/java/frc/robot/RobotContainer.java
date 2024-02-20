@@ -43,7 +43,7 @@ public class RobotContainer {
   private static final double CAMERA_HEIGHT = 43.7; // on test robot
   private static final double CAMERA_PITCH = 22.0;
 
-  public final static double PIVOT_LOWER_ENDPOINT = 7;
+  public final static double PIVOT_LOWER_ENDPOINT = 17; //7
   public final static double PIVOT_UPPER_ENDPOINT = 90;
 
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
@@ -76,9 +76,9 @@ public class RobotContainer {
   public static final double SHOOTER_TRAP_PIVOT_ANGLE = 50;
 
   // SPEAKER SHOOTER
-  public static final double SHOOTER_SPEAKER_RIGHT_RPM = 2000;
-  public static final double SHOOTER_SPEAKER_LEFT_RPM = 2000;
-  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 20; // Automatic
+  public static final double SHOOTER_SPEAKER_RIGHT_RPM = 3850;
+  public static final double SHOOTER_SPEAKER_LEFT_RPM = 3750;
+  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 39; // Automatic 55 at 79in, 36 at 212in, 39 at 144
 
   // Used to indicate auto mode (based on April tag distance) for the shooter
   // pivot angle
@@ -139,7 +139,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
-    // shooterSubsystem.setDefaultCommand(shooterCommand);
+    shooterSubsystem.setDefaultCommand(shooterCommand);
 
     configureAutoChooser();
     SmartDashboard.putData(chooser);

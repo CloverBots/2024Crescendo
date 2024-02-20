@@ -76,8 +76,8 @@ public class DriveToDistanceCommand extends Command {
     driveDistanceControllerX.reset();
     driveDistanceControllerY.reset();
     rotationController.reset();
-    SmartDashboard.putBoolean("Status", true);
-    timer.start(); */
+    SmartDashboard.putBoolean("Status", true); */
+    timer.start(); 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -92,7 +92,7 @@ public class DriveToDistanceCommand extends Command {
     // ySpeed = yLimiter.calculate(ySpeed);
     ySpeed = MathUtil.clamp(ySpeed, -SwerveDriveConstants.AUTO_MAX_SPEED, SwerveDriveConstants.AUTO_MAX_SPEED);
 
-    double dTheta = rotationController.calculate(swerveSubsystem.getHeading());
+    double dTheta = rotationController.calculate(swerveSubsystem.getPose().getRotation().getDegrees());
     // dTheta = rotationLimiter.calculate(dTheta);
     dTheta = MathUtil.clamp(dTheta, -100, 100);
     

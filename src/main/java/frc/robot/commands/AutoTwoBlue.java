@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -16,7 +17,7 @@ public class AutoTwoBlue extends SequentialCommandGroup {
   /** Creates a new Auto. */
   public AutoTwoBlue(SwerveSubsystem swerveSubsystem) {
     addCommands(
-        new ResetOdometryCommand(swerveSubsystem),
+        new ResetOdometryCommand(swerveSubsystem, new Pose2d()),
         // Shoot ring
         new WaitCommand(1),
 

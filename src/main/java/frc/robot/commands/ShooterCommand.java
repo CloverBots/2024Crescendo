@@ -168,14 +168,14 @@ public class ShooterCommand extends Command {
                     break;
 
                 case SPEAKER:
-                    /*shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
+                    shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
                     shooterRightRPM = RobotContainer.SHOOTER_SPEAKER_RIGHT_RPM;
-                    feederSpeed = RobotContainer.FEEDER_SPEED;
+                    //feederSpeed = RobotContainer.FEEDER_SPEED;
                     pivotAngle = RobotContainer.SHOOTER_SPEAKER_PIVOT_ANGLE;
                     pivotAngle = checkAngleLimits(pivotAngle);
                     previousPivotAngle = pivotAngle;
                     pivotController.reset();
-                    pivotController.setSetpoint(pivotAngle); */;
+                    pivotController.setSetpoint(pivotAngle);
 
                     DriveFromControllerCommand.lockOnMode = true; //TO-DO enable
                     // previousPivotAngle = pivotAngle;
@@ -252,8 +252,8 @@ public class ShooterCommand extends Command {
                 break;
 
             case SPEAKER:
-                // shooterSubsystem.setShooterLeftRPM(shooterLeftRPM);
-                // shooterSubsystem.setShooterRightRPM(shooterRightRPM);
+                shooterSubsystem.setShooterLeftRPM(shooterLeftRPM);
+                shooterSubsystem.setShooterRightRPM(shooterRightRPM);
 
                 /*double targetDistance = visionTargetTracker.computeTargetDistance();
                 Boolean isTargetValid = visionTargetTracker.isValid();
@@ -267,13 +267,13 @@ public class ShooterCommand extends Command {
                     previousPivotAngle = pivotAngle;
                     pivotController.reset();
                     pivotController.setSetpoint(pivotAngle);
-                }
+                } */
 
                 pivotSpeed = -pivotController.calculate(pivotSubsystem.getPivotAbsolutePosition());
                 pivotSpeed = checkPivotSpeed(pivotSpeed);
                 pivotSpeed = MathUtil.clamp(pivotSpeed, -MAX_PIVOT_POWER, MAX_PIVOT_POWER);
 
-                pivotSubsystem.setSpeed(pivotSpeed); */
+                pivotSubsystem.setSpeed(pivotSpeed); 
                 break;
             case FIRE:
                 if (Math.abs(pivotSubsystem.getPivotAbsolutePosition() - pivotAngle) < 1.0 &&

@@ -142,6 +142,10 @@ public class SwerveSubsystem extends SubsystemBase {
         odometer.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
     }
 
+    public void resetOdometryPose(Pose2d pose) {
+        odometer.resetPosition(getRotation2d(), getModulePositions(), pose);
+    }
+
     public void setBrakeMode(boolean brake) {
         for (SwerveModule module : modules) {
             module.setBrakeMode(brake);
@@ -206,6 +210,7 @@ public class SwerveSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber("Gyro Pitch", gyro.getPitch());
 
         SmartDashboard.putString("Odometer Robot Location", getPose().getTranslation().toString());
+        SmartDashboard.putString("Odometer Robot Rotation", getPose().getRotation().toString());
 
         if (SmartDashboard.getBoolean("reset gyro", false)) {
             SmartDashboard.putBoolean("reset gyro", false);

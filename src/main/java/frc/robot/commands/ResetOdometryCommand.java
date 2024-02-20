@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -13,11 +14,13 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class ResetOdometryCommand extends Command {
 
   SwerveSubsystem swerveSubsystem;
+  Pose2d pose;
   
   /** Creates a new ResetOdometryCommand. */
-  public ResetOdometryCommand(SwerveSubsystem swerveSubsystem) {
+  public ResetOdometryCommand(SwerveSubsystem swerveSubsystem, Pose2d pose) {
     addRequirements(swerveSubsystem);
     this.swerveSubsystem = swerveSubsystem;
+    this.pose = pose;
   }
 
   // Called when the command is initially scheduled.
@@ -27,7 +30,7 @@ public class ResetOdometryCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    swerveSubsystem.resetOdometry();
+    swerveSubsystem.resetOdometryPose(pose);
   }
 
   // Called once the command ends or is interrupted.
