@@ -25,7 +25,7 @@ public class PivotSubsystem extends SubsystemBase {
   public final static double PIVOT_LOWER_ENDPOINT = 1;//TO-DO 359
   public final static double PIVOT_UPPER_ENDPOINT = 100;
 
-  private final int CURRENT_LIMIT = 10;
+  private final int CURRENT_LIMIT = 100;
 
   public PivotSubsystem() {
     this.pivotLeadMotor = new CANSparkMax(IDs.PIVOT_LEAD_MOTOR, MotorType.kBrushless);

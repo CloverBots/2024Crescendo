@@ -56,7 +56,7 @@ public class RobotContainer {
   public static final double INTAKE_SPEED = -1;
   public static final double FEEDER_SPEED = -1;
   public final static double FEEDER_TIME = 2;
-  public static final double PIVOT_SPEED = 0.2;
+  public static final double PIVOT_SPEED = 0.5;
   public static final double DEFAULT_SPEAKER_PIVOT_ANGLE = 20;
 
   private static final double CLIMBER_READY_POSITION = 10;
@@ -139,7 +139,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
-    shooterSubsystem.setDefaultCommand(shooterCommand);
+    // shooterSubsystem.setDefaultCommand(shooterCommand);
 
     configureAutoChooser();
     SmartDashboard.putData(chooser);
