@@ -1,11 +1,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.VisionTargetTracker;
@@ -18,7 +19,6 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShooterCommand extends Command {
     private final static double MAX_PIVOT_POWER = 0.2;
-    
 
     private final ShooterSubsystem shooterSubsystem;
     private final FeederDistanceSensorSubsystem feederDistanceSensorSubsystem;
@@ -28,7 +28,9 @@ public class ShooterCommand extends Command {
     private final VisionTargetTracker visionTargetTracker;
     private final Supplier<Boolean> fireButton;
     private final Supplier<Double> intakeLoadTrigger, intakeEjectTrigger;
-    private final Supplier<Boolean> yButton, bButton, aButton, xButton, startButton;
+    private final DoubleSupplier leftJoystickY;
+    private final Supplier<Boolean> yButton, bButton, aButton, xButton, startButton, backButton;
+    private final Supplier<Integer> dPad;
     private double shooterLeftRPM;
     private double shooterRightRPM;
     private double feederSpeed;
@@ -39,7 +41,7 @@ public class ShooterCommand extends Command {
     private boolean firing = false;
 
     public enum ACTION {
-        NONE, INTAKE, EJECT, AMP, SPEAKER, TRAP, FIRE, PARK, TUNING
+        NONE, INTAKE, EJECT, AMP, SPEAKER, TRAP, FIRE, PARK, TUNING, CLIMB_AUTO_READY, CLIMB_AUTO_LIFT, CLIMB_MANUAL
     }
 
     private ACTION mode;
@@ -60,6 +62,9 @@ public class ShooterCommand extends Command {
             Supplier<Boolean> aButton,
             Supplier<Boolean> xButton,
             Supplier<Boolean> startButton,
+            DoubleSupplier leftJoystickY,
+            Supplier<Integer> dPad,
+            Supplier<Boolean> backButton,
             Supplier<Boolean> fireButton) {
 
         this.shooterSubsystem = shooterSubsystem;
@@ -75,6 +80,9 @@ public class ShooterCommand extends Command {
         this.aButton = aButton;
         this.xButton = xButton;
         this.startButton = startButton;
+        this.leftJoystickY = leftJoystickY;
+        this.backButton = backButton;
+        this.dPad = dPad;
         this.fireButton = fireButton;
 
         timer = new Timer();
@@ -102,125 +110,24 @@ public class ShooterCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if (intakeLoadTrigger.get() > 0.5 && mode != ACTION.INTAKE) {
-            mode = ACTION.INTAKE;
-            modeChanged = true;
-        } else if (intakeEjectTrigger.get() > 0.5 && mode != ACTION.EJECT) {
-            mode = ACTION.EJECT;
-            modeChanged = true;
-        } else if (xButton.get() && mode != ACTION.PARK) {
-            mode = ACTION.PARK;
-            modeChanged = true;
-        } else if (aButton.get() && mode != ACTION.AMP) {
-            mode = ACTION.AMP;
-            modeChanged = true;
-        } else if (bButton.get() && mode != ACTION.SPEAKER) {
-            mode = ACTION.SPEAKER;
-            modeChanged = true;
-        } else if (yButton.get() && mode != ACTION.TRAP) {
-            mode = ACTION.TRAP;
-            modeChanged = true;
-        } else if (startButton.get() && mode != ACTION.TUNING) {
-            mode = ACTION.TUNING;
-            modeChanged = true;
-        } else if (fireButton.get()) {
-            mode = ACTION.FIRE;
-            modeChanged = true;
-        }
+        
+        checkControllerValues();
 
         // If mode changed then get appropriate values for the new mode
         if (modeChanged) {
-            modeChanged = false;
-
-            switch (mode) {
-                case INTAKE:
-                case EJECT:
-                    shooterSubsystem.setShooterLeftRPM(0);
-                    shooterSubsystem.setShooterRightRPM(0);
-                    feederSubsystem.setSpeed(0);
-                    pivotAngle = RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE;
-                    pivotAngle = checkAngleLimits(pivotAngle);
-                    pivotController.reset();
-                    pivotController.setSetpoint(pivotAngle);
-
-                    break;
-
-                case PARK:
-                    shooterLeftRPM = 0;
-                    shooterRightRPM = 0;
-                    shooterSubsystem.stop();
-                    feederSpeed = 0;
-                    pivotAngle = RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE;
-                    pivotAngle = checkAngleLimits(pivotAngle);
-                    pivotController.reset();
-                    pivotController.setSetpoint(pivotAngle);
-                    DriveFromControllerCommand.lockOnMode = false;
-                    break;
-
-                case AMP:
-                    shooterLeftRPM = RobotContainer.SHOOTER_AMP_LEFT_RPM;
-                    shooterRightRPM = RobotContainer.SHOOTER_AMP_RIGHT_RPM;
-                    feederSpeed = RobotContainer.FEEDER_SPEED;
-                    pivotAngle = RobotContainer.SHOOTER_AMP_PIVOT_ANGLE;
-                    pivotAngle = checkAngleLimits(pivotAngle);
-                    pivotController.reset();
-                    pivotController.setSetpoint(pivotAngle);
-                    break;
-
-                case SPEAKER:
-                    shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
-                    shooterRightRPM = RobotContainer.SHOOTER_SPEAKER_RIGHT_RPM;
-                    //feederSpeed = RobotContainer.FEEDER_SPEED;
-                    pivotAngle = RobotContainer.SHOOTER_SPEAKER_PIVOT_ANGLE;
-                    pivotAngle = checkAngleLimits(pivotAngle);
-                    previousPivotAngle = pivotAngle;
-                    pivotController.reset();
-                    pivotController.setSetpoint(pivotAngle);
-
-                    DriveFromControllerCommand.lockOnMode = true; //TO-DO enable
-                    // previousPivotAngle = pivotAngle;
-
-                    break;
-                case TRAP:
-                    shooterLeftRPM = RobotContainer.SHOOTER_TRAP_LEFT_RPM;
-                    shooterRightRPM = RobotContainer.SHOOTER_TRAP_RIGHT_RPM;
-                    feederSpeed = RobotContainer.FEEDER_SPEED;
-                    pivotAngle = RobotContainer.SHOOTER_TRAP_PIVOT_ANGLE;
-                    pivotAngle = checkAngleLimits(pivotAngle);
-                    pivotController.reset();
-                    pivotController.setSetpoint(pivotAngle);
-                    break;
-
-                case FIRE:
-                    feederSpeed = RobotContainer.FEEDER_SPEED;
-
-                case NONE:
-
-                    break;
-
-                case TUNING:
-                    // used during tuning
-                    shooterRightRPM = SmartDashboard.getNumber("Shooter right power", 0);
-                    shooterLeftRPM = SmartDashboard.getNumber("Shooter left power", 0);
-                    pivotAngle = SmartDashboard.getNumber("Shooter angle", 0);
-                    pivotAngle = checkAngleLimits(pivotAngle);
-                    feederSpeed = SmartDashboard.getNumber("Feeder power", feederSpeed);
-                    pivotController.reset();
-                    pivotController.setSetpoint(pivotAngle);
-                    break;
-
-            }
+            updateValues();
         }
+
         switch (mode) {
             case INTAKE:
-                //if (!feederDistanceSensorSubsystem.isNoteLoaded()) {
-                    intakeSubsystem.setIntakeSpeed(RobotContainer.INTAKE_SPEED);
-                    feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED);
-                    pivotSpeed = -pivotController.calculate(pivotSubsystem.getPivotAbsolutePosition());
-                    pivotSpeed = checkPivotSpeed(pivotSpeed);
-                    pivotSpeed = MathUtil.clamp(pivotSpeed, -MAX_PIVOT_POWER, MAX_PIVOT_POWER);
-                    pivotSubsystem.setSpeed(pivotSpeed);
-                //}
+             if (!feederDistanceSensorSubsystem.isNoteLoaded()) { //TO-DO do we enable this?
+                intakeSubsystem.setIntakeSpeed(RobotContainer.INTAKE_SPEED);
+                feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED);
+                pivotSpeed = -pivotController.calculate(pivotSubsystem.getPivotAbsolutePosition());
+                pivotSpeed = checkPivotSpeed(pivotSpeed);
+                pivotSpeed = MathUtil.clamp(pivotSpeed, -MAX_PIVOT_POWER, MAX_PIVOT_POWER);
+                pivotSubsystem.setSpeed(pivotSpeed);
+             }
                 break;
             case EJECT:
                 intakeSubsystem.setIntakeSpeed(-RobotContainer.INTAKE_SPEED);
@@ -254,30 +161,31 @@ public class ShooterCommand extends Command {
             case SPEAKER:
                 shooterSubsystem.setShooterLeftRPM(shooterLeftRPM);
                 shooterSubsystem.setShooterRightRPM(shooterRightRPM);
-
-                /*double targetDistance = visionTargetTracker.computeTargetDistance();
-                Boolean isTargetValid = visionTargetTracker.isValid();
-                if (isTargetValid) {
-                    pivotAngle = computePivotAngle(targetDistance);
-                    pivotAngle = checkAngleLimits(pivotAngle);
-                }
-
-                // If the desired angle has changed by 1 degree or more, update the setpoint
-                if (Math.abs(previousPivotAngle - pivotAngle) > 1) {
-                    previousPivotAngle = pivotAngle;
-                    pivotController.reset();
-                    pivotController.setSetpoint(pivotAngle);
-                } */
+                    //TO-DO enable vision
+                /*
+                 * double targetDistance = visionTargetTracker.computeTargetDistance();
+                 * Boolean isTargetValid = visionTargetTracker.isValid();
+                 * if (isTargetValid) {
+                 * pivotAngle = computePivotAngle(targetDistance);
+                 * pivotAngle = checkAngleLimits(pivotAngle);
+                 * }
+                 * 
+                 * // If the desired angle has changed by 1 degree or more, update the setpoint
+                 * if (Math.abs(previousPivotAngle - pivotAngle) > 1) {
+                 * previousPivotAngle = pivotAngle;
+                 * pivotController.reset();
+                 * pivotController.setSetpoint(pivotAngle);
+                 * }
+                 */
 
                 pivotSpeed = -pivotController.calculate(pivotSubsystem.getPivotAbsolutePosition());
                 pivotSpeed = checkPivotSpeed(pivotSpeed);
                 pivotSpeed = MathUtil.clamp(pivotSpeed, -MAX_PIVOT_POWER, MAX_PIVOT_POWER);
 
-                pivotSubsystem.setSpeed(pivotSpeed); 
+                pivotSubsystem.setSpeed(pivotSpeed);
                 break;
             case FIRE:
-                if (Math.abs(pivotSubsystem.getPivotAbsolutePosition() - pivotAngle) < 1.0 &&
-                        !firing) {
+                if (!firing) {
                     firing = true;
                     timer.reset();
                     timer.start();
@@ -288,8 +196,180 @@ public class ShooterCommand extends Command {
             case NONE:
                 break;
 
+            case CLIMB_AUTO_LIFT:
+            case CLIMB_AUTO_READY:
+                pivotSubsystem.setSpeed(pivotSpeed);
+                break;
+
+            case CLIMB_MANUAL:
+                if (Math.abs(leftJoystickY.getAsDouble()) > .05) {
+                    pivotSpeed = leftJoystickY.getAsDouble() / 3; // TO-DO remove the 3 or adjust it
+
+                    if (leftJoystickY.getAsDouble() < -.05 &&
+                            pivotSubsystem.getPivotAbsolutePosition() > RobotContainer.PIVOT_UPPER_ENDPOINT) {
+                        pivotSpeed = 0;
+                    }
+
+                    if (leftJoystickY.getAsDouble() > .05 &&
+                            pivotSubsystem.getPivotAbsolutePosition() < RobotContainer.PIVOT_LOWER_ENDPOINT) {
+                        pivotSpeed = 0;
+                    }
+
+                    pivotSubsystem.setSpeed(pivotSpeed);
+
+                } else {
+                    pivotSubsystem.setSpeed(0);
+                }
+
+                break;
         }
 
+    }
+
+    private void checkControllerValues() {
+        if (intakeLoadTrigger.get() > 0.5 && mode != ACTION.INTAKE) {
+            mode = ACTION.INTAKE;
+            modeChanged = true;
+        } else if (intakeEjectTrigger.get() > 0.5 && mode != ACTION.EJECT) {
+            mode = ACTION.EJECT;
+            modeChanged = true;
+        } else if (xButton.get() && mode != ACTION.PARK) {
+            mode = ACTION.PARK;
+            modeChanged = true;
+        } else if (aButton.get() && mode != ACTION.AMP) {
+            mode = ACTION.AMP;
+            modeChanged = true;
+        } else if (bButton.get() && mode != ACTION.SPEAKER) {
+            mode = ACTION.SPEAKER;
+            modeChanged = true;
+        } else if (yButton.get() && mode != ACTION.TRAP) {
+            mode = ACTION.TRAP;
+            modeChanged = true;
+        } else if (startButton.get() && mode != ACTION.TUNING) {
+            mode = ACTION.TUNING;
+            modeChanged = true;
+        } else if (fireButton.get()) {
+            mode = ACTION.FIRE;
+            modeChanged = true;
+        } else if (backButton.get()) {
+            mode = ACTION.CLIMB_MANUAL;
+            modeChanged = true;
+        } else if (dPad.get() == 0) {
+            mode = ACTION.CLIMB_AUTO_READY;
+            modeChanged = true;
+        } else if (dPad.get() == 180) {
+            mode = ACTION.CLIMB_AUTO_LIFT;
+            modeChanged = true;
+        }
+    }
+
+    private void updateValues() {
+        modeChanged = false;
+
+        switch (mode) {
+            case INTAKE:
+            case EJECT:
+                shooterSubsystem.setShooterLeftRPM(0);
+                shooterSubsystem.setShooterRightRPM(0);
+                feederSubsystem.setSpeed(0);
+                pivotAngle = RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE;
+                pivotAngle = checkAngleLimits(pivotAngle);
+                pivotController.reset();
+                pivotController.setSetpoint(pivotAngle);
+
+                break;
+
+            case PARK:
+                shooterLeftRPM = 0;
+                shooterRightRPM = 0;
+                shooterSubsystem.stop();
+                feederSpeed = 0;
+                pivotAngle = RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE;
+                pivotAngle = checkAngleLimits(pivotAngle);
+                pivotController.reset();
+                pivotController.setSetpoint(pivotAngle);
+                DriveFromControllerCommand.lockOnMode = false;
+                break;
+
+            case AMP:
+                shooterLeftRPM = RobotContainer.SHOOTER_AMP_LEFT_RPM;
+                shooterRightRPM = RobotContainer.SHOOTER_AMP_RIGHT_RPM;
+                feederSpeed = RobotContainer.FEEDER_SPEED;
+                pivotAngle = RobotContainer.SHOOTER_AMP_PIVOT_ANGLE;
+                pivotAngle = checkAngleLimits(pivotAngle);
+                pivotController.reset();
+                pivotController.setSetpoint(pivotAngle);
+                break;
+
+            case SPEAKER:
+                shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
+                shooterRightRPM = RobotContainer.SHOOTER_SPEAKER_RIGHT_RPM;
+                // feederSpeed = RobotContainer.FEEDER_SPEED;
+                pivotAngle = RobotContainer.SHOOTER_SPEAKER_PIVOT_ANGLE;
+                pivotAngle = checkAngleLimits(pivotAngle);
+                previousPivotAngle = pivotAngle;
+                pivotController.reset();
+                pivotController.setSetpoint(pivotAngle);
+
+                DriveFromControllerCommand.lockOnMode = true; // TO-DO enable
+                // previousPivotAngle = pivotAngle;
+
+                break;
+            case TRAP:
+                shooterLeftRPM = RobotContainer.SHOOTER_TRAP_LEFT_RPM;
+                shooterRightRPM = RobotContainer.SHOOTER_TRAP_RIGHT_RPM;
+                feederSpeed = RobotContainer.FEEDER_SPEED;
+                pivotAngle = RobotContainer.SHOOTER_TRAP_PIVOT_ANGLE;
+                pivotAngle = checkAngleLimits(pivotAngle);
+                pivotController.reset();
+                pivotController.setSetpoint(pivotAngle);
+                break;
+
+            case FIRE:
+                feederSpeed = RobotContainer.FEEDER_SPEED;
+
+            case NONE:
+
+                break;
+
+            case CLIMB_AUTO_LIFT:
+                shooterLeftRPM = 0;
+                shooterRightRPM = 0;
+                feederSpeed = 0;
+                pivotController.reset();
+                pivotAngle = RobotContainer.CLIMBER_RAISED_POSITION;
+                pivotAngle = checkAngleLimits(pivotAngle);
+                pivotSpeed = RobotContainer.CLIMBER_PIVOT_SPEED;
+                DriveFromControllerCommand.lockOnMode = false;
+                break;
+
+            case CLIMB_AUTO_READY:
+                shooterLeftRPM = 0;
+                shooterRightRPM = 0;
+                feederSpeed = 0;
+                pivotController.reset();
+                pivotAngle = RobotContainer.CLIMBER_READY_POSITION;
+                pivotAngle = checkAngleLimits(pivotAngle);
+                pivotSpeed = -RobotContainer.CLIMBER_PIVOT_SPEED; // negative is up
+                DriveFromControllerCommand.lockOnMode = false;
+                break;
+
+            case CLIMB_MANUAL:
+
+                break;
+
+            case TUNING:
+                // used during tuning
+                shooterRightRPM = SmartDashboard.getNumber("Shooter right power", 0);
+                shooterLeftRPM = SmartDashboard.getNumber("Shooter left power", 0);
+                pivotAngle = SmartDashboard.getNumber("Shooter angle", 0);
+                pivotAngle = checkAngleLimits(pivotAngle);
+                feederSpeed = SmartDashboard.getNumber("Feeder power", feederSpeed);
+                pivotController.reset();
+                pivotController.setSetpoint(pivotAngle);
+                break;
+
+        }
     }
 
     private double checkAngleLimits(double angle) {
@@ -321,15 +401,14 @@ public class ShooterCommand extends Command {
 
         switch (mode) {
             case INTAKE:
-            /**
-                if (intakeSubsystem.isIntakeRunningForward() && feederDistanceSensorSubsystem.isNoteLoaded()) {
+
+                if (intakeSubsystem.isIntakeRunningForward() &&
+                        feederDistanceSensorSubsystem.isNoteLoaded()) {
                     intakeSubsystem.setIntakeSpeed(0);
                     feederSubsystem.setSpeed(0);
                     mode = ACTION.NONE;
                     modeChanged = true;
-                } else 
-                */
-                if (intakeLoadTrigger.get() < 0.5 && intakeSubsystem.isIntakeRunningForward()) {
+                } else if (intakeLoadTrigger.get() < 0.5 && intakeSubsystem.isIntakeRunningForward()) {
                     intakeSubsystem.setIntakeSpeed(0);
                     feederSubsystem.setSpeed(0);
                     mode = ACTION.NONE;
@@ -353,7 +432,7 @@ public class ShooterCommand extends Command {
                 shooterSubsystem.setShooterLeftRPM(0);
                 shooterSubsystem.setShooterRightRPM(0);
                 DriveFromControllerCommand.lockOnMode = false;
-                if (pivotController.atSetpoint()) { //TO-DO do we want to shut it down?
+                if (pivotController.atSetpoint()) { // TO-DO do we want to shut it down?
                     pivotSubsystem.setSpeed(0);
                     mode = ACTION.NONE;
                     modeChanged = true;
@@ -373,6 +452,29 @@ public class ShooterCommand extends Command {
                     modeChanged = true;
                 }
                 break;
+
+            case NONE:
+                break;
+
+            case CLIMB_AUTO_LIFT:
+                if (pivotSubsystem.getPivotAbsolutePosition() < pivotAngle) {
+                    pivotSubsystem.setSpeed(0);
+                    mode = ACTION.NONE;
+                    modeChanged = true;
+                }
+                break;
+
+            case CLIMB_AUTO_READY:
+                if (pivotSubsystem.getPivotAbsolutePosition() > pivotAngle) {
+                    pivotSubsystem.setSpeed(0);
+                    mode = ACTION.NONE;
+                    modeChanged = true;
+                }
+                break;
+
+            case CLIMB_MANUAL:
+                break;
+
         }
 
         return false;
@@ -384,7 +486,7 @@ public class ShooterCommand extends Command {
 
     private double checkPivotSpeed(double speed) {
         if ((speed < 0 && pivotSubsystem.getPivotAbsolutePosition() > RobotContainer.PIVOT_UPPER_ENDPOINT)
-        || (speed > 0 && pivotSubsystem.getPivotAbsolutePosition() < RobotContainer.PIVOT_LOWER_ENDPOINT)) {
+                || (speed > 0 && pivotSubsystem.getPivotAbsolutePosition() < RobotContainer.PIVOT_LOWER_ENDPOINT)) {
             speed = 0;
         }
 

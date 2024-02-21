@@ -13,8 +13,12 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
+import frc.robot.VisionConfiguration;
+import frc.robot.VisionTargetTracker;
 import frc.robot.constants.IDs;
 
 public class PivotSubsystem extends SubsystemBase {
@@ -22,10 +26,12 @@ public class PivotSubsystem extends SubsystemBase {
   private final CANSparkMax pivotFollowMotor;
 
   private final CANCoder pivotEncoder;
-  public final static double PIVOT_LOWER_ENDPOINT = 1;//TO-DO 359
+  public final static double PIVOT_LOWER_ENDPOINT = 1;
   public final static double PIVOT_UPPER_ENDPOINT = 100;
 
   private final int CURRENT_LIMIT = 100;
+
+  private final DigitalInput limitSwitch = new DigitalInput(IDs.PIVOT_LIMIT_SWITCH);
 
   public PivotSubsystem() {
     this.pivotLeadMotor = new CANSparkMax(IDs.PIVOT_LEAD_MOTOR, MotorType.kBrushless);
@@ -35,8 +41,8 @@ public class PivotSubsystem extends SubsystemBase {
 
     pivotLeadMotor.setInverted(false);
 
-    pivotLeadMotor.setIdleMode(IdleMode.kBrake); 
-    pivotFollowMotor.setIdleMode(IdleMode.kBrake); 
+    pivotLeadMotor.setIdleMode(IdleMode.kBrake);
+    pivotFollowMotor.setIdleMode(IdleMode.kBrake);
 
     pivotLeadMotor.setSmartCurrentLimit(CURRENT_LIMIT);
     pivotFollowMotor.setSmartCurrentLimit(CURRENT_LIMIT);
@@ -59,15 +65,21 @@ public class PivotSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-      if (getPivotAbsolutePosition() < PIVOT_LOWER_ENDPOINT
-        && getPivotAbsolutePosition() > PIVOT_UPPER_ENDPOINT) {
-        pivotLeadMotor.set(0);
-      }
-      
+    if (getPivotAbsolutePosition() < PIVOT_LOWER_ENDPOINT
+        || getPivotAbsolutePosition() > PIVOT_UPPER_ENDPOINT) {
+      System.out.println("PIVOT ENDPOINT reached!!!");
+      pivotLeadMotor.set(0);
+    }
+
+    if (!limitSwitch.get()) {
+      System.out.println("PIVOT LIMIT SWITCH reached!!!");
+      pivotLeadMotor.set(0);
+    }
+
   }
 
   public double getPivotAbsolutePosition() {
-    SmartDashboard.putNumber("Absolut encoder", pivotEncoder.getAbsolutePosition()); //TO-DO remove
+    SmartDashboard.putNumber("Absolut encoder", pivotEncoder.getAbsolutePosition());
     return pivotEncoder.getAbsolutePosition();
   }
 

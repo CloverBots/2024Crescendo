@@ -6,8 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -61,11 +59,10 @@ public class DriveToDistanceCommand extends Command {
   @Override
   public void initialize() {
 
-    // TODO: is the slew rate stuff correct? 
-    // May need to swap some things if it behaves in the opposite way.
+    /**
     Pose2d initPos = swerveSubsystem.getPose();
     double initAngle = swerveSubsystem.getHeading();
-    /* if (xPos - initPos.getX() >= 0) xLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ACCELERATION, Integer.MIN_VALUE, 0);
+   if (xPos - initPos.getX() >= 0) xLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ACCELERATION, Integer.MIN_VALUE, 0);
     else xLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ACCELERATION, 0);
 
     if (yPos - initPos.getY() >= 0) yLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ACCELERATION, Integer.MIN_VALUE, 0);
@@ -77,6 +74,7 @@ public class DriveToDistanceCommand extends Command {
     driveDistanceControllerY.reset();
     rotationController.reset();
     SmartDashboard.putBoolean("Status", true); */
+
     timer.start(); 
   }
 

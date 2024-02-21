@@ -26,4 +26,6 @@ public final class IDs {
   public static final int SHOOTER_RIGHT_MOTOR_ID = 34;
   public static final int CENTER_MOTOR_1 = 36;
   public static final int CENTER_MOTOR_2 = 46;
+
+  public static final int PIVOT_LIMIT_SWITCH = 0; //digital input port
 }

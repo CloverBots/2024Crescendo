@@ -4,21 +4,14 @@
 
 package frc.robot;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoOneBlue;
-import frc.robot.commands.ClimbCommand;
-import frc.robot.commands.ClimbManualCommand;
 import frc.robot.commands.DriveFromControllerCommand;
-import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.constants.IDs;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
@@ -39,9 +32,9 @@ import frc.robot.subsystems.SwerveSubsystem;
  */
 public class RobotContainer {
 
-  private static final double VISION_TARGET_HEIGHT = 78.5; // on test robot
-  private static final double CAMERA_HEIGHT = 43.7; // on test robot
-  private static final double CAMERA_PITCH = 22.0;
+  private static final double VISION_TARGET_HEIGHT = 57.13; // AprilTag 4, 7
+  private static final double CAMERA_HEIGHT = 8.75; // inches
+  private static final double CAMERA_PITCH = 180 - 53.0; // degrees
 
   public final static double PIVOT_LOWER_ENDPOINT = 17; //7
   public final static double PIVOT_UPPER_ENDPOINT = 90;
@@ -51,7 +44,7 @@ public class RobotContainer {
       CAMERA_HEIGHT,
       CAMERA_PITCH);
 
-  private final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
+  public final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
 
   public static final double INTAKE_SPEED = -1;
   public static final double FEEDER_SPEED = -1;
@@ -59,8 +52,9 @@ public class RobotContainer {
   public static final double PIVOT_SPEED = 0.5;
   public static final double DEFAULT_SPEAKER_PIVOT_ANGLE = 20;
 
-  private static final double CLIMBER_READY_POSITION = 10;
-  private static final double CLIMBER_RAISED_POSITION = 15;
+  public static final double CLIMBER_READY_POSITION = 90;
+  public static final double CLIMBER_RAISED_POSITION = 15;
+  public static final double CLIMBER_PIVOT_SPEED = 0.2;
 
   // PARKED SHOOTER
   public static final double SHOOTER_PARKED_PIVOT_ANGLE = 10;
@@ -78,7 +72,7 @@ public class RobotContainer {
   // SPEAKER SHOOTER
   public static final double SHOOTER_SPEAKER_RIGHT_RPM = 3850;
   public static final double SHOOTER_SPEAKER_LEFT_RPM = 3750;
-  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 39; // Automatic 55 at 79in, 36 at 212in, 39 at 144
+  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 39; // Automatic 55 at 79in, 36 at 212in, 39 at 144in
 
   // Used to indicate auto mode (based on April tag distance) for the shooter
   // pivot angle
@@ -110,17 +104,6 @@ public class RobotContainer {
       driverController::getPOV,
       visionTargetTracker);
 
-  private final IntakeCommand intakeCommand = new IntakeCommand(intakeSubsystem, feederSubsystem,
-      feederDistanceSensorSubsystem, operatorController::getLeftTriggerAxis, operatorController::getRightTriggerAxis);
-
-  private final ClimbCommand climbReadyCommand = new ClimbCommand(pivotSubsystem,
-      CLIMBER_READY_POSITION);
-
-  private final ClimbCommand climbRaisedCommand = new ClimbCommand(pivotSubsystem,
-      CLIMBER_RAISED_POSITION);
-
-  private final ClimbManualCommand climbManualCommand = new ClimbManualCommand(pivotSubsystem,
-      operatorController::getLeftY);
 
   private final ShooterCommand shooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
       shooterSubsystem, pivotSubsystem, feederSubsystem, intakeSubsystem, visionTargetTracker,
@@ -131,7 +114,9 @@ public class RobotContainer {
       operatorController::getAButton,
       operatorController::getXButton,
       operatorController::getStartButton,
-
+      operatorController::getLeftY,
+      operatorController::getPOV,
+      operatorController::getBackButton,
       driverController::getRightBumper);
 
   /**
@@ -202,13 +187,6 @@ public class RobotContainer {
     SmartDashboard.putNumber("Shooter angle", 25);
     SmartDashboard.putNumber("Feeder power", 0);
 
-    POVButton climbReadyButton = new POVButton(operatorController, 0); // Up
-    // climbReadyButton.onTrue(climbReadyCommand);
-    POVButton climbRaisedButton = new POVButton(operatorController, 180); // Down
-    // climbRaisedButton.onTrue(climbRaisedCommand);
-
-    JoystickButton climbManualButton = new JoystickButton(operatorController, XboxController.Button.kBack.value);
-    climbManualButton.onTrue(climbManualCommand);
   }
 
   /**
