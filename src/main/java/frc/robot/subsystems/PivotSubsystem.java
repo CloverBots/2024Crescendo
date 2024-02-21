@@ -67,12 +67,12 @@ public class PivotSubsystem extends SubsystemBase {
   public void periodic() {
     if (getPivotAbsolutePosition() < PIVOT_LOWER_ENDPOINT
         || getPivotAbsolutePosition() > PIVOT_UPPER_ENDPOINT) {
-      System.out.println("PIVOT ENDPOINT reached!!!");
+      // System.out.println("PIVOT ENDPOINT reached!!!");
       pivotLeadMotor.set(0);
     }
 
     if (!limitSwitch.get()) {
-      System.out.println("PIVOT LIMIT SWITCH reached!!!");
+      // System.out.println("PIVOT LIMIT SWITCH reached!!!");
       pivotLeadMotor.set(0);
     }
 

@@ -37,7 +37,7 @@ public class RobotContainer {
   private static final double CAMERA_PITCH = 180 - 53.0; // degrees
 
   public final static double PIVOT_LOWER_ENDPOINT = 17; //7
-  public final static double PIVOT_UPPER_ENDPOINT = 90;
+  public final static double PIVOT_UPPER_ENDPOINT = 200;
 
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
       VISION_TARGET_HEIGHT,
@@ -47,7 +47,8 @@ public class RobotContainer {
   public final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
 
   public static final double INTAKE_SPEED = -1;
-  public static final double FEEDER_SPEED = -1;
+  public static final double FEEDER_SPEED_INTAKE = -0.6;
+  public static final double FEEDER_SPEED_SHOOT = -0.8;
   public final static double FEEDER_TIME = 2;
   public static final double PIVOT_SPEED = 0.5;
   public static final double DEFAULT_SPEAKER_PIVOT_ANGLE = 20;
@@ -60,9 +61,9 @@ public class RobotContainer {
   public static final double SHOOTER_PARKED_PIVOT_ANGLE = 10;
 
   // AMP SHOOTER
-  public static final double SHOOTER_AMP_RIGHT_RPM = 700;
-  public static final double SHOOTER_AMP_LEFT_RPM = 500;
-  public static final double SHOOTER_AMP_PIVOT_ANGLE = 61;
+  public static final double SHOOTER_AMP_RIGHT_RPM = 600;
+  public static final double SHOOTER_AMP_LEFT_RPM = 600;
+  public static final double SHOOTER_AMP_PIVOT_ANGLE = 77; // 77
 
   // TRAP SHOOTER
   public static final double SHOOTER_TRAP_RIGHT_RPM = 20;

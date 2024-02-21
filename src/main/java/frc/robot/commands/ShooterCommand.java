@@ -122,7 +122,7 @@ public class ShooterCommand extends Command {
             case INTAKE:
                 if (!feederDistanceSensorSubsystem.isNoteLoaded()) {
                     intakeSubsystem.setIntakeSpeed(RobotContainer.INTAKE_SPEED);
-                    feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED);
+                    feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_INTAKE);
                     pivotSpeed = -pivotController.calculate(pivotSubsystem.getPivotAbsolutePosition());
                     pivotSpeed = checkPivotSpeed(pivotSpeed);
                     pivotSpeed = MathUtil.clamp(pivotSpeed, -MAX_PIVOT_POWER, MAX_PIVOT_POWER);
@@ -131,7 +131,7 @@ public class ShooterCommand extends Command {
                 break;
             case EJECT:
                 intakeSubsystem.setIntakeSpeed(-RobotContainer.INTAKE_SPEED);
-                feederSubsystem.setSpeed(-RobotContainer.FEEDER_SPEED);
+                feederSubsystem.setSpeed(-RobotContainer.FEEDER_SPEED_INTAKE);
                 pivotSpeed = -pivotController.calculate(pivotSubsystem.getPivotAbsolutePosition());
                 pivotSpeed = checkPivotSpeed(pivotSpeed);
                 pivotSpeed = MathUtil.clamp(pivotSpeed, -MAX_PIVOT_POWER, MAX_PIVOT_POWER);
@@ -142,7 +142,7 @@ public class ShooterCommand extends Command {
             case TUNING:
                 shooterRightRPM = SmartDashboard.getNumber("Shooter right power", 0);
                 shooterLeftRPM = SmartDashboard.getNumber("Shooter left power", 0);
-                pivotAngle = SmartDashboard.getNumber("Shooter angle", 25);
+                pivotAngle = SmartDashboard.getNumber("Shooter angle", 50);
                 feederSpeed = SmartDashboard.getNumber("Feeder power", feederSpeed);
                 feederSubsystem.setSpeed(feederSpeed);
             case PARK:
@@ -292,7 +292,7 @@ public class ShooterCommand extends Command {
             case AMP:
                 shooterLeftRPM = RobotContainer.SHOOTER_AMP_LEFT_RPM;
                 shooterRightRPM = RobotContainer.SHOOTER_AMP_RIGHT_RPM;
-                feederSpeed = RobotContainer.FEEDER_SPEED;
+                feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
                 pivotAngle = RobotContainer.SHOOTER_AMP_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotController.reset();
@@ -302,21 +302,21 @@ public class ShooterCommand extends Command {
             case SPEAKER:
                 shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
                 shooterRightRPM = RobotContainer.SHOOTER_SPEAKER_RIGHT_RPM;
-                feederSpeed = RobotContainer.FEEDER_SPEED;
+                feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
                 pivotAngle = RobotContainer.SHOOTER_SPEAKER_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 previousPivotAngle = pivotAngle;
                 pivotController.reset();
                 pivotController.setSetpoint(pivotAngle);
 
-                DriveFromControllerCommand.lockOnMode = true; 
+                DriveFromControllerCommand.lockOnMode = true;
                 previousPivotAngle = pivotAngle;
 
                 break;
             case TRAP:
                 shooterLeftRPM = RobotContainer.SHOOTER_TRAP_LEFT_RPM;
                 shooterRightRPM = RobotContainer.SHOOTER_TRAP_RIGHT_RPM;
-                feederSpeed = RobotContainer.FEEDER_SPEED;
+                feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
                 pivotAngle = RobotContainer.SHOOTER_TRAP_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotController.reset();
@@ -324,7 +324,7 @@ public class ShooterCommand extends Command {
                 break;
 
             case FIRE:
-                feederSpeed = RobotContainer.FEEDER_SPEED;
+                feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
 
             case NONE:
 

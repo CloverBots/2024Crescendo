@@ -44,5 +44,13 @@ public class IntakeSubsystem extends SubsystemBase {
         } else {
             return false;
         }
+    } 
+
+    public boolean isIntakeNotRunning() {
+        if (-0.1 < motor.get() && motor.get() < 0.1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
