@@ -110,7 +110,7 @@ public class ShooterCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        
+
         checkControllerValues();
 
         // If mode changed then get appropriate values for the new mode
@@ -120,14 +120,14 @@ public class ShooterCommand extends Command {
 
         switch (mode) {
             case INTAKE:
-             if (!feederDistanceSensorSubsystem.isNoteLoaded()) { //TO-DO do we enable this?
-                intakeSubsystem.setIntakeSpeed(RobotContainer.INTAKE_SPEED);
-                feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED);
-                pivotSpeed = -pivotController.calculate(pivotSubsystem.getPivotAbsolutePosition());
-                pivotSpeed = checkPivotSpeed(pivotSpeed);
-                pivotSpeed = MathUtil.clamp(pivotSpeed, -MAX_PIVOT_POWER, MAX_PIVOT_POWER);
-                pivotSubsystem.setSpeed(pivotSpeed);
-             }
+                if (!feederDistanceSensorSubsystem.isNoteLoaded()) {
+                    intakeSubsystem.setIntakeSpeed(RobotContainer.INTAKE_SPEED);
+                    feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED);
+                    pivotSpeed = -pivotController.calculate(pivotSubsystem.getPivotAbsolutePosition());
+                    pivotSpeed = checkPivotSpeed(pivotSpeed);
+                    pivotSpeed = MathUtil.clamp(pivotSpeed, -MAX_PIVOT_POWER, MAX_PIVOT_POWER);
+                    pivotSubsystem.setSpeed(pivotSpeed);
+                }
                 break;
             case EJECT:
                 intakeSubsystem.setIntakeSpeed(-RobotContainer.INTAKE_SPEED);
@@ -161,22 +161,20 @@ public class ShooterCommand extends Command {
             case SPEAKER:
                 shooterSubsystem.setShooterLeftRPM(shooterLeftRPM);
                 shooterSubsystem.setShooterRightRPM(shooterRightRPM);
-                    //TO-DO enable vision
-                /*
-                 * double targetDistance = visionTargetTracker.computeTargetDistance();
-                 * Boolean isTargetValid = visionTargetTracker.isValid();
-                 * if (isTargetValid) {
-                 * pivotAngle = computePivotAngle(targetDistance);
-                 * pivotAngle = checkAngleLimits(pivotAngle);
-                 * }
-                 * 
-                 * // If the desired angle has changed by 1 degree or more, update the setpoint
-                 * if (Math.abs(previousPivotAngle - pivotAngle) > 1) {
-                 * previousPivotAngle = pivotAngle;
-                 * pivotController.reset();
-                 * pivotController.setSetpoint(pivotAngle);
-                 * }
-                 */
+
+                double targetDistance = visionTargetTracker.computeTargetDistance();
+                Boolean isTargetValid = visionTargetTracker.isValid();
+                if (isTargetValid) {
+                    pivotAngle = computePivotAngle(targetDistance);
+                    pivotAngle = checkAngleLimits(pivotAngle);
+                }
+
+                // If the desired angle has changed by 1 degree or more, update the setpoint
+                if (Math.abs(previousPivotAngle - pivotAngle) > 1) {
+                    previousPivotAngle = pivotAngle;
+                    pivotController.reset();
+                    pivotController.setSetpoint(pivotAngle);
+                }
 
                 pivotSpeed = -pivotController.calculate(pivotSubsystem.getPivotAbsolutePosition());
                 pivotSpeed = checkPivotSpeed(pivotSpeed);
@@ -203,7 +201,7 @@ public class ShooterCommand extends Command {
 
             case CLIMB_MANUAL:
                 if (Math.abs(leftJoystickY.getAsDouble()) > .05) {
-                    pivotSpeed = leftJoystickY.getAsDouble() / 3; // TO-DO remove the 3 or adjust it
+                    pivotSpeed = leftJoystickY.getAsDouble() / 3;
 
                     if (leftJoystickY.getAsDouble() < -.05 &&
                             pivotSubsystem.getPivotAbsolutePosition() > RobotContainer.PIVOT_UPPER_ENDPOINT) {
@@ -304,15 +302,15 @@ public class ShooterCommand extends Command {
             case SPEAKER:
                 shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
                 shooterRightRPM = RobotContainer.SHOOTER_SPEAKER_RIGHT_RPM;
-                // feederSpeed = RobotContainer.FEEDER_SPEED;
+                feederSpeed = RobotContainer.FEEDER_SPEED;
                 pivotAngle = RobotContainer.SHOOTER_SPEAKER_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 previousPivotAngle = pivotAngle;
                 pivotController.reset();
                 pivotController.setSetpoint(pivotAngle);
 
-                DriveFromControllerCommand.lockOnMode = true; // TO-DO enable
-                // previousPivotAngle = pivotAngle;
+                DriveFromControllerCommand.lockOnMode = true; 
+                previousPivotAngle = pivotAngle;
 
                 break;
             case TRAP:
@@ -432,7 +430,7 @@ public class ShooterCommand extends Command {
                 shooterSubsystem.setShooterLeftRPM(0);
                 shooterSubsystem.setShooterRightRPM(0);
                 DriveFromControllerCommand.lockOnMode = false;
-                if (pivotController.atSetpoint()) { // TO-DO do we want to shut it down?
+                if (pivotController.atSetpoint()) {
                     pivotSubsystem.setSpeed(0);
                     mode = ACTION.NONE;
                     modeChanged = true;
@@ -481,7 +479,7 @@ public class ShooterCommand extends Command {
     }
 
     private double computePivotAngle(double distance) {
-        return 46.7 * distance + 1793; // TO-DO determine proper formula
+        return 91.727 - 0.585 * distance + 0.00152 * distance * distance;
     }
 
     private double checkPivotSpeed(double speed) {

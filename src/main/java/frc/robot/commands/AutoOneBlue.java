@@ -21,6 +21,7 @@ public class AutoOneBlue extends SequentialCommandGroup {
     addCommands(
         new ResetOdometryCommand(swerveSubsystem, new Pose2d(new Translation2d(), new Rotation2d(Units.degreesToRadians(-45)))),
         // Shoot ring
+        
         new WaitCommand(1),
 
         // Get 3
