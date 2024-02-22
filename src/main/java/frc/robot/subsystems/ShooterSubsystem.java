@@ -130,8 +130,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public boolean isShooterAtTargetRpm() {
         // If both are within 95% of the target, return true
-        if (encoderLeft.getVelocity() > (targetRpmLeft * 0.95)
-             && encoderRight.getVelocity() > (targetRpmRight * 0.95)) {
+        if (encoderLeft.getVelocity() > (targetRpmLeft * 0.90)
+             && encoderRight.getVelocity() > (targetRpmRight * 0.90)) {
             return true;
         }
 

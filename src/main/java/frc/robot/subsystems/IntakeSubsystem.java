@@ -21,17 +21,17 @@ public class IntakeSubsystem extends SubsystemBase {
 
         motor.setIdleMode(IdleMode.kCoast);
 
-        motor.setInverted(false);
+        motor.setInverted(true);
     }
 
     public void setIntakeSpeed(double speed) {
         motor.set(speed);
-        centerMotor1.set(TalonSRXControlMode.PercentOutput, -speed);
-        centerMotor2.set(TalonSRXControlMode.PercentOutput, speed); // One may be inverted
+        centerMotor1.set(TalonSRXControlMode.PercentOutput, speed);
+        centerMotor2.set(TalonSRXControlMode.PercentOutput, -speed); // One may be inverted
     }
 
     public boolean isIntakeRunningForward() {
-        if (motor.get() < 0) {
+        if (motor.get() > 0) {
             return true;
         } else {
             return false;
@@ -39,18 +39,10 @@ public class IntakeSubsystem extends SubsystemBase {
     }
    
     public boolean isIntakeRunningBackward() {
-        if (motor.get() > 0) {
+        if (motor.get() < 0) {
             return true;
         } else {
             return false;
         }
     } 
-
-    public boolean isIntakeNotRunning() {
-        if (-0.1 < motor.get() && motor.get() < 0.1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

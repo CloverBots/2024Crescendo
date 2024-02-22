@@ -46,9 +46,9 @@ public class RobotContainer {
 
   public final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
 
-  public static final double INTAKE_SPEED = -1;
-  public static final double FEEDER_SPEED_INTAKE = -0.6;
-  public static final double FEEDER_SPEED_SHOOT = -0.8;
+  public static final double INTAKE_SPEED = 1;
+  public static final double FEEDER_SPEED_INTAKE = 0.6;
+  public static final double FEEDER_SPEED_SHOOT = 0.8;
   public final static double FEEDER_TIME = 2;
   public static final double PIVOT_SPEED = 0.5;
   public static final double DEFAULT_SPEAKER_PIVOT_ANGLE = 20;
@@ -124,7 +124,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
+ // TO-DO   swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
     shooterSubsystem.setDefaultCommand(shooterCommand);
 
     configureAutoChooser();
@@ -183,8 +183,8 @@ public class RobotContainer {
   private void configureBindings() {
 
     // used during tuning
-    SmartDashboard.putNumber("Shooter right power", 0.5);
-    SmartDashboard.putNumber("Shooter left power", 0.5);
+    SmartDashboard.putNumber("Shooter right RPM", 0.5);
+    SmartDashboard.putNumber("Shooter left RPM", 0.5);
     SmartDashboard.putNumber("Shooter angle", 25);
     SmartDashboard.putNumber("Feeder power", 0);
 

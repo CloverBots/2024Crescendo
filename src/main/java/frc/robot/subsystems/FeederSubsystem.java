@@ -20,9 +20,9 @@ private final int CURRENT_LIMIT = 100;
   public FeederSubsystem() {
     this.feederMotor = new CANSparkMax(IDs.FEEDER_MOTOR, MotorType.kBrushless);
 
-    feederMotor.setInverted(false);
-    feederMotor.setIdleMode(IdleMode.kCoast);
     feederMotor.setInverted(true);
+    feederMotor.setIdleMode(IdleMode.kCoast);
+    feederMotor.setInverted(false);
     feederMotor.setSmartCurrentLimit(CURRENT_LIMIT);
   }
 
