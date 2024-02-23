@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoOneBlue;
+import frc.robot.commands.AutoTwoBlue;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.constants.IDs;
@@ -36,7 +37,7 @@ public class RobotContainer {
   private static final double CAMERA_HEIGHT = 8.75; // inches
   private static final double CAMERA_PITCH = 180 - 53.0; // degrees
 
-  public final static double PIVOT_LOWER_ENDPOINT = 17; //7
+  public final static double PIVOT_LOWER_ENDPOINT = 17; // 7
   public final static double PIVOT_UPPER_ENDPOINT = 200;
 
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
@@ -105,7 +106,6 @@ public class RobotContainer {
       driverController::getPOV,
       visionTargetTracker);
 
-
   private final ShooterCommand shooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
       shooterSubsystem, pivotSubsystem, feederSubsystem, intakeSubsystem, visionTargetTracker,
       operatorController::getRightTriggerAxis,
@@ -124,7 +124,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
- // TO-DO   swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
+    swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
     shooterSubsystem.setDefaultCommand(shooterCommand);
 
     configureAutoChooser();
@@ -157,7 +157,9 @@ public class RobotContainer {
   }
 
   private void configureAutoChooser() {
-    chooser.setDefaultOption("Test Auto", new AutoOneBlue(swerveSubsystem));
+    chooser.setDefaultOption("Test Auto", new AutoTwoBlue(swerveSubsystem, feederSubsystem, pivotSubsystem,
+        shooterSubsystem, feederDistanceSensorSubsystem,
+        intakeSubsystem, visionTargetTracker));
 
   }
 

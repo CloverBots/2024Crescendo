@@ -17,6 +17,7 @@ public class AutoAimCommand extends Command {
 
   public AutoAimCommand(SwerveSubsystem swerve, VisionTargetTracker vision) {
     addRequirements(swerve);
+    this.swerve = swerve;
     this.lockToTagXController = new PIDController(0.075, 0.03, 0.005);
     this.lockToTagXController.setTolerance(0.05);
     this.vision = vision;

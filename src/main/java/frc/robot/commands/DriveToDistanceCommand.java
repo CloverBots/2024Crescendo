@@ -69,11 +69,11 @@ public class DriveToDistanceCommand extends Command {
     else yLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ACCELERATION, 0);
 
     if (angle - initAngle >= 0) rotationLimiter = new SlewRateLimiter(SwerveDriveConstants.AUTO_MAX_ANGULAR_ACCELERATION, Integer.MIN_VALUE, 0);
-    else rotationLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ANGULAR_ACCELERATION, 0);
+    else rotationLimiter = new SlewRateLimiter(Integer.MAX_VALUE, -SwerveDriveConstants.AUTO_MAX_ANGULAR_ACCELERATION, 0); **/
     driveDistanceControllerX.reset();
     driveDistanceControllerY.reset();
     rotationController.reset();
-    SmartDashboard.putBoolean("Status", true); */
+    SmartDashboard.putBoolean("Status", true); 
 
     timer.start(); 
   }
