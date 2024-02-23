@@ -69,4 +69,16 @@ public class VisionTargetTracker {
 
         return (targetHeight - cameraHeight) / Math.tan(Math.toRadians(cameraPitch + getTy()));
     }
+
+    public double computePivotAngle(double distance) {
+        return 91.727 - 0.585 * distance + 0.00152 * distance * distance;
+    }
+
+    public double computeShooterRightSpeed(double distance) {
+        return 1000;
+    }
+
+    public double computeShooterLeftSpeed(double distance) {
+        return 1000;
+    }
 }

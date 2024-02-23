@@ -137,13 +137,12 @@ public class ShooterCommand extends Command {
                 break;
 
             case SPEAKER:
-                shooterSubsystem.setShooterLeftRPM(shooterLeftRPM);
-                shooterSubsystem.setShooterRightRPM(shooterRightRPM);
-
-                double targetDistance = visionTargetTracker.computeTargetDistance();
+                
+                double targetDistance = 0;
                 Boolean isTargetValid = visionTargetTracker.isValid();
                 if (isTargetValid) {
-                    pivotAngle = computePivotAngle(targetDistance);
+                    targetDistance = visionTargetTracker.computeTargetDistance();
+                    pivotAngle = visionTargetTracker.computePivotAngle(targetDistance);
                     pivotAngle = checkAngleLimits(pivotAngle);
                 }
 
@@ -151,7 +150,14 @@ public class ShooterCommand extends Command {
                 if (Math.abs(previousPivotAngle - pivotAngle) > 1) {
                     previousPivotAngle = pivotAngle;
                     pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
+
+                    shooterLeftRPM = visionTargetTracker.computeShooterLeftSpeed(targetDistance);
+                    shooterRightRPM = visionTargetTracker.computeShooterRightSpeed(targetDistance);
                 }
+
+                shooterSubsystem.setShooterLeftRPM(shooterLeftRPM);
+                shooterSubsystem.setShooterRightRPM(shooterRightRPM);
+
                 break;
 
             case FIRE:
@@ -452,7 +458,5 @@ public class ShooterCommand extends Command {
         return false;
     }
 
-    private double computePivotAngle(double distance) {
-        return 91.727 - 0.585 * distance + 0.00152 * distance * distance;
-    }
+    
 }

@@ -46,13 +46,13 @@ public class AutoTwoBlue extends SequentialCommandGroup {
         new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE),
             pivotSubsystem),
         new ParallelCommandGroup(
-            new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-36), Units.inchesToMeters(-24), 45, 1.5),
+            new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-36), Units.inchesToMeters(-24), 45, 10.0),
             new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 5)),
          
         // Shoot position
         new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(45), pivotSubsystem),
-        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-36), Units.inchesToMeters(-24), 270, 1.5),
-        new AutoAimCommand(swerveSubsystem, visionTargetTracker),
+        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-36), Units.inchesToMeters(-24), 270, 10.0),
+        new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,shooterSubsystem),
 
         // Shoot ring
         new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT), feederSubsystem),
