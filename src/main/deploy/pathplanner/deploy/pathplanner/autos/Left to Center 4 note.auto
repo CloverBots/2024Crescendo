@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.323928801703758,
-      "y": 5.53650223579517
+      "x": 0.7365015087811937,
+      "y": 4.435076061565361
     },
-    "rotation": 0
+    "rotation": -59.93141717813752
   },
   "command": {
     "type": "sequential",
@@ -14,19 +14,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Ring 2 from Center"
+            "pathName": "Ring 3 from Left"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Ring 3 from Center"
+            "pathName": "Ring 2 from Line Shot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Ring 6 under Stage"
+            "pathName": "Ring 1 from Line Shot"
           }
         }
       ]

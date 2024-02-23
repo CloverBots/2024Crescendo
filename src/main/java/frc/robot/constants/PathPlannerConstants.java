@@ -29,8 +29,8 @@ public final class PathPlannerConstants {
     public static final double maxModuleSpeed = 2; // M/S
 
     public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-      new PIDConstants(1.0, 0, 0), // Translation constants 
-      new PIDConstants(1.0, 0, 0), // Rotation constants 
+      new PIDConstants(6.0, 0.25, 0.4), // Translation constants 
+      new PIDConstants(0.075, 0.03, 0.005), // Rotation constants 
       maxModuleSpeed, 
       flModuleOffset.getNorm(), // Drive base radius (distance from center to furthest module) 
       new ReplanningConfig()
