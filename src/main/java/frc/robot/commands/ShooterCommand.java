@@ -102,7 +102,7 @@ public class ShooterCommand extends Command {
     @Override
     public void execute() {
 
-        checkControllerValues();
+            checkControllerValues();
 
         // If mode changed then get appropriate values for the new mode
         if (modeChanged) {
@@ -128,6 +128,7 @@ public class ShooterCommand extends Command {
                 pivotAngle = SmartDashboard.getNumber("Shooter angle", 50);
                 feederSpeed = SmartDashboard.getNumber("Feeder power", feederSpeed);
                 feederSubsystem.setSpeed(feederSpeed);
+                
             case PARK:
             case AMP:
             case TRAP:
@@ -158,6 +159,7 @@ public class ShooterCommand extends Command {
                 shooterSubsystem.setShooterLeftRPM(shooterLeftRPM);
                 shooterSubsystem.setShooterRightRPM(shooterRightRPM);
 
+                SmartDashboard.putNumber("target distance", visionTargetTracker.computeTargetDistance());
                 break;
 
             case FIRE:

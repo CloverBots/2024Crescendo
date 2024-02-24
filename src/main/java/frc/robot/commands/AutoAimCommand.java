@@ -5,6 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.VisionTargetTracker;
 import frc.robot.subsystems.PivotSubsystem;
@@ -20,16 +22,20 @@ public class AutoAimCommand extends Command {
   private ShooterSubsystem shooterSubsystem;
   private double pivotAngle;
   private double previousPivotAngle;
+  private float time;
+  private Timer timer;
 
   public AutoAimCommand(SwerveSubsystem swerve, VisionTargetTracker visionTargetTracker, PivotSubsystem pivotSubsystem,
-      ShooterSubsystem shooterSubsystem) {
+      ShooterSubsystem shooterSubsystem, float time) {
     addRequirements(swerve);
     this.swerve = swerve;
     this.pivotSubsystem = pivotSubsystem;
     this.shooterSubsystem = shooterSubsystem;
-    this.lockToTagXController = new PIDController(0.075, 0.03, 0.005);
-    this.lockToTagXController.setTolerance(0.05);
+    this.lockToTagXController = new PIDController(14.0, 0.7, 0.3);
+    this.lockToTagXController.setTolerance(2);
     this.visionTargetTracker = visionTargetTracker;
+    this.time = time;
+    timer = new Timer();
   }
 
   // Called when the command is initially scheduled.
@@ -38,12 +44,16 @@ public class AutoAimCommand extends Command {
     lockToTagXController.reset();
     pivotAngle = pivotSubsystem.getSetpoint();
     previousPivotAngle = pivotAngle;
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    swerve.setSpeed(0, 0, lockToTagXController.calculate(visionTargetTracker.getTx(), 0), true);
+    double calculate = -lockToTagXController.calculate(visionTargetTracker.getTx(), 0);
+    swerve.setSpeed(0, 0, calculate, true);
+
+    SmartDashboard.putNumber("calculate", calculate);
 
     double targetDistance = 0;
     Boolean isTargetValid = visionTargetTracker.isValid();
@@ -83,7 +93,7 @@ public class AutoAimCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (!visionTargetTracker.isValid()) {
+    if (!visionTargetTracker.isValid() || timer.get() > time) {
       return true;
     }
 

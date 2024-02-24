@@ -35,7 +35,7 @@ public class RobotContainer {
 
   private static final double VISION_TARGET_HEIGHT = 57.13; // AprilTag 4, 7
   private static final double CAMERA_HEIGHT = 8.75; // inches
-  private static final double CAMERA_PITCH = 180 - 53.0; // degrees
+  private static final double CAMERA_PITCH = 35; // degrees
 
   public final static double PIVOT_LOWER_ENDPOINT = 17; // 7
   public final static double PIVOT_UPPER_ENDPOINT = 200;
@@ -72,9 +72,9 @@ public class RobotContainer {
   public static final double SHOOTER_TRAP_PIVOT_ANGLE = 50;
 
   // SPEAKER SHOOTER
-  public static final double SHOOTER_SPEAKER_RIGHT_RPM = 3850;
-  public static final double SHOOTER_SPEAKER_LEFT_RPM = 3750;
-  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 39; // Automatic 55 at 79in, 36 at 212in, 39 at 144in
+  public static final double SHOOTER_SPEAKER_RIGHT_RPM = 4500;
+  public static final double SHOOTER_SPEAKER_LEFT_RPM = 3500;
+  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 31; // Automatic 55 at 79in, 36 at 212in, 39 at 144in
 
   // Used to indicate auto mode (based on April tag distance) for the shooter
   // pivot angle
@@ -157,7 +157,10 @@ public class RobotContainer {
   }
 
   private void configureAutoChooser() {
-    chooser.setDefaultOption("Test Auto", new AutoTwoBlue(swerveSubsystem, feederSubsystem, pivotSubsystem,
+    chooser.addOption("Auto One", new AutoOneBlue(swerveSubsystem, feederSubsystem, pivotSubsystem,
+        shooterSubsystem, feederDistanceSensorSubsystem,
+        intakeSubsystem, visionTargetTracker));
+    chooser.setDefaultOption("Auto Two", new AutoTwoBlue(swerveSubsystem, feederSubsystem, pivotSubsystem,
         shooterSubsystem, feederDistanceSensorSubsystem,
         intakeSubsystem, visionTargetTracker));
 

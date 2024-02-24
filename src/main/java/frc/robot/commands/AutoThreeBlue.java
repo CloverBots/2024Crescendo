@@ -22,37 +22,37 @@ public class AutoThreeBlue extends SequentialCommandGroup {
         new WaitCommand(1),
 
         // Get 1
-        new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(0), -Units.inchesToMeters(0), Math.PI, 1.5),
+        new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(0), -Units.inchesToMeters(0), Math.PI, 1.5, false),
 
         // Shoot position
-        new DriveToDistanceCommand(swerveSubsystem, 0, 0, 0, 1.5),
+        new DriveToDistanceCommand(swerveSubsystem, 0, 0, 0, 1.5, false),
 
         // Shoot ring
         new WaitCommand(1),
 
         // Get 2
-        new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(0), -Units.inchesToMeters(0), Math.PI, 1.5),
+        new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(0), -Units.inchesToMeters(0), Math.PI, 1.5, false),
 
         // Shoot position
-        new DriveToDistanceCommand(swerveSubsystem, 0, 0, 0, 1.5),
+        new DriveToDistanceCommand(swerveSubsystem, 0, 0, 0, 1.5, false),
 
         // Shoot ring
         new WaitCommand(1),
 
         // Get 5
-        new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(0), -Units.inchesToMeters(0), Math.PI, 1.5),
+        new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(0), -Units.inchesToMeters(0), Math.PI, 1.5, false),
 
         // Throw position
-        new DriveToDistanceCommand(swerveSubsystem, 0, 0, 0, 1.5),
+        new DriveToDistanceCommand(swerveSubsystem, 0, 0, 0, 1.5, false),
 
         // Shoot ring
         new WaitCommand(1),
 
         // Get 4
-        new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(0), -Units.inchesToMeters(0), Math.PI, 1.5),
+        new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(0), -Units.inchesToMeters(0), Math.PI, 1.5, false),
 
         // Throw position
-        new DriveToDistanceCommand(swerveSubsystem, 0, 0, 0, 1.5),
+        new DriveToDistanceCommand(swerveSubsystem, 0, 0, 0, 1.5, false),
 
         // Shoot ring
         new WaitCommand(1));

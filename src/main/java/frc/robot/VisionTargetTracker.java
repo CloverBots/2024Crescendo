@@ -45,7 +45,6 @@ public class VisionTargetTracker {
         return ty.getDouble(0.0);
     }
 
-    
     /**
      * Get whether there is a valid target visible
      */
@@ -57,28 +56,35 @@ public class VisionTargetTracker {
         return true;
     }
 
-    
     /**
      * Computes the distance to the target, usually in inches.
+     * 
      * @param config The configuration describing camera and field measurements.
      */
     public double computeTargetDistance() {
-        var targetHeight = configuration.getTargetHeight();
-        var cameraHeight = configuration.getCameraHeight();
-        var cameraPitch = configuration.getCameraPitch();
+        if (isValid()) {
+            var targetHeight = configuration.getTargetHeight();
+            var cameraHeight = configuration.getCameraHeight();
+            var cameraPitch = configuration.getCameraPitch();
 
-        return (targetHeight - cameraHeight) / Math.tan(Math.toRadians(cameraPitch + getTy()));
+            // convert degrees to radians because Math.tan uses radians
+            return (targetHeight - cameraHeight) / Math.tan(Math.toRadians(cameraPitch + getTy()));
+        } else {
+            return -1;
+        }
     }
 
     public double computePivotAngle(double distance) {
-        return 91.727 - 0.585 * distance + 0.00152 * distance * distance;
+        return 79.658 - 0.3889 * distance + 0.0007654 * distance * distance;
     }
 
     public double computeShooterRightSpeed(double distance) {
-        return 1000;
+        return 2698.927 - 10.32823 * distance + 0.145699 * distance * distance
+                - 0.0002956 * distance * distance * distance;
     }
 
     public double computeShooterLeftSpeed(double distance) {
-        return 1000;
+        return 3370.554 - 55.07335 * distance + 0.5782 * distance * distance
+                - 0.0014495 * distance * distance * distance;
     }
 }

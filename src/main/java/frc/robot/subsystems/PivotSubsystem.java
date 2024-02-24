@@ -134,7 +134,7 @@ public class PivotSubsystem extends PIDSubsystem {
   }
 
   public double getPivotAbsolutePosition() {
-    SmartDashboard.putNumber("Absolut encoder", pivotEncoder.getAbsolutePosition());
+    SmartDashboard.putNumber("Absolute encoder", pivotEncoder.getAbsolutePosition());
     return pivotEncoder.getAbsolutePosition();
   }
 

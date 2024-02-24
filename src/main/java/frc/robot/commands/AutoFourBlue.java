@@ -22,7 +22,7 @@ public class AutoFourBlue extends SequentialCommandGroup {
         new WaitCommand(1),
 
         // leave
-        new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(0), -Units.inchesToMeters(0), Math.PI, 1.5),
+        new DriveToDistanceCommand(swerveSubsystem, -Units.inchesToMeters(0), -Units.inchesToMeters(0), Math.PI, 1.5, false),
 
         // Wait
         new WaitCommand(1));
