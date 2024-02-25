@@ -90,9 +90,9 @@ public class PivotSubsystem extends PIDSubsystem {
   }
 
   public void setSpeed(double speed) {
+    disable();
     pivotLeadMotor.set(speed);
     this.speed = speed;
-    disable();
   }
 
   public void stop() {

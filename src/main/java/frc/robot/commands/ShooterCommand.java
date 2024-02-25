@@ -182,15 +182,15 @@ public class ShooterCommand extends Command {
 
             case CLIMB_MANUAL:
                 if (Math.abs(leftJoystickY.getAsDouble()) > .05) {
-                    pivotSpeed = -leftJoystickY.getAsDouble() / 3; // - is because joystick returns 1 for down, -1 for
+                    pivotSpeed = -leftJoystickY.getAsDouble() / 2; // - is because joystick returns 1 for down, -1 for
                                                                    // up
 
-                    if (leftJoystickY.getAsDouble() > 0.05 &&
+                    if (pivotSpeed > 0.05 &&
                             pivotSubsystem.getPivotAbsolutePosition() > RobotContainer.PIVOT_UPPER_ENDPOINT) {
                         pivotSpeed = 0;
                     }
 
-                    if (leftJoystickY.getAsDouble() < -.05 &&
+                    if (pivotSpeed < -.05 &&
                             pivotSubsystem.getPivotAbsolutePosition() < RobotContainer.PIVOT_LOWER_ENDPOINT) {
                         pivotSpeed = 0;
                     }

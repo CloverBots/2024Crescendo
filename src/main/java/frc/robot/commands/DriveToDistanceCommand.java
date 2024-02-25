@@ -116,7 +116,6 @@ public class DriveToDistanceCommand extends Command {
     // dTheta = MathUtil.clamp(dTheta, -150, 150);//TO-DO change limits
 
     swerveSubsystem.setSpeed(xSpeed, ySpeed, -dTheta, true);
-    System.out.println(xSpeed + " " + ySpeed);
   }
 
   // Called once the command ends or is interrupted.

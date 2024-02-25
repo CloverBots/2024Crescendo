@@ -49,11 +49,11 @@ public class AutoOneBlue extends SequentialCommandGroup {
         new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE),
             pivotSubsystem),
         new ParallelCommandGroup(
-            new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-66), Units.inchesToMeters(-3), 0, 2.5, false),
+            new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-70), Units.inchesToMeters(-3), 0, 2.5, false),
             new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 2)
         ),
 
-        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-66), Units.inchesToMeters(-3), -30, 1.0, true),
+        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-70), Units.inchesToMeters(-3), -30, 1.0, true),
         new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(1500), shooterSubsystem),
         new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(1500), shooterSubsystem),
         new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(45), pivotSubsystem), 
@@ -71,11 +71,11 @@ public class AutoOneBlue extends SequentialCommandGroup {
          new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE),
             pivotSubsystem),
         new ParallelCommandGroup(
-            new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-75), Units.inchesToMeters(-43), 90, 2.0, false),
+            new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90), Units.inchesToMeters(-45), 90, 2.0, false),
             new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 3)
         ),
 
-        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-75), Units.inchesToMeters(-43), 0, 2.0, true),
+        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90), Units.inchesToMeters(-45), 0, 2.0, true),
         new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(1500), shooterSubsystem),
         new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(1500), shooterSubsystem),
         new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(45), pivotSubsystem), 

@@ -53,7 +53,7 @@ public class SwerveSubsystem extends SubsystemBase {
             } catch (Exception e) {
             }
         }).start();
-        SmartDashboard.putBoolean("reset gyro", false);
+        SmartDashboard.putBoolean("reset odometry", false);
         SmartDashboard.putBoolean("resync turn encoders", false);
         this.modules = new SwerveModule[4];
         this.states = new SwerveModuleState[] {
@@ -74,7 +74,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public void onEnable() {
         resyncTimer.start();
 
-        SmartDashboard.putBoolean("reset gyro", false);
+        SmartDashboard.putBoolean("reset odometry", false);
         SmartDashboard.putBoolean("resync turn encoders", false);
         resetTurnEncoders();
         setModuleStates(
@@ -168,7 +168,7 @@ public class SwerveSubsystem extends SubsystemBase {
             // no matter its rotation.
             chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
                     chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond,
-                    chassisSpeeds.omegaRadiansPerSecond, getRotation2d());
+                    chassisSpeeds.omegaRadiansPerSecond, getPose().getRotation());
         } else {
             // Driving will be relative to the robot.
             // If this is enabled, then pressing forward will move the robot in the
@@ -212,9 +212,9 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putString("Odometer Robot Location", getPose().getTranslation().toString());
         SmartDashboard.putString("Odometer Robot Rotation", getPose().getRotation().toString());
 
-        if (SmartDashboard.getBoolean("reset gyro", false)) {
-            SmartDashboard.putBoolean("reset gyro", false);
-            zeroHeading();
+        if (SmartDashboard.getBoolean("reset odometry", false)) {
+            SmartDashboard.putBoolean("reset odometry", false);
+            resetOdometry();
         }
         if (SmartDashboard.getBoolean("resync turn encoders", false)) {
             SmartDashboard.putBoolean("resync turn encoders", false);

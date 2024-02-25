@@ -31,18 +31,19 @@ public class AutoTwoBlue extends SequentialCommandGroup {
             ShooterSubsystem shooterSubsystem, FeederDistanceSensorSubsystem feederDistanceSensorSubsystem,
             IntakeSubsystem intakeSubsystem, VisionTargetTracker visionTargetTracker) {
         addCommands(
-                new ResetOdometryCommand(swerveSubsystem,
-                        new Pose2d(new Translation2d(), new Rotation2d(Units.degreesToRadians(-45)))),
+                new ResetOdometryCommand(swerveSubsystem, new Pose2d(new Translation2d(), new Rotation2d(Units.degreesToRadians(-60)))),
                 // Shoot ring
 
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2000),
                         shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(2500),
                         shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(65),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(40),
                         pivotSubsystem),
 
-                new WaitCommand(1.8),
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-64), Units.inchesToMeters(72), -60, 2.0, false),
+
+                new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem, shooterSubsystem, 2.0f),
 
                 new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT),
                         feederSubsystem),
@@ -59,9 +60,33 @@ public class AutoTwoBlue extends SequentialCommandGroup {
                         pivotSubsystem),
 
                 new ParallelCommandGroup(
-                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-36), Units.inchesToMeters(36),
-                                0, 10.0, false),
-                        new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 5))
+                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-12 * 24), Units.inchesToMeters(160),
+                                0, 4.0, false),
+                        new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 5)),
+
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90), Units.inchesToMeters(140), -60, 4.0, false),
+
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2500),
+                        shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(2500),
+                        shooterSubsystem),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(40),
+                        pivotSubsystem),
+
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90), Units.inchesToMeters(72), -40, 4.0, false),
+
+                new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem, shooterSubsystem, 2.0f),
+
+                new WaitCommand(1),
+
+                new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT),
+                        feederSubsystem),
+                new WaitCommand(0.5),
+                new InstantCommand(() -> feederSubsystem.setSpeed(0), feederSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0),
+                        shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0),
+                        shooterSubsystem)
 
         // Shoot position
         // new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(45),

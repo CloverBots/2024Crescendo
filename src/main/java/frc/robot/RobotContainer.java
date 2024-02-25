@@ -37,8 +37,8 @@ public class RobotContainer {
   private static final double CAMERA_HEIGHT = 8.75; // inches
   private static final double CAMERA_PITCH = 35; // degrees
 
-  public final static double PIVOT_LOWER_ENDPOINT = 17; // 7
-  public final static double PIVOT_UPPER_ENDPOINT = 200;
+  public final static double PIVOT_LOWER_ENDPOINT = 7; // 7
+  public final static double PIVOT_UPPER_ENDPOINT = 100;
 
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
       VISION_TARGET_HEIGHT,
