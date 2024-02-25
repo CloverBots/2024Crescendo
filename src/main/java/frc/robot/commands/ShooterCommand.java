@@ -35,6 +35,9 @@ public class ShooterCommand extends Command {
     private double previousPivotAngle;
     private double pivotSpeed = 0;
     private Timer timer;
+    private Timer visionTimer;
+    private static final double VISION_TIMER_VALUE = 2;
+    double previousVisionTx, previousVisionTy;
     private boolean firing = false;
     private boolean noteLoaded = false;
 
@@ -82,11 +85,12 @@ public class ShooterCommand extends Command {
         this.fireButton = fireButton;
 
         timer = new Timer();
+        visionTimer = new Timer();
         mode = ACTION.NONE;
 
         addRequirements(shooterSubsystem);
         addRequirements(feederDistanceSensorSubsystem);
-        // addRequirements(pivotSubsystem);
+        addRequirements(pivotSubsystem);
         addRequirements(feederSubsystem);
         addRequirements(intakeSubsystem);
     }
@@ -102,7 +106,7 @@ public class ShooterCommand extends Command {
     @Override
     public void execute() {
 
-            checkControllerValues();
+        checkControllerValues();
 
         // If mode changed then get appropriate values for the new mode
         if (modeChanged) {
@@ -128,7 +132,7 @@ public class ShooterCommand extends Command {
                 pivotAngle = SmartDashboard.getNumber("Shooter angle", 50);
                 feederSpeed = SmartDashboard.getNumber("Feeder power", feederSpeed);
                 feederSubsystem.setSpeed(feederSpeed);
-                
+
             case PARK:
             case AMP:
             case TRAP:
@@ -138,13 +142,38 @@ public class ShooterCommand extends Command {
                 break;
 
             case SPEAKER:
-                
+
                 double targetDistance = 0;
-                Boolean isTargetValid = visionTargetTracker.isValid();
-                if (isTargetValid) {
-                    targetDistance = visionTargetTracker.computeTargetDistance();
-                    pivotAngle = visionTargetTracker.computePivotAngle(targetDistance);
-                    pivotAngle = checkAngleLimits(pivotAngle);
+
+                if (visionTargetTracker.isValid()) {
+
+                    if (visionTargetTracker.getTx() == previousVisionTx
+                            && visionTargetTracker.getTy() == previousVisionTy) {
+                        // Limelight is not updating values, don't use them
+                        shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
+                        shooterRightRPM = RobotContainer.SHOOTER_SPEAKER_RIGHT_RPM;
+                        pivotAngle = RobotContainer.SHOOTER_SPEAKER_PIVOT_ANGLE;
+                        pivotAngle = checkAngleLimits(pivotAngle);
+                        previousPivotAngle = pivotAngle;
+                        pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
+                        previousPivotAngle = pivotAngle;
+                        DriveFromControllerCommand.lockOnMode = false;
+                    } else {
+                        // Limelight values are changing and should be used
+                        targetDistance = visionTargetTracker.computeTargetDistance();
+                        pivotAngle = visionTargetTracker.computePivotAngle(targetDistance);
+                        pivotAngle = checkAngleLimits(pivotAngle);
+                        DriveFromControllerCommand.lockOnMode = true;
+                    }
+
+                    if (visionTimer.get() > VISION_TIMER_VALUE) {
+                        visionTimer.reset();
+                        visionTimer.start();
+                        previousVisionTx = visionTargetTracker.getTx();
+                        previousVisionTy = visionTargetTracker.getTy();
+                    }
+                } else {
+                    DriveFromControllerCommand.lockOnMode = false;
                 }
 
                 // If the desired angle has changed by 1 degree or more, update the setpoint
@@ -168,7 +197,7 @@ public class ShooterCommand extends Command {
                     noteLoaded = false;
                     timer.reset();
                     timer.start();
-                    feederSubsystem.setSpeed(feederSpeed); // TO-DO check shooter
+                    feederSubsystem.setSpeed(feederSpeed);
                 }
                 break;
 
@@ -286,10 +315,12 @@ public class ShooterCommand extends Command {
                 pivotAngle = checkAngleLimits(pivotAngle);
                 previousPivotAngle = pivotAngle;
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
-
-                DriveFromControllerCommand.lockOnMode = true;
-
                 previousPivotAngle = pivotAngle;
+
+                visionTimer.reset();
+                visionTimer.start();
+                previousVisionTx = visionTargetTracker.getTx();
+                previousVisionTy = visionTargetTracker.getTy();
 
                 break;
 
@@ -379,7 +410,7 @@ public class ShooterCommand extends Command {
 
         switch (mode) {
             case INTAKE:
-               
+
                 if (feederDistanceSensorSubsystem.isNoteLoaded()) {
                     System.out.println("xxxxxxxxxxxxxxxxxx");
                     intakeSubsystem.setIntakeSpeed(0);
@@ -460,5 +491,4 @@ public class ShooterCommand extends Command {
         return false;
     }
 
-    
 }

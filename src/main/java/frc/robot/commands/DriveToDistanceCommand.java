@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -113,7 +112,7 @@ public class DriveToDistanceCommand extends Command {
 
     double dTheta = rotationController.calculate(swerveSubsystem.getPose().getRotation().getDegrees());
     // dTheta = rotationLimiter.calculate(dTheta);
-    // dTheta = MathUtil.clamp(dTheta, -150, 150);//TO-DO change limits
+    // dTheta = MathUtil.clamp(dTheta, -150, 150);
 
     swerveSubsystem.setSpeed(xSpeed, ySpeed, -dTheta, true);
   }

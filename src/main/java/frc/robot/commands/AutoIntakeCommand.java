@@ -55,7 +55,6 @@ public class AutoIntakeCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        //TO-DO do we need a time limit or will the auto routine time it out for us?
         if (feederDistanceSensorSubsystem.isNoteLoaded() || timer.get() > setTime) {
             return true;
         } else {
