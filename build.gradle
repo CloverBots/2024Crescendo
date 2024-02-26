@@ -1,7 +1,7 @@
 //If plugins line gives error, look at https://docs.wpilib.org/en/stable/docs/yearly-overview/known-issues.html#visual-studio-code-reports-unresolved-dependency
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2024.1.1"
+    id "edu.wpi.first.GradleRIO" version "2024.3.1"
 }
 
 java {
