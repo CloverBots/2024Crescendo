@@ -33,6 +33,7 @@ public class DriveFromControllerCommand extends Command {
     private PIDController rotationController;
     private PIDController lockToTagXController;
 
+
     public DriveFromControllerCommand(
             SwerveSubsystem swerveSubsystem,
             Supplier<Double> leftStickX,
@@ -70,7 +71,8 @@ public class DriveFromControllerCommand extends Command {
         //using degrees
         this.rotationController = new PIDController(0.065, 0.03, 0.005); // 0.017, 0, 0
         this.rotationController.enableContinuousInput(0, 360);
-        this.lockToTagXController = new PIDController(0.5, 0, 0);
+        this.lockToTagXController = new PIDController(0.075, 0.03, 0.005);
+        
         // this.pointedRotationController = new PIDController(0.07, 0.02, 0);
         // this.pointedRotationController.enableContinuousInput(0, 360);
 
@@ -116,20 +118,19 @@ public class DriveFromControllerCommand extends Command {
     private ChassisSpeeds calculateSpeeds() {
         double rotationSpeed;
 
+
         // Uses the ABYX buttons if any of them are pressed
         if (isTurnButtonPressed()) rotationSpeed = calculateTurningSpeedHotkey();
-        
-         // Locks on if no rotation stick input
-         else if (lockOnMode && Math.abs(rightStickX.get()) < JOYSTICK_DEADZONE) {
+
+        // Locks on if no rotation stick input
+        else if (lockOnMode && Math.abs(rightStickX.get()) < JOYSTICK_DEADZONE) {
             rotationSpeed = calculateLockOnRotationSpeed();
         }
-
         // If none of those buttons are pressed, check to see if pointed turning is enabled.
         else if (pointedTurning) {
             rotationSpeed = calculateTurningSpeedPointed(rightStickX.get(), rightStickY.get());
         }
-
-        // If none of those above are true, use the normal controls.
+        // If none of those above are true, use the normal cont1rols.
         else rotationSpeed = calculateTurningSpeedsNormal(rightStickX.get());
         
         // Calculate the Translation speeds
@@ -273,6 +274,6 @@ public class DriveFromControllerCommand extends Command {
     }
 
     private double calculateLockOnRotationSpeed() {
-        return lockToTagXController.calculate(limelight.getTx());
+        return -lockToTagXController.calculate(limelight.getTx());
     }
 }
