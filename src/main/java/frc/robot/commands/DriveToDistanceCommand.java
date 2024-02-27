@@ -4,8 +4,12 @@
 
 package frc.robot.commands;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,6 +29,8 @@ public class DriveToDistanceCommand extends Command {
 
   double xPos, yPos, angle;
   boolean rotateOnly;
+  Optional<Alliance> side = DriverStation.getAlliance();
+  int inverted;
   // SlewRateLimiter xLimiter, yLimiter, rotationLimiter;
 
   private Timer timer;
@@ -55,6 +61,20 @@ public class DriveToDistanceCommand extends Command {
     this.yPos = yPos;
     this.angle = angle;
     this.rotateOnly = rotateOnly;
+
+    if (side.isPresent()) {
+      if (side.get() == Alliance.Red) {
+        inverted = -1;
+      }
+      if (side.get() == Alliance.Blue) {
+        inverted = 1;
+      }
+    } else {
+      inverted = 1; // TO-DO choose if red or blue is default
+    }
+
+    yPos = inverted * yPos;
+    angle = inverted * angle;
 
     driveDistanceControllerX.setSetpoint(xPos);
     driveDistanceControllerX.setTolerance(0.0254); // 0.05 meters = 2 inches
@@ -127,8 +147,9 @@ public class DriveToDistanceCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    
-    if ((timer.get() >= timeout)) return true;
+
+    if ((timer.get() >= timeout))
+      return true;
 
     if ((driveDistanceControllerX.atSetpoint() && driveDistanceControllerY.atSetpoint())) {
       if (rotateOnly) {
