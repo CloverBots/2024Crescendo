@@ -65,8 +65,7 @@ public class DriveToDistanceCommand extends Command {
     if (side.isPresent()) {
       if (side.get() == Alliance.Red) {
         inverted = -1;
-      }
-      if (side.get() == Alliance.Blue) {
+      } else if (side.get() == Alliance.Blue) {
         inverted = 1;
       }
     } else {

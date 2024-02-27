@@ -10,8 +10,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AutoOneBlue;
-import frc.robot.commands.AutoTwoBlue;
+import frc.robot.commands.AutoFour;
+import frc.robot.commands.AutoOne;
+import frc.robot.commands.AutoThree;
+import frc.robot.commands.AutoTwo;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.constants.IDs;
@@ -72,7 +74,7 @@ public class RobotContainer {
   public static final double SHOOTER_TRAP_PIVOT_ANGLE = 50;
 
   // SPEAKER SHOOTER
-  //TO-DO Chose default shot location and set proper values.
+  // TO-DO Chose default shot location and set proper values.
   public static final double SHOOTER_SPEAKER_RIGHT_RPM = 4500;
   public static final double SHOOTER_SPEAKER_LEFT_RPM = 3500;
   public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 31; // Automatic 55 at 79in, 36 at 212in, 39 at 144in
@@ -130,6 +132,7 @@ public class RobotContainer {
 
     configureAutoChooser();
     SmartDashboard.putData(chooser);
+    SmartDashboard.putNumber("Auto Wait Seconds", 0);
 
     // Configure the trigger bindings
     configureBindings();
@@ -158,10 +161,16 @@ public class RobotContainer {
   }
 
   private void configureAutoChooser() {
-    chooser.addOption("Auto One", new AutoOneBlue(swerveSubsystem, feederSubsystem, pivotSubsystem,
+    chooser.setDefaultOption("Auto 3 Note", new AutoOne(swerveSubsystem, feederSubsystem, pivotSubsystem,
         shooterSubsystem, feederDistanceSensorSubsystem,
         intakeSubsystem, visionTargetTracker));
-    chooser.setDefaultOption("Auto Two", new AutoTwoBlue(swerveSubsystem, feederSubsystem, pivotSubsystem,
+    chooser.addOption("Auto 2 Note", new AutoTwo(swerveSubsystem, feederSubsystem, pivotSubsystem,
+        shooterSubsystem, feederDistanceSensorSubsystem,
+        intakeSubsystem, visionTargetTracker));
+    chooser.addOption("Auto 1 Note Amp", new AutoThree(swerveSubsystem, feederSubsystem, pivotSubsystem,
+        shooterSubsystem, feederDistanceSensorSubsystem,
+        intakeSubsystem, visionTargetTracker));
+    chooser.addOption("Auto 1 Note Side", new AutoFour(swerveSubsystem, feederSubsystem, pivotSubsystem,
         shooterSubsystem, feederDistanceSensorSubsystem,
         intakeSubsystem, visionTargetTracker));
 
