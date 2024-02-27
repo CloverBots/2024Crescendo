@@ -107,6 +107,8 @@ public class ShooterCommand extends Command {
     @Override
     public void execute() {
 
+        SmartDashboard.putBoolean("Note Loaded", noteLoaded);
+
         checkControllerValues();
 
         // If mode changed then get appropriate values for the new mode
