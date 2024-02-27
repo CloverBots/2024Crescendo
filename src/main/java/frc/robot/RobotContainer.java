@@ -72,6 +72,7 @@ public class RobotContainer {
   public static final double SHOOTER_TRAP_PIVOT_ANGLE = 50;
 
   // SPEAKER SHOOTER
+  //TO-DO Chose default shot location and set proper values.
   public static final double SHOOTER_SPEAKER_RIGHT_RPM = 4500;
   public static final double SHOOTER_SPEAKER_LEFT_RPM = 3500;
   public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 31; // Automatic 55 at 79in, 36 at 212in, 39 at 144in

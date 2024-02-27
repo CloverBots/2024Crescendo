@@ -100,6 +100,7 @@ public class ShooterCommand extends Command {
     public void initialize() {
         pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE);
         pivotSubsystem.enable();
+        SmartDashboard.putBoolean("Camera", true);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -158,12 +159,14 @@ public class ShooterCommand extends Command {
                         pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
                         previousPivotAngle = pivotAngle;
                         DriveFromControllerCommand.lockOnMode = false;
+                        SmartDashboard.putBoolean("Camera", false);
                     } else {
                         // Limelight values are changing and should be used
                         targetDistance = visionTargetTracker.computeTargetDistance();
                         pivotAngle = visionTargetTracker.computePivotAngle(targetDistance);
                         pivotAngle = checkAngleLimits(pivotAngle);
                         DriveFromControllerCommand.lockOnMode = true;
+                        SmartDashboard.putBoolean("Camera", true);
                     }
 
                     if (visionTimer.get() > VISION_TIMER_VALUE) {
@@ -412,7 +415,6 @@ public class ShooterCommand extends Command {
             case INTAKE:
 
                 if (feederDistanceSensorSubsystem.isNoteLoaded()) {
-                    System.out.println("xxxxxxxxxxxxxxxxxx");
                     intakeSubsystem.setIntakeSpeed(0);
                     feederSubsystem.setSpeed(0);
                     mode = ACTION.NONE;
