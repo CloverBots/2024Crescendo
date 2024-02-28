@@ -53,8 +53,6 @@ public class AutoAimCommand extends Command {
     double calculate = -lockToTagXController.calculate(visionTargetTracker.getTx(), 0);
     swerve.setSpeed(0, 0, calculate, true);
 
-    SmartDashboard.putNumber("calculate", calculate);
-
     double targetDistance = 0;
     Boolean isTargetValid = visionTargetTracker.isValid();
     if (isTargetValid) {
@@ -93,10 +91,10 @@ public class AutoAimCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (!visionTargetTracker.isValid() || timer.get() > time) {
+    if (timer.get() > time) {
       return true;
     }
 
-    return lockToTagXController.atSetpoint() && pivotSubsystem.atSetpoint();
+    return lockToTagXController.atSetpoint() && pivotSubsystem.atSetpoint() && shooterSubsystem.isShooterAtTargetRpm();
   }
 }

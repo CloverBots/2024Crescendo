@@ -4,10 +4,14 @@
 
 package frc.robot.commands;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -28,12 +32,20 @@ public class AutoTwo extends SequentialCommandGroup {
     public AutoTwo(SwerveSubsystem swerveSubsystem, FeederSubsystem feederSubsystem, PivotSubsystem pivotSubsystem,
             ShooterSubsystem shooterSubsystem, FeederDistanceSensorSubsystem feederDistanceSensorSubsystem,
             IntakeSubsystem intakeSubsystem, VisionTargetTracker visionTargetTracker) {
+
+        Optional<Alliance> side = DriverStation.getAlliance();
+        int inverted = 1; // default Blue
+
+        if (side.isPresent()) {
+            if (side.get() == Alliance.Red) {
+                inverted = -1;
+            }
+        }
         addCommands(
                 new ResetOdometryCommand(swerveSubsystem,
                         new Pose2d(new Translation2d(),
-                                new Rotation2d(Units.degreesToRadians(60)))),
+                                new Rotation2d(Units.degreesToRadians(-60 * inverted)))),
                 // Shoot ring
-//TO-DO change 60 above to -60 and figure out red settinga                      
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000),
                         shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3000),

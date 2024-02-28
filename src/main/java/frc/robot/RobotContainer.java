@@ -201,7 +201,6 @@ public class RobotContainer {
     SmartDashboard.putNumber("Shooter right RPM", 0.5);
     SmartDashboard.putNumber("Shooter left RPM", 0.5);
     SmartDashboard.putNumber("Shooter angle", 25);
-    SmartDashboard.putNumber("Feeder power", 0);
 
   }
 
