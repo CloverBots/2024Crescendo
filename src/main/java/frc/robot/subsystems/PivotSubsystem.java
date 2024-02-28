@@ -32,7 +32,7 @@ public class PivotSubsystem extends PIDSubsystem {
   private final CANSparkMax pivotFollowMotor;
 
   private final CANCoder pivotEncoder;
-  public final static double PIVOT_LOWER_ENDPOINT = 1;
+  public final static double PIVOT_LOWER_ENDPOINT = 2;
   public final static double PIVOT_UPPER_ENDPOINT = 100;
 
   private final int CURRENT_LIMIT = 100;

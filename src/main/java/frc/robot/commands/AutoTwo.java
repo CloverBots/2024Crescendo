@@ -31,21 +31,21 @@ public class AutoTwo extends SequentialCommandGroup {
         addCommands(
                 new ResetOdometryCommand(swerveSubsystem,
                         new Pose2d(new Translation2d(),
-                                new Rotation2d(Units.degreesToRadians(-60)))),
+                                new Rotation2d(Units.degreesToRadians(60)))),
                 // Shoot ring
-
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2000),
+//TO-DO change 60 above to -60 and figure out red settinga                      
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000),
                         shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(2500),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3000),
                         shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(40),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(30),
                         pivotSubsystem),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-64),
                         Units.inchesToMeters(72), -60, 2.0, false),
 
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
-                        shooterSubsystem, 2.0f),
+                        shooterSubsystem, 2.5f),
 
                 new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT),
                         feederSubsystem),
@@ -65,7 +65,7 @@ public class AutoTwo extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new DriveToDistanceCommand(swerveSubsystem,
                                 Units.inchesToMeters(-12 * 24),
-                                Units.inchesToMeters(160),
+                                Units.inchesToMeters(150),
                                 0, 4.0, false),
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
                                 intakeSubsystem, 5)),
@@ -73,15 +73,15 @@ public class AutoTwo extends SequentialCommandGroup {
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90),
                         Units.inchesToMeters(140), -60, 4.0, false),
 
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2500),
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000),
                         shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(2500),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3000),
                         shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(40),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(30),
                         pivotSubsystem),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90),
-                        Units.inchesToMeters(72), -40, 4.0, false),
+                        Units.inchesToMeters(72), -50, 4.0, false),
 
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
                         shooterSubsystem, 2.0f),

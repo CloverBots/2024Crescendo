@@ -50,7 +50,7 @@ public class RobotContainer {
   public final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
 
   public static final double INTAKE_SPEED = 1;
-  public static final double FEEDER_SPEED_INTAKE = 0.6;
+  public static final double FEEDER_SPEED_INTAKE = 0.5;
   public static final double FEEDER_SPEED_SHOOT = 0.8;
   public final static double FEEDER_TIME = 2;
   public static final double PIVOT_SPEED = 0.5;
@@ -58,7 +58,7 @@ public class RobotContainer {
 
   public static final double CLIMBER_READY_POSITION = 90;
   public static final double CLIMBER_RAISED_POSITION = 15;
-  public static final double CLIMBER_PIVOT_SPEED = 0.2;
+  public static final double CLIMBER_PIVOT_SPEED = 0.5;
 
   // PARKED SHOOTER
   public static final double SHOOTER_PARKED_PIVOT_ANGLE = 10;
@@ -75,9 +75,9 @@ public class RobotContainer {
 
   // SPEAKER SHOOTER
   // TO-DO Chose default shot location and set proper values.
-  public static final double SHOOTER_SPEAKER_RIGHT_RPM = 4500;
-  public static final double SHOOTER_SPEAKER_LEFT_RPM = 3500;
-  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 31; // Automatic 55 at 79in, 36 at 212in, 39 at 144in
+  public static final double SHOOTER_SPEAKER_RIGHT_RPM = 0; // 2500
+  public static final double SHOOTER_SPEAKER_LEFT_RPM = 0; // 2000
+  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 10; // 64
 
   // Used to indicate auto mode (based on April tag distance) for the shooter
   // pivot angle

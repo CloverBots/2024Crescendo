@@ -162,7 +162,7 @@ public class ShooterCommand extends Command {
                         previousPivotAngle = pivotAngle;
                         DriveFromControllerCommand.lockOnMode = false;
                         SmartDashboard.putBoolean("Camera", false);
-                    } else {
+                    } else { 
                         // Limelight values are changing and should be used
                         targetDistance = visionTargetTracker.computeTargetDistance();
                         pivotAngle = visionTargetTracker.computePivotAngle(targetDistance);
@@ -340,7 +340,7 @@ public class ShooterCommand extends Command {
 
             case FIRE:
                 feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
-
+System.out.println("angle: " + pivotAngle + " RPM left: " + shooterLeftRPM + " RPM right: " + shooterRightRPM);
             case NONE:
 
                 break;
@@ -352,7 +352,7 @@ public class ShooterCommand extends Command {
                 pivotSubsystem.disable();
                 pivotAngle = RobotContainer.CLIMBER_RAISED_POSITION;
                 pivotAngle = checkAngleLimits(pivotAngle);
-                pivotSpeed = RobotContainer.CLIMBER_PIVOT_SPEED;
+                pivotSpeed = -RobotContainer.CLIMBER_PIVOT_SPEED;
                 DriveFromControllerCommand.lockOnMode = false;
                 break;
 
@@ -363,7 +363,7 @@ public class ShooterCommand extends Command {
                 pivotSubsystem.disable();
                 pivotAngle = RobotContainer.CLIMBER_READY_POSITION;
                 pivotAngle = checkAngleLimits(pivotAngle);
-                pivotSpeed = -RobotContainer.CLIMBER_PIVOT_SPEED; // negative is up
+                pivotSpeed = RobotContainer.CLIMBER_PIVOT_SPEED; // negative is up
                 DriveFromControllerCommand.lockOnMode = false;
                 break;
 
