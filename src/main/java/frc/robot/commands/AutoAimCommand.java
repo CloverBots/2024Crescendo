@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.VisionTargetTracker;
 import frc.robot.subsystems.PivotSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class AutoAimCommand extends Command {
@@ -19,18 +18,16 @@ public class AutoAimCommand extends Command {
   private SwerveSubsystem swerve;
   private PivotSubsystem pivotSubsystem;
   private VisionTargetTracker visionTargetTracker;
-  private ShooterSubsystem shooterSubsystem;
   private double pivotAngle;
   private double previousPivotAngle;
   private float time;
   private Timer timer;
 
   public AutoAimCommand(SwerveSubsystem swerve, VisionTargetTracker visionTargetTracker, PivotSubsystem pivotSubsystem,
-      ShooterSubsystem shooterSubsystem, float time) {
+      float time) {
     addRequirements(swerve);
     this.swerve = swerve;
     this.pivotSubsystem = pivotSubsystem;
-    this.shooterSubsystem = shooterSubsystem;
     this.lockToTagXController = new PIDController(14.0, 0.7, 0.3);
     this.lockToTagXController.setTolerance(2);
     this.visionTargetTracker = visionTargetTracker;
@@ -67,9 +64,6 @@ public class AutoAimCommand extends Command {
     if (Math.abs(previousPivotAngle - pivotAngle) > 1) {
       previousPivotAngle = pivotAngle;
       pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
-
-      shooterSubsystem.setShooterLeftRPM(visionTargetTracker.computeShooterLeftSpeed(targetDistance));
-      shooterSubsystem.setShooterRightRPM(visionTargetTracker.computeShooterRightSpeed(targetDistance));
     }
   }
 

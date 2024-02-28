@@ -30,8 +30,12 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AutoAimCommand;
+import frc.robot.commands.AutoFireCommand;
+import frc.robot.commands.AutoIntakeCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.AutoStartShooterCommand;
 import frc.robot.constants.IDs;
 import frc.robot.constants.PathPlannerConstants;
 import frc.robot.constants.PathPlannerConstants.Swerve;
@@ -138,6 +142,13 @@ public class RobotContainer {
       operatorController::getBackButton,
       driverController::getRightBumper);
 
+    private final AutoAimCommand autoAimCommand = new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem, 2.0f);
+
+    private final AutoFireCommand autoFireCommand = new AutoFireCommand(feederSubsystem, pivotSubsystem);
+
+    private final AutoIntakeCommand autoIntakeCommand = new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 5.0);
+
+    private final AutoStartShooterCommand autoStartShooterCommand = new AutoStartShooterCommand(shooterSubsystem);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -156,10 +167,10 @@ public class RobotContainer {
     });
 
     // Register Named Commands
-    NamedCommands.registerCommand("Intake", Commands.print("Intaking"));
-    NamedCommands.registerCommand("Start Shooter", Commands.print("Starting Shooter"));
-    NamedCommands.registerCommand("Aim", Commands.print("Aiming"));
-    NamedCommands.registerCommand("Fire", Commands.print("Firing")); 
+    NamedCommands.registerCommand("Intake", Commands.print("Intaking")); // autoIntakeCommand
+    NamedCommands.registerCommand("Start Shooter", Commands.print("Starting Shooter")); // autoStartShooterCommand
+    NamedCommands.registerCommand("Aim", Commands.print("Aiming")); // autoAimCommand 
+    NamedCommands.registerCommand("Fire", Commands.print("Firing"));  // autoFireCommand
 
     autoChooser = AutoBuilder.buildAutoChooser("Test");
     SmartDashboard.putData("Auto Chooser", autoChooser);
