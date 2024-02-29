@@ -54,10 +54,10 @@ public class AutoTwo extends SequentialCommandGroup {
                         pivotSubsystem),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-64),
-                        Units.inchesToMeters(72), -60, 2.0, false),
+                        Units.inchesToMeters(72), -60, 1.5, false),
 
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
-                        shooterSubsystem, 2.5f),
+                        shooterSubsystem, 1.0f),
 
                 new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT),
                         feederSubsystem),
@@ -76,14 +76,14 @@ public class AutoTwo extends SequentialCommandGroup {
 
                 new ParallelCommandGroup(
                         new DriveToDistanceCommand(swerveSubsystem,
-                                Units.inchesToMeters(-12 * 24),
-                                Units.inchesToMeters(150),
+                                Units.inchesToMeters(-12 * 24 - 6),
+                                Units.inchesToMeters(136),
                                 0, 4.0, false),
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
                                 intakeSubsystem, 5)),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90),
-                        Units.inchesToMeters(140), -60, 4.0, false),
+                        Units.inchesToMeters(140), -60, 3.5, false),
 
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000),
                         shooterSubsystem),
@@ -93,12 +93,10 @@ public class AutoTwo extends SequentialCommandGroup {
                         pivotSubsystem),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90),
-                        Units.inchesToMeters(72), -50, 4.0, false),
+                        Units.inchesToMeters(72), -50, 2.0, false),
 
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
-                        shooterSubsystem, 2.0f),
-
-                new WaitCommand(1),
+                        shooterSubsystem, 1.0f),
 
                 new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT),
                         feederSubsystem),

@@ -63,7 +63,7 @@ public class AutoOne extends SequentialCommandGroup {
                         () -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE),
                         pivotSubsystem),
                 new ParallelCommandGroup(
-                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-66), Units.inchesToMeters(-3),
+                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-66), Units.inchesToMeters(15),
                                 0, 2.5, false),
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 2.5)),
 
@@ -88,7 +88,7 @@ public class AutoOne extends SequentialCommandGroup {
                         pivotSubsystem),
                 new ParallelCommandGroup(
                         new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-86),
-                                Units.inchesToMeters(-45), 90, 2.0, false),
+                                Units.inchesToMeters(-45), 75, 2.0, false),
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 3)),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-86), Units.inchesToMeters(-45), 0,

@@ -341,7 +341,7 @@ public class ShooterCommand extends Command {
             case FIRE:
                 feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
                 System.out.println(
-                        "angle: " + pivotAngle + " RPM left: " + shooterLeftRPM + " RPM right: " + shooterRightRPM);
+                        "angle: " + pivotAngle + " RPM left: " + shooterLeftRPM + " RPM right: " + shooterRightRPM + " Distance " + visionTargetTracker.computeTargetDistance());
                 // Update previous values for comparison during next shot
                 if (visionTargetTracker.isValid()) {
                     previousVisionTy = visionTargetTracker.getTy();

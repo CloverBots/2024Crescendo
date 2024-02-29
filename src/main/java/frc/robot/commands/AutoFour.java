@@ -35,8 +35,10 @@ public class AutoFour extends SequentialCommandGroup {
             ShooterSubsystem shooterSubsystem, FeederDistanceSensorSubsystem feederDistanceSensorSubsystem,
             IntakeSubsystem intakeSubsystem, VisionTargetTracker visionTargetTracker) {
 
-        double wait = SmartDashboard.getNumber("Auto Wait Seconds", 0);
+        double wait = SmartDashboard.getNumber("Auto Wait Seconds", 3);
 
+        wait = 3;
+        
         Optional<Alliance> side = DriverStation.getAlliance();
         int inverted = 1; // default Blue
 
@@ -70,7 +72,7 @@ public class AutoFour extends SequentialCommandGroup {
                 // move out of home area
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(0), Units.inchesToMeters(130), 0, 2.5,
                         false), // TO-DO proper values
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-70), Units.inchesToMeters(130), 0, 2.5,
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-80), Units.inchesToMeters(130), 0, 2.5,
                         false)); // TO-DO proper values
     }
 }

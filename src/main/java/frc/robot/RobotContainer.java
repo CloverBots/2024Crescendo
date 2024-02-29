@@ -75,9 +75,9 @@ public class RobotContainer {
 
   // SPEAKER SHOOTER
   // TO-DO Chose default shot location and set proper values.
-  public static final double SHOOTER_SPEAKER_RIGHT_RPM = 0; // 2500
-  public static final double SHOOTER_SPEAKER_LEFT_RPM = 0; // 2000
-  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 10; // 64
+  public static final double SHOOTER_SPEAKER_RIGHT_RPM = 2500; // 2500
+  public static final double SHOOTER_SPEAKER_LEFT_RPM = 2000; // 2000
+  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 64; // 64
 
   // Used to indicate auto mode (based on April tag distance) for the shooter
   // pivot angle
