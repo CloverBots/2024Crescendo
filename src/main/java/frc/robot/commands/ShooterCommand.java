@@ -303,7 +303,7 @@ public class ShooterCommand extends Command {
                     previousPivotAngle = pivotAngle;
                     pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
                     previousPivotAngle = pivotAngle;
-                } else {
+                } else if (visionTargetTracker.isValid()) {
                     SmartDashboard.putBoolean("Camera", false);
                     mode = ACTION.NONE;
                     modeChanged = true;
@@ -462,6 +462,7 @@ public class ShooterCommand extends Command {
 
             case AMP:
             case SPEAKER:
+            case DEFAULT_SPEAKER:
             case TRAP:
             case TUNING:
                 break;

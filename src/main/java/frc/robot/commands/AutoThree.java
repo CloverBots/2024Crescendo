@@ -12,7 +12,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -30,12 +29,11 @@ import frc.robot.subsystems.SwerveSubsystem;
 // Uses delayed start option
 
 public class AutoThree extends SequentialCommandGroup {
+    private final static String SMART_DASHBOARD_AUTO_WAIT_TIME = "Auto Wait Time";
 
     public AutoThree(SwerveSubsystem swerveSubsystem, FeederSubsystem feederSubsystem, PivotSubsystem pivotSubsystem,
             ShooterSubsystem shooterSubsystem, FeederDistanceSensorSubsystem feederDistanceSensorSubsystem,
             IntakeSubsystem intakeSubsystem, VisionTargetTracker visionTargetTracker) {
-
-        double wait = SmartDashboard.getNumber("Auto Wait Seconds", 0);
 
         Optional<Alliance> side = DriverStation.getAlliance();
         int inverted = 1; // default Blue
@@ -46,11 +44,11 @@ public class AutoThree extends SequentialCommandGroup {
             }
         }
 
+        addCommands(new SmartDashboardWaitCommand(SMART_DASHBOARD_AUTO_WAIT_TIME));
+
         addCommands(
                 new ResetOdometryCommand(swerveSubsystem,
                         new Pose2d(new Translation2d(), new Rotation2d(Units.degreesToRadians(60 * inverted)))),
-                // Shoot ring
-                new WaitCommand(wait),
                 // Shoot ring
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2000), shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(2500), shooterSubsystem),
@@ -70,7 +68,7 @@ public class AutoThree extends SequentialCommandGroup {
                 // move out of home area
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(0), Units.inchesToMeters(-70), 0, 2.5,
                         false), // TO-DO proper values
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-70), Units.inchesToMeters(-70), 0, 2.5,
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-80), Units.inchesToMeters(-70), 0, 2.5,
                         false)); // TO-DO proper values
     }
 }

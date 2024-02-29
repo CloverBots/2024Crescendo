@@ -133,7 +133,7 @@ public class RobotContainer {
 
     configureAutoChooser();
     SmartDashboard.putData(chooser);
-    SmartDashboard.putNumber("Auto Wait Seconds", 0);
+    SmartDashboard.putNumber(AutoFour.SMART_DASHBOARD_AUTO_WAIT_TIME, 0);
 
     // Configure the trigger bindings
     configureBindings();
