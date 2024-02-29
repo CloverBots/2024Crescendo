@@ -39,7 +39,7 @@ public class RobotContainer {
   private static final double CAMERA_HEIGHT = 8.75; // inches
   private static final double CAMERA_PITCH = 35; // degrees
 
-  public final static double PIVOT_LOWER_ENDPOINT = 7; // 7
+  public final static double PIVOT_LOWER_ENDPOINT = 5; // 7
   public final static double PIVOT_UPPER_ENDPOINT = 100;
 
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
@@ -104,6 +104,7 @@ public class RobotContainer {
       driverController::getBButton,
       driverController::getAButton,
       driverController::getXButton,
+      driverController::getStartButton,
       driverController::getLeftTriggerAxis,
       driverController::getRightTriggerAxis,
       driverController::getPOV,

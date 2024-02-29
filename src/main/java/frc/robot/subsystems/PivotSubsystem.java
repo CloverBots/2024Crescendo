@@ -124,7 +124,7 @@ public class PivotSubsystem extends PIDSubsystem {
 
     if (!limitSwitch.get()) {
       if (speed < 0) {
-        System.out.println("Limit Switch reached!!!");
+        System.out.println("Limit Switch reached!!!"); // Limit switch is at 3.5
         speed = 0;
         disable();
       }

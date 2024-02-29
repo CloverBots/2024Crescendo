@@ -19,7 +19,7 @@ public class DriveFromControllerCommand extends Command {
     private final SwerveSubsystem swerveSubsystem;
     private VisionTargetTracker limelight;
     private final Supplier<Double> leftStickX, leftStickY, rightStickX, rightStickY, crawlTrigger, slowRotate;
-    private final Supplier<Boolean> yButton, bButton, aButton, xButton;
+    private final Supplier<Boolean> yButton, bButton, aButton, xButton, startButton;
     private final Supplier<Integer> dPad;
     private final SlewRateLimiter translationLimiter, turningLimiter;
     private boolean fieldOriented = true;
@@ -44,6 +44,7 @@ public class DriveFromControllerCommand extends Command {
             Supplier<Boolean> bButton,
             Supplier<Boolean> aButton,
             Supplier<Boolean> xButton,
+            Supplier<Boolean> startButton,
             Supplier<Double> crawlTrigger,
             Supplier<Double> slowRotate,
             Supplier<Integer> dPad,
@@ -60,6 +61,7 @@ public class DriveFromControllerCommand extends Command {
         this.bButton = bButton;
         this.aButton = aButton;
         this.xButton = xButton;
+        this.startButton = startButton;
 
         this.crawlTrigger = crawlTrigger;
         this.slowRotate = slowRotate;
@@ -110,6 +112,10 @@ public class DriveFromControllerCommand extends Command {
             pointedTurning = !pointedTurning;
         }
         pointedModeCache = dPad.get() == 90;
+
+        if (startButton.get() == true) {
+            swerveSubsystem.resetOdometry();
+        }
     }
     /**
      * Calculates the translation (X/Y) speeds and turning speeds from the controller, depending on the current mode.
