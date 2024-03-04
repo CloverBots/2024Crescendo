@@ -20,13 +20,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Aim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Fire"
+            "name": "Fire Subwoofer"
           }
         },
         {
@@ -36,38 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Ring 2 from Center"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Fire"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Aim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Fire"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Ring 3 from Line Shot"
+                  "pathName": "Note 2 from Center"
                 }
               },
               {
@@ -88,7 +51,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Fire"
+            "name": "Fire Line"
           }
         },
         {
@@ -98,7 +61,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Ring 6 under Stage"
+                  "pathName": "Note 3 from Line Shot"
                 }
               },
               {
@@ -119,7 +82,38 @@
         {
           "type": "named",
           "data": {
-            "name": "Fire"
+            "name": "Fire Line"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 6 from Line Shot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Aim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Fire Far"
           }
         }
       ]

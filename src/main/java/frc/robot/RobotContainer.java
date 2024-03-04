@@ -31,11 +31,15 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoAimCommand;
-import frc.robot.commands.AutoFireCommand;
+import frc.robot.commands.AutoFireFarCommand;
+import frc.robot.commands.AutoFireLeftCommand;
+import frc.robot.commands.AutoFireLineCommand;
+import frc.robot.commands.AutoFireSubwooferCommand;
 import frc.robot.commands.AutoIntakeCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.AutoStartShooterCommand;
+import frc.robot.commands.AutoTrackCommand;
 import frc.robot.constants.IDs;
 import frc.robot.constants.PathPlannerConstants;
 import frc.robot.constants.PathPlannerConstants.Swerve;
@@ -61,7 +65,7 @@ public class RobotContainer {
   private static final double CAMERA_HEIGHT = 8.75; // inches
   private static final double CAMERA_PITCH = 35; // degrees
 
-  public final static double PIVOT_LOWER_ENDPOINT = 7; // 7
+  public final static double PIVOT_LOWER_ENDPOINT = 5; // 7
   public final static double PIVOT_UPPER_ENDPOINT = 100;
 
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
@@ -72,7 +76,7 @@ public class RobotContainer {
   public final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
 
   public static final double INTAKE_SPEED = 1;
-  public static final double FEEDER_SPEED_INTAKE = 0.6;
+  public static final double FEEDER_SPEED_INTAKE = 0.5;
   public static final double FEEDER_SPEED_SHOOT = 0.8;
   public final static double FEEDER_TIME = 2;
   public static final double PIVOT_SPEED = 0.5;
@@ -96,9 +100,9 @@ public class RobotContainer {
   public static final double SHOOTER_TRAP_PIVOT_ANGLE = 50;
 
   // SPEAKER SHOOTER
-  public static final double SHOOTER_SPEAKER_RIGHT_RPM = 4500;
-  public static final double SHOOTER_SPEAKER_LEFT_RPM = 3500;
-  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 31;
+  public static final double SHOOTER_SPEAKER_RIGHT_RPM = 2500; // 2500
+  public static final double SHOOTER_SPEAKER_LEFT_RPM = 2000; // 2000
+  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 64; // 64
 
   private final Field2d field;
   private final SendableChooser<Command> autoChooser;
@@ -123,6 +127,7 @@ public class RobotContainer {
       driverController::getBButton,
       driverController::getAButton,
       driverController::getXButton,
+      driverController::getStartButton,
       driverController::getLeftTriggerAxis,
       driverController::getRightTriggerAxis,
       driverController::getPOV,
@@ -142,13 +147,22 @@ public class RobotContainer {
       operatorController::getBackButton,
       driverController::getRightBumper);
 
-    private final AutoAimCommand autoAimCommand = new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem, 2.0f);
+  private final AutoTrackCommand autoTrackCommand = new AutoTrackCommand(swerveSubsystem, visionTargetTracker,
+      2.0f);
 
-    private final AutoFireCommand autoFireCommand = new AutoFireCommand(feederSubsystem, pivotSubsystem);
+  private final AutoFireSubwooferCommand autoFireSubwooferCommand = new AutoFireSubwooferCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
 
-    private final AutoIntakeCommand autoIntakeCommand = new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 5.0);
+  private final AutoFireLineCommand autoFireLineCommand = new AutoFireLineCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
 
-    private final AutoStartShooterCommand autoStartShooterCommand = new AutoStartShooterCommand(shooterSubsystem);
+  private final AutoFireFarCommand autoFireFarCommand = new AutoFireFarCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
+
+  private final AutoFireLeftCommand autoFireLeftCommand = new AutoFireLeftCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
+
+  private final AutoIntakeCommand autoIntakeCommand = new AutoIntakeCommand(feederDistanceSensorSubsystem,
+      feederSubsystem, intakeSubsystem, 5.0);
+
+  private final AutoStartShooterCommand autoStartShooterCommand = new AutoStartShooterCommand(shooterSubsystem);
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -169,8 +183,11 @@ public class RobotContainer {
     // Register Named Commands
     NamedCommands.registerCommand("Intake", Commands.print("Intaking")); // autoIntakeCommand
     NamedCommands.registerCommand("Start Shooter", Commands.print("Starting Shooter")); // autoStartShooterCommand
-    NamedCommands.registerCommand("Aim", Commands.print("Aiming")); // autoAimCommand 
-    NamedCommands.registerCommand("Fire", Commands.print("Firing"));  // autoFireCommand
+    NamedCommands.registerCommand("Aim", Commands.print("Aiming")); // autoTrackCommand
+    NamedCommands.registerCommand("Fire Subwoofer", Commands.print("Firing Subwoofer")); // autoFireSubwooferCommand
+    NamedCommands.registerCommand("Fire Line", Commands.print("Firing Line")); // autoFireLineCommand
+    NamedCommands.registerCommand("Fire Far", Commands.print("Firing Far")); // autoFireFarCommand
+    NamedCommands.registerCommand("Fire Left", Commands.print("Firing Left")); // autoFireLeftCommand
 
     autoChooser = AutoBuilder.buildAutoChooser("Test");
     SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -228,6 +245,6 @@ public class RobotContainer {
     SmartDashboard.putNumber("Shooter left RPM", 0.5);
     SmartDashboard.putNumber("Shooter angle", 25);
     SmartDashboard.putNumber("Feeder power", 0);
-    
+
   }
 }

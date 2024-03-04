@@ -13,24 +13,20 @@ import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
-public class AutoAimCommand extends Command {
+public class AutoTrackCommand extends Command {
 
   private PIDController lockToTagXController = new PIDController(0.075, 0.03, 0.005);
   private SwerveSubsystem swerve;
-  private PivotSubsystem pivotSubsystem;
-  private ShooterSubsystem shooterSubsystem;
   private VisionTargetTracker visionTargetTracker;
   private double pivotAngle;
   private double previousPivotAngle;
   private float time;
   private Timer timer;
 
-  public AutoAimCommand(SwerveSubsystem swerve, VisionTargetTracker visionTargetTracker, PivotSubsystem pivotSubsystem, ShooterSubsystem shooterSubsystem,
+  public AutoTrackCommand(SwerveSubsystem swerve, VisionTargetTracker visionTargetTracker,
       float time) {
     addRequirements(swerve);
     this.swerve = swerve;
-    this.pivotSubsystem = pivotSubsystem;
-    this.shooterSubsystem = shooterSubsystem;
     this.lockToTagXController = new PIDController(14.0, 0.7, 0.3);
     this.lockToTagXController.setTolerance(2);
     this.visionTargetTracker = visionTargetTracker;
@@ -42,8 +38,6 @@ public class AutoAimCommand extends Command {
   @Override
   public void initialize() {
     lockToTagXController.reset();
-    pivotAngle = pivotSubsystem.getSetpoint();
-    previousPivotAngle = pivotAngle;
     timer.start();
   }
 
@@ -54,33 +48,6 @@ public class AutoAimCommand extends Command {
     swerve.setSpeed(0, 0, calculate, true);
 
     SmartDashboard.putNumber("calculate", calculate);
-
-    double targetDistance = 0;
-    Boolean isTargetValid = visionTargetTracker.isValid();
-    if (isTargetValid) {
-      targetDistance = visionTargetTracker.computeTargetDistance();
-      pivotAngle = visionTargetTracker.computePivotAngle(targetDistance);
-      pivotAngle = checkAngleLimits(pivotAngle);
-    }
-
-    // If the desired angle has changed by 1 degree or more, update the setpoint
-    if (Math.abs(previousPivotAngle - pivotAngle) > 1) {
-      previousPivotAngle = pivotAngle;
-      pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
-      shooterSubsystem.setShooterLeftRPM(visionTargetTracker.computeShooterLeftSpeed(targetDistance));
-      shooterSubsystem.setShooterRightRPM(visionTargetTracker.computeShooterRightSpeed(targetDistance));
-    }
-  }
-
-  private double checkAngleLimits(double angle) {
-    if (angle > PivotSubsystem.PIVOT_UPPER_ENDPOINT) {
-      angle = PivotSubsystem.PIVOT_UPPER_ENDPOINT;
-    }
-    if (angle < PivotSubsystem.PIVOT_LOWER_ENDPOINT) {
-      angle = PivotSubsystem.PIVOT_LOWER_ENDPOINT;
-    }
-
-    return angle;
   }
 
   // Called once the command ends or is interrupted.
@@ -96,6 +63,6 @@ public class AutoAimCommand extends Command {
       return true;
     }
 
-    return lockToTagXController.atSetpoint() && pivotSubsystem.atSetpoint() && shooterSubsystem.isShooterAtTargetRpm();
+    return lockToTagXController.atSetpoint();
   }
 }

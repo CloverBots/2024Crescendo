@@ -15,8 +15,8 @@ public class AutoStartShooterCommand extends InstantCommand {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooterSubsystem);
 
-    shooterSubsystem.setShooterLeftRPM(3000);
-    shooterSubsystem.setShooterRightRPM(3500);
+    shooterSubsystem.setShooterLeftRPM(2000);
+    shooterSubsystem.setShooterRightRPM(2000);
   }
 
   // Called when the command is initially scheduled.

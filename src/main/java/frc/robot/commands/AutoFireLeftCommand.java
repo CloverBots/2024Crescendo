@@ -10,18 +10,27 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutoFireCommand extends SequentialCommandGroup {
+public class AutoFireLeftCommand extends SequentialCommandGroup {
   /** Creates a new AutoFire. */
-  public AutoFireCommand(FeederSubsystem feederSubsystem, PivotSubsystem pivotSubsystem) {
+  public AutoFireLeftCommand(FeederSubsystem feederSubsystem, PivotSubsystem pivotSubsystem, ShooterSubsystem shooterSubsystem) {
     addCommands(
+      new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(0)), // Need values
+      new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0)),
+      new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0)),
+
+      new WaitCommand(0.2),
+
       new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT)),
       new WaitCommand(0.2),
       new InstantCommand(() -> feederSubsystem.setSpeed(0)),
-      new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE))
+      new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE)),
+      new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2000)),
+      new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(2000))
     );
   }
 }

@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3386144840268221,
-      "y": 5.521816553472107
+      "x": 1.32,
+      "y": 5.54
     },
-    "rotation": 1.0809241866607378
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,13 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Test"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake"
+            "pathName": "Test Rotate"
           }
         },
         {
@@ -39,6 +33,12 @@
           "type": "named",
           "data": {
             "name": "Fire"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
           }
         }
       ]

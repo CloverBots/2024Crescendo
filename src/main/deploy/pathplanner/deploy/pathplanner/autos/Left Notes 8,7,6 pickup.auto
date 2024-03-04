@@ -3,9 +3,9 @@
   "startingPose": {
     "position": {
       "x": 0.7365015087811937,
-      "y": 4.435076061565361
+      "y": 4.449761743888425
     },
-    "rotation": -59.93141717813752
+    "rotation": -59.34933204294715
   },
   "command": {
     "type": "sequential",
@@ -26,7 +26,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Fire"
+            "name": "Fire Subwoofer"
           }
         },
         {
@@ -36,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Ring 3 from Left"
+                  "pathName": "Note 8 from Left"
                 }
               },
               {
@@ -57,7 +57,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Fire"
+            "name": "Fire Left"
           }
         },
         {
@@ -67,7 +67,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Ring 2 from Line Shot"
+                  "pathName": "Note 7 from Podium"
                 }
               },
               {
@@ -88,7 +88,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Fire"
+            "name": "Fire Far"
           }
         },
         {
@@ -98,7 +98,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Ring 1 from Line Shot"
+                  "pathName": "Note 6 Fetch"
                 }
               },
               {
@@ -108,49 +108,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Aim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Fire"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Ring 4 from Line Shot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Aim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Fire"
           }
         }
       ]
