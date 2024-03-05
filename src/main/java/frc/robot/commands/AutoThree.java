@@ -67,8 +67,8 @@ public class AutoThree extends SequentialCommandGroup {
 
                 // move out of home area
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(0), Units.inchesToMeters(-70), 0, 2.5,
-                        false), // TO-DO proper values
+                        false),
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-80), Units.inchesToMeters(-70), 0, 2.5,
-                        false)); // TO-DO proper values
+                        false));
     }
 }

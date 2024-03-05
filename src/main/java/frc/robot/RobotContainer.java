@@ -53,7 +53,6 @@ public class RobotContainer {
   public static final double FEEDER_SPEED_INTAKE = 0.5;
   public static final double FEEDER_SPEED_SHOOT = 0.8;
   public final static double FEEDER_TIME = 2;
-  public static final double PIVOT_SPEED = 0.5;
   public static final double DEFAULT_SPEAKER_PIVOT_ANGLE = 20;
 
   public static final double CLIMBER_READY_POSITION = 90;
@@ -74,7 +73,6 @@ public class RobotContainer {
   public static final double SHOOTER_TRAP_PIVOT_ANGLE = 50;
 
   // SPEAKER SHOOTER
-  // TO-DO Chose default shot location and set proper values.
   public static final double SHOOTER_SPEAKER_RIGHT_RPM = 2500; // 2500
   public static final double SHOOTER_SPEAKER_LEFT_RPM = 2000; // 2000
   public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 64; // 64

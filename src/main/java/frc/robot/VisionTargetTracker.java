@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /** Add your docs here. */
 public class VisionTargetTracker {
@@ -14,6 +15,7 @@ public class VisionTargetTracker {
     private static final String LIMELIGHT_TABLE_NAME = "limelight";
     private static final String LIMELIGHT_TABLE_ENTRY_X = "tx";
     private static final String LIMELIGHT_TABLE_ENTRY_Y = "ty";
+    private static final String LIMELIGHT_TABLE_ENTRY_LIGHTS = "ledMode";
 
     // tv = 0 if no valid targets identified, tv = 1 for valid target
     private static final String LIMELIGHT_TABLE_ENTRY_VALID = "tv";
@@ -23,6 +25,7 @@ public class VisionTargetTracker {
     private final NetworkTableEntry tx;
     private final NetworkTableEntry ty;
     private final NetworkTableEntry tv;
+    private final NetworkTableEntry lights;
 
     public VisionTargetTracker(VisionConfiguration configuration) {
         this.configuration = configuration;
@@ -31,6 +34,7 @@ public class VisionTargetTracker {
         tx = table.getEntry(LIMELIGHT_TABLE_ENTRY_X);
         ty = table.getEntry(LIMELIGHT_TABLE_ENTRY_Y);
         tv = table.getEntry(LIMELIGHT_TABLE_ENTRY_VALID);
+        lights = table.getEntry(LIMELIGHT_TABLE_ENTRY_LIGHTS);
     }
 
     public double getTx() {
@@ -43,6 +47,10 @@ public class VisionTargetTracker {
      */
     public double getTy() {
         return ty.getDouble(0.0);
+    }
+
+    public void blinkLights() {
+        lights.setNumber(2);
     }
 
     /**

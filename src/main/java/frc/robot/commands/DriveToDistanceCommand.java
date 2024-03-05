@@ -69,7 +69,7 @@ public class DriveToDistanceCommand extends Command {
         inverted = 1;
       }
     } else {
-      inverted = 1; // TO-DO choose if red or blue is default
+      inverted = 1;
     }
 
     yPos = inverted * yPos;

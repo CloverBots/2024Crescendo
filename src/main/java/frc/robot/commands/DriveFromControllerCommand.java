@@ -196,7 +196,7 @@ public class DriveFromControllerCommand extends Command {
     private double calculateTurningSpeedHotkey() {
         int angle; // The desired angle of the robot
         if (yButton.get()) {
-            angle = 0;
+            angle = 0; // TO-DO Proper angles for chain
         }
         else if (bButton.get()) {
             angle = 270;
