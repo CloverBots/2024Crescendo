@@ -63,12 +63,12 @@ public class AutoThree extends SequentialCommandGroup {
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0), shooterSubsystem),
                 new InstantCommand(
                         () -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE),
-                        pivotSubsystem),
+                        pivotSubsystem));
 
                 // move out of home area
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(0), Units.inchesToMeters(-130), 0, 2.5,
-                        false),
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-80), Units.inchesToMeters(-130), 0, 2.5,
-                        false));
+                //new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(0), Units.inchesToMeters(-130), 0, 2.5,
+                //        false),
+                //new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-80), Units.inchesToMeters(-130), 0, 2.5,
+                //        false));
     }
 }
