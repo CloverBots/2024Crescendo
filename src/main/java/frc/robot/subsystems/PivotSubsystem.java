@@ -22,7 +22,7 @@ import frc.robot.constants.IDs;
 
 public class PivotSubsystem extends PIDSubsystem {
 
-    private final static double MAX_PIVOT_POWER_PID = 0.2; // TO-DO Increase
+    private final static double MAX_PIVOT_POWER_PID = 0.2; 
 
     private final CANSparkMax pivotLeadMotor;
     private final CANSparkMax pivotFollowMotor;
@@ -72,7 +72,6 @@ public class PivotSubsystem extends PIDSubsystem {
 
     @Override
     public void useOutput(double output, double setpoint) {
-        // System.out.println(output); // TO-DO remove
         output = MathUtil.clamp(output, -MAX_PIVOT_POWER_PID, MAX_PIVOT_POWER_PID);
         speed = output;
         // checkLimits();

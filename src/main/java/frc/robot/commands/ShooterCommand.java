@@ -347,9 +347,7 @@ public class ShooterCommand extends Command {
 
             case FIRE:
                 feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
-                System.out.println(
-                        "angle: " + pivotAngle + " RPM left: " + shooterLeftRPM + " RPM right: " + shooterRightRPM
-                                + " Distance " + visionTargetTracker.computeTargetDistance());
+
                 // Update previous values for comparison during next shot
                 if (visionTargetTracker.isValid()) {
                     previousVisionTy = visionTargetTracker.getTy();
@@ -420,7 +418,6 @@ public class ShooterCommand extends Command {
         shooterSubsystem.setShooterRightRPM(0);
         pivotSubsystem.setSpeed(0);
         pivotSubsystem.disable();
-        System.out.println("Shooter Command Ending!!!!!!!!!!!");
     }
 
     // Returns true when the command should end.
@@ -477,7 +474,6 @@ public class ShooterCommand extends Command {
                     readyToFire = true;
                 } else {
                     readyToFire = false;
-                    System.out.println("Shooter RPM " + shooterSubsystem.isShooterAtTargetRpm() + " Pivot Encooder " + pivotSubsystem.pivotReady() + " Pivot Value Get " + pivotAngle + " At " + pivotSubsystem.getPivotAbsolutePosition()); // TO-DO remove
                 }
                 break;
             case FIRE:
