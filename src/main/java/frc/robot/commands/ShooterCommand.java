@@ -195,7 +195,7 @@ public class ShooterCommand extends Command {
 
             case CLIMB_MANUAL:
                 if (Math.abs(leftJoystickY.getAsDouble()) > .05) {
-                    pivotSpeed = -leftJoystickY.getAsDouble() / 2; // - is because joystick returns 1 for down, -1 for
+                    pivotSpeed = -leftJoystickY.getAsDouble() / 2.2; // - is because joystick returns 1 for down, -1 for
                                                                    // up
 
                     if (pivotSpeed > 0.05 &&
@@ -436,7 +436,6 @@ public class ShooterCommand extends Command {
                     mode = ACTION.NONE;
                     modeChanged = true;
                     noteLoaded = true;
-                    visionTargetTracker.blinkLights();
                 } else if (intakeLoadTrigger.get() < 0.5 && intakeSubsystem.isIntakeRunningForward()) {
                     intakeSubsystem.setIntakeSpeed(0);
                     feederSubsystem.setSpeed(0);
@@ -474,11 +473,11 @@ public class ShooterCommand extends Command {
             case DEFAULT_SPEAKER:
             case TRAP:
             case TUNING:
-                if (shooterSubsystem.isShooterAtTargetRpm() && pivotSubsystem.atSetpoint() && noteLoaded) {
+                if (shooterSubsystem.isShooterAtTargetRpm() && pivotSubsystem.pivotReady() && noteLoaded) {
                     readyToFire = true;
                 } else {
                     readyToFire = false;
-                    System.out.println("Shooter RPM " + shooterSubsystem.isShooterAtTargetRpm() + " Pivot Encooder " + pivotSubsystem.atSetpoint()); // TO-DO remove
+                    System.out.println("Shooter RPM " + shooterSubsystem.isShooterAtTargetRpm() + " Pivot Encooder " + pivotSubsystem.pivotReady() + " Pivot Value Get " + pivotAngle + " At " + pivotSubsystem.getPivotAbsolutePosition()); // TO-DO remove
                 }
                 break;
             case FIRE:

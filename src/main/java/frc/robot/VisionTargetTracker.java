@@ -49,10 +49,6 @@ public class VisionTargetTracker {
         return ty.getDouble(0.0);
     }
 
-    public void blinkLights() {
-        lights.setNumber(2);
-    }
-
     /**
      * Get whether there is a valid target visible
      */

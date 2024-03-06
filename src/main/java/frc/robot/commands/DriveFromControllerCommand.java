@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.VisionTargetTracker;
@@ -71,8 +72,8 @@ public class DriveFromControllerCommand extends Command {
         this.turningLimiter = new SlewRateLimiter(SwerveDriveConstants.teleOpMaxAngularAccelerationUnitsPerSecond);
 
         //using degrees
-        this.rotationController = new PIDController(0.065, 0.03, 0.005); // 0.017, 0, 0
-        this.rotationController.enableContinuousInput(0, 360);
+        this.rotationController = new PIDController(5.0, .3, 0); // 0.017, 0, 0
+        this.rotationController.enableContinuousInput(0, 2 * Math.PI);
         this.lockToTagXController = new PIDController(0.075, 0.03, 0.005);
         
         // this.pointedRotationController = new PIDController(0.07, 0.02, 0);
@@ -189,28 +190,28 @@ public class DriveFromControllerCommand extends Command {
         return -rotationController.calculate(swerveSubsystem.getHeading(), angle);
     }
     /**
-     * Automatically points the robot in the four cardinal directions (0, 90, 180, and 270 degrees) relative to the A B Y X buttons.
-     * For example, pressing Y (which is on top of the four buttons) will point the robot forward, or to 0 degrees.
+     * Automatically points the robot in the four cardinal directions relative to the A B Y X buttons.
+     * For example, pressing Y (which is on top of the four buttons) will point the robot forward, or to 0 radians.
      * @return The calculated turning speed
      */
     private double calculateTurningSpeedHotkey() {
-        int angle; // The desired angle of the robot
+        double angle; // The desired angle of the robot
         if (yButton.get()) {
             angle = 0; // TO-DO Proper angles for chain
         }
         else if (bButton.get()) {
-            angle = 270;
+            angle = Units.degreesToRadians(-120);
         }
         else if (aButton.get()) {
-            angle = 180;
+            angle = Units.degreesToRadians(180.0);
         }
         else if (xButton.get()) {
-            angle = 90;
+            angle = Units.degreesToRadians(120);
         } 
         
         else return 0; // Returns a speed of 0 if none of the buttons are pressed.
         SmartDashboard.putNumber("Joystick/Angle", angle);
-        return -rotationController.calculate(swerveSubsystem.getHeading(), angle);
+        return -rotationController.calculate(swerveSubsystem.getPose().getRotation().getRadians(), angle);
     }
     /**
      * Calculates the Translation (X and Y) speeds of the robot from the controller joystick.
