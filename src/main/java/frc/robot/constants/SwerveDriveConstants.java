@@ -10,7 +10,7 @@ import edu.wpi.first.math.util.Units;
 
 /** Constant values relating to the Swerve Drive */
 public class SwerveDriveConstants {
-    public static final double WHEEL_CIRCUMFERENCE = Units.inchesToMeters(4) * Math.PI;
+    public static final double WHEEL_CIRCUMFERENCE = Units.inchesToMeters(3.96) * Math.PI;
 
     /** The driving gear ratio for the swerve module (MK4i L3). This is how many times the drive motor has to turn in order for the wheel to make 1 rotation. */
     public static final double DRIVE_GEAR_RATIO = (50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0);
@@ -27,19 +27,20 @@ public class SwerveDriveConstants {
     public static final double PHYSICAL_MAX_SPEED_METERS_PER_SECOND = (1/DRIVE_GEAR_RATIO) * (6380.0/60) * WHEEL_CIRCUMFERENCE;
     
     /** The maximum speed of the robot, in meters per second during TeleOp. Use this to limit the speed when using a controller.*/
-    public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = PHYSICAL_MAX_SPEED_METERS_PER_SECOND * 0.5; //Max is 5.5435
-    public static final double TELEOP_SLOW_SPEED_METERS_PER_SECOND = 1;
+    public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = PHYSICAL_MAX_SPEED_METERS_PER_SECOND; //Max is 5.5435
+    public static final double TELEOP_SLOW_SPEED_METERS_PER_SECOND = 2;
     
     /** Maximum speed for the robot's turning. */
-    public static final double teleOpMaxAngularSpeed = 2 * (2 * Math.PI);
-    public static final double teleOpSlowAngularSpeed = 1 * (2 * Math.PI);
+    public static final double teleOpMaxAngularSpeed = 1 * (2 * Math.PI);
+    public static final double teleOpSlowAngularSpeed = 0.5 * (2 * Math.PI);
     /** The maximum angular acceleration for the robot's turning. */
     public static final double teleOpMaxAngularAccelerationUnitsPerSecond = 5;
     /** The maximum acceleration for the robot's X and Y movement. */
-    public static final double teleOpMaxAccelerationMetersPerSecond = 5;
+    public static final double teleOpMaxAccelerationMetersPerSecond = 3;
 
-    public static final double AUTO_MAX_SPEED = 1;
+    public static final double AUTO_MAX_SPEED = 2;
     public static final double AUTO_MAX_ACCELERATION = 1;
+    // public static final double AUTO_MAX_ANGULAR_ACCELERATION = 1;
 
     /** Multiply the output of {@code getSelectedSensorPosition()} by this to get the total distance travelled, in meters, on a swerve module. */
     public static final double DRIVE_ENCODER_TO_METERS = (WHEEL_CIRCUMFERENCE / (DRIVE_GEAR_RATIO * 2048.0));

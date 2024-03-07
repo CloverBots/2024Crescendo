@@ -75,7 +75,9 @@ public class VisionTargetTracker {
     }
 
     public double computePivotAngle(double distance) {
-        return 79.658 - 0.3889 * distance + 0.0007654 * distance * distance;
+        return 79.57881 - 0.3868654 * distance + 0.0007489939 * distance * distance
+                + 3.848706 * Math.pow(10, -8) * distance * distance * distance; // 79.658 - 0.3889 * distance +
+                                                                                // 0.0007654 * distance * distance
     }
 
     public double computeShooterRightSpeed(double distance) {

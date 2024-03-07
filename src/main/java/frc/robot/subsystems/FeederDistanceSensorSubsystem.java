@@ -19,7 +19,6 @@ public class FeederDistanceSensorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("ToF", distanceSensor.getRange());
-        SmartDashboard.putBoolean("Is Note Loaded", isNoteLoaded());
     }
 
     public boolean isNoteLoaded() {

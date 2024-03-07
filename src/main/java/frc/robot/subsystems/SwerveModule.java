@@ -157,5 +157,4 @@ public class SwerveModule {
         encoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
         cancoder.configAllSettings(encoderConfig);
     }
-
 }

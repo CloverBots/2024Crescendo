@@ -111,6 +111,7 @@ public class SwerveSubsystem extends SubsystemBase {
         return angle;
         // return Math.IEEEremainder(-gyro.getAngle(), 360);
     }
+    
 
     /**
      * Gives the robot's heading as a {@code Rotation2d} instance.
@@ -152,7 +153,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(double vx, double vy, double omegaDegreesPerSecond, boolean fieldOriented) {
-        setSpeed(new ChassisSpeeds(vx, vy, Units.degreesToRadians(omegaDegreesPerSecond)), fieldOriented);
+        setSpeed(new ChassisSpeeds(vx, vy,Units.degreesToRadians(omegaDegreesPerSecond)), fieldOriented);
     }
 
     public void setSpeed(ChassisSpeeds chassisSpeeds, boolean fieldOriented) {
@@ -208,13 +209,12 @@ public class SwerveSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber("Gyro Roll", gyro.getRoll());
         // SmartDashboard.putNumber("Gyro Pitch", gyro.getPitch());
 
-        SmartDashboard.putString("Odometer Robot Rotation", getPose().getRotation().toString());
-
         SmartDashboard.putString("Odometer Robot Location", getPose().getTranslation().toString());
+        SmartDashboard.putString("Odometer Robot Rotation", getPose().getRotation().toString());
 
         if (SmartDashboard.getBoolean("reset odometry", false)) {
             SmartDashboard.putBoolean("reset odometry", false);
-            resetOdometry();;
+            resetOdometry();
         }
         if (SmartDashboard.getBoolean("resync turn encoders", false)) {
             SmartDashboard.putBoolean("resync turn encoders", false);
@@ -222,19 +222,17 @@ public class SwerveSubsystem extends SubsystemBase {
         }
         // Monitor absolute encoder values for configuration
         // for (int i=0; i<modules.length; i++) {
-        // SmartDashboard.putNumber("abs
-        // "+SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
-        // modules[i].getAbsolutePosition());
+        //     SmartDashboard.putNumber("abs "+SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
+        //         modules[i].getAbsolutePosition());
         // }
         // // Monitor encoder values for configuration
         // for (int i=0; i<modules.length; i++) {
-        // SmartDashboard.putNumber(SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
-        // Units.radiansToDegrees(modules[i].getTurningPosition()));
+        //     SmartDashboard.putNumber(SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
+        //         Units.radiansToDegrees(modules[i].getTurningPosition()));
         // }
         // for (int i=0; i<modules.length; i++) {
-        // SmartDashboard.putNumber("talon
-        // "+SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
-        // modules[i].getDriveVelocity());
+        //     SmartDashboard.putNumber("talon "+SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
+        //         modules[i].getDriveVelocity());
         // }
     }
 

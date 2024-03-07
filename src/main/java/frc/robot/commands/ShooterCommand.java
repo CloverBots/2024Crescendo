@@ -40,6 +40,7 @@ public class ShooterCommand extends Command {
 
     private boolean firing = false;
     private boolean noteLoaded = false;
+    private boolean readyToFire = false;
 
     public enum ACTION {
         NONE, INTAKE, EJECT, AMP, SPEAKER, DEFAULT_SPEAKER, TRAP, FIRE, PARK, TUNING, CLIMB_AUTO_READY, CLIMB_AUTO_LIFT,
@@ -108,6 +109,8 @@ public class ShooterCommand extends Command {
     public void execute() {
 
         SmartDashboard.putBoolean("Note Loaded", noteLoaded);
+
+        SmartDashboard.putBoolean("Fire", readyToFire);
 
         checkControllerValues();
 
@@ -192,7 +195,7 @@ public class ShooterCommand extends Command {
 
             case CLIMB_MANUAL:
                 if (Math.abs(leftJoystickY.getAsDouble()) > .05) {
-                    pivotSpeed = -leftJoystickY.getAsDouble() / 2; // - is because joystick returns 1 for down, -1 for
+                    pivotSpeed = -leftJoystickY.getAsDouble() / 2.2; // - is because joystick returns 1 for down, -1 for
                                                                    // up
 
                     if (pivotSpeed > 0.05 &&
@@ -203,6 +206,10 @@ public class ShooterCommand extends Command {
                     if (pivotSpeed < -.05 &&
                             pivotSubsystem.getPivotAbsolutePosition() < RobotContainer.PIVOT_LOWER_ENDPOINT) {
                         pivotSpeed = 0;
+                    }
+
+                    if (Math.abs(pivotSpeed) < 0.2) {
+                        pivotSpeed = pivotSpeed / 2;
                     }
 
                     pivotSubsystem.setSpeed(pivotSpeed);
@@ -295,19 +302,19 @@ public class ShooterCommand extends Command {
 
                     SmartDashboard.putBoolean("Camera", true);
 
-                    shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
-                    shooterRightRPM = RobotContainer.SHOOTER_SPEAKER_RIGHT_RPM;
-                    feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
-                    pivotAngle = RobotContainer.SHOOTER_SPEAKER_PIVOT_ANGLE;
-                    pivotAngle = checkAngleLimits(pivotAngle);
-                    previousPivotAngle = pivotAngle;
-                    pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
-                    previousPivotAngle = pivotAngle;
                 } else if (visionTargetTracker.isValid()) {
                     SmartDashboard.putBoolean("Camera", false);
-                    mode = ACTION.NONE;
-                    modeChanged = true;
+
                 }
+
+                shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
+                shooterRightRPM = RobotContainer.SHOOTER_SPEAKER_RIGHT_RPM;
+                feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
+                pivotAngle = RobotContainer.SHOOTER_SPEAKER_PIVOT_ANGLE;
+                pivotAngle = checkAngleLimits(pivotAngle);
+                previousPivotAngle = pivotAngle;
+                pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
+                previousPivotAngle = pivotAngle;
 
                 break;
 
@@ -340,8 +347,7 @@ public class ShooterCommand extends Command {
 
             case FIRE:
                 feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
-                System.out.println(
-                        "angle: " + pivotAngle + " RPM left: " + shooterLeftRPM + " RPM right: " + shooterRightRPM + " Distance " + visionTargetTracker.computeTargetDistance());
+
                 // Update previous values for comparison during next shot
                 if (visionTargetTracker.isValid()) {
                     previousVisionTy = visionTargetTracker.getTy();
@@ -412,7 +418,6 @@ public class ShooterCommand extends Command {
         shooterSubsystem.setShooterRightRPM(0);
         pivotSubsystem.setSpeed(0);
         pivotSubsystem.disable();
-        System.out.println("Shooter Command Ending!!!!!!!!!!!");
     }
 
     // Returns true when the command should end.
@@ -465,10 +470,16 @@ public class ShooterCommand extends Command {
             case DEFAULT_SPEAKER:
             case TRAP:
             case TUNING:
+                if (shooterSubsystem.isShooterAtTargetRpm() && pivotSubsystem.pivotReady() && noteLoaded) {
+                    readyToFire = true;
+                } else {
+                    readyToFire = false;
+                }
                 break;
             case FIRE:
                 if (firing && timer.get() > RobotContainer.FEEDER_TIME) {
                     firing = false;
+                    readyToFire = false;
                     mode = ACTION.PARK;
                     DriveFromControllerCommand.lockOnMode = false;
                     modeChanged = true;

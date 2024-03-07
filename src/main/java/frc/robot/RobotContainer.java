@@ -64,13 +64,13 @@ public class RobotContainer {
   private static final double CAMERA_HEIGHT = 8.75; // inches
   private static final double CAMERA_PITCH = 35; // degrees
 
-  public final static double PIVOT_LOWER_ENDPOINT = 5; // 7
+  public final static double PIVOT_LOWER_ENDPOINT = 6; // 7 , 5
   public final static double PIVOT_UPPER_ENDPOINT = 100;
 
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
-      VISION_TARGET_HEIGHT,
-      CAMERA_HEIGHT,
-      CAMERA_PITCH);
+          VISION_TARGET_HEIGHT,
+          CAMERA_HEIGHT,
+          CAMERA_PITCH);
 
   public final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
 
@@ -78,12 +78,11 @@ public class RobotContainer {
   public static final double FEEDER_SPEED_INTAKE = 0.5;
   public static final double FEEDER_SPEED_SHOOT = 0.8;
   public final static double FEEDER_TIME = 2;
-  public static final double PIVOT_SPEED = 0.5;
   public static final double DEFAULT_SPEAKER_PIVOT_ANGLE = 20;
 
   public static final double CLIMBER_READY_POSITION = 90;
   public static final double CLIMBER_RAISED_POSITION = 15;
-  public static final double CLIMBER_PIVOT_SPEED = 0.2;
+  public static final double CLIMBER_PIVOT_SPEED = 0.5;
 
   // PARKED SHOOTER
   public static final double SHOOTER_PARKED_PIVOT_ANGLE = 10;
@@ -103,8 +102,9 @@ public class RobotContainer {
   public static final double SHOOTER_SPEAKER_LEFT_RPM = 2000; // 2000
   public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 64; // 64
 
+
   private final Field2d field;
-  private final SendableChooser<Command> autoChooser;
+  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
   private final PathSwerveSubsystem pathSwerveSubsystem = new PathSwerveSubsystem();
   private final FeederSubsystem feederSubsystem = new FeederSubsystem();
@@ -183,17 +183,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("Left", Commands.print("Left")); // autoLeftCommand
     NamedCommands.registerCommand("Fire", Commands.print("Fire")); // autoFireCommand
 
-    autoChooser = AutoBuilder.buildAutoChooser("Test X");
-    autoChooser.addOption("Test X", AutoBuilder.buildAuto("Test X"));
-    autoChooser.addOption("Test Y", AutoBuilder.buildAuto("Test Y"));
-    autoChooser.addOption("Test Rotate", AutoBuilder.buildAuto("Test Rotate"));
-    autoChooser.addOption("Center Notes 3,2,1,4", AutoBuilder.buildAuto("Center Notes 3,2,1,4"));
-    autoChooser.addOption("Center Notes 2,3,6", AutoBuilder.buildAuto("Center Notes 2,3,6"));
-    autoChooser.addOption("Right 1,2,3,4", AutoBuilder.buildAuto("Right 1,2,3,4"));
-    autoChooser.addOption("Right Notes 4,5,6", AutoBuilder.buildAuto("Right Notes 4,5,6"));
-    autoChooser.addOption("Left 3,2,1,4", AutoBuilder.buildAuto("Left 3,2,1,4"));
-    autoChooser.addOption("Left Notes 8,7,6", AutoBuilder.buildAuto("Left Notes 8,7,6"));
+    configureAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
+    
     configureBindings();
   }
 
@@ -216,6 +208,18 @@ public class RobotContainer {
 
   public void resetGyro() {
     swerveSubsystem.zeroHeading();
+  }
+
+  private void configureAutoChooser() {
+    autoChooser.setDefaultOption("Test X", AutoBuilder.buildAuto("Test X"));
+    autoChooser.addOption("Test Y", AutoBuilder.buildAuto("Test Y"));
+    autoChooser.addOption("Test Rotate", AutoBuilder.buildAuto("Test Rotate"));
+    autoChooser.addOption("Center Notes 3,2,1,4", AutoBuilder.buildAuto("Center Notes 3,2,1,4"));
+    autoChooser.addOption("Center Notes 2,3,6", AutoBuilder.buildAuto("Center Notes 2,3,6"));
+    autoChooser.addOption("Right 1,2,3,4", AutoBuilder.buildAuto("Right 1,2,3,4"));
+    autoChooser.addOption("Right Notes 4,5,6", AutoBuilder.buildAuto("Right Notes 4,5,6"));
+    autoChooser.addOption("Left 3,2,1,4", AutoBuilder.buildAuto("Left 3,2,1,4"));
+    autoChooser.addOption("Left Notes 8,7,6", AutoBuilder.buildAuto("Left Notes 8,7,6"));
   }
 
   public Command getAutonomousCommand() {
@@ -247,7 +251,6 @@ public class RobotContainer {
     SmartDashboard.putNumber("Shooter right RPM", 0.5);
     SmartDashboard.putNumber("Shooter left RPM", 0.5);
     SmartDashboard.putNumber("Shooter angle", 25);
-    SmartDashboard.putNumber("Feeder power", 0);
 
   }
 }
