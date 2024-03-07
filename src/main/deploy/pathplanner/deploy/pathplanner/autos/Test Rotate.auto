@@ -16,30 +16,6 @@
           "data": {
             "pathName": "Test Rotate"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Start Shooter"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Aim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Fire"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake"
-          }
         }
       ]
     }
