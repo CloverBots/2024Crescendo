@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.VisionTargetTracker;
 import frc.robot.subsystems.PivotSubsystem;
@@ -18,15 +17,15 @@ public class AutoAimCommand extends Command {
   private PIDController lockToTagXController = new PIDController(0.075, 0.03, 0.005);
   private SwerveSubsystem swerve;
   private PivotSubsystem pivotSubsystem;
-  private ShooterSubsystem shooterSubsystem;
   private VisionTargetTracker visionTargetTracker;
+  private ShooterSubsystem shooterSubsystem;
   private double pivotAngle;
   private double previousPivotAngle;
   private float time;
   private Timer timer;
 
-  public AutoAimCommand(SwerveSubsystem swerve, VisionTargetTracker visionTargetTracker, PivotSubsystem pivotSubsystem, ShooterSubsystem shooterSubsystem,
-      float time) {
+  public AutoAimCommand(SwerveSubsystem swerve, VisionTargetTracker visionTargetTracker, PivotSubsystem pivotSubsystem,
+      ShooterSubsystem shooterSubsystem, float time) {
     addRequirements(swerve);
     this.swerve = swerve;
     this.pivotSubsystem = pivotSubsystem;
@@ -53,8 +52,6 @@ public class AutoAimCommand extends Command {
     double calculate = -lockToTagXController.calculate(visionTargetTracker.getTx(), 0);
     swerve.setSpeed(0, 0, calculate, true);
 
-    SmartDashboard.putNumber("calculate", calculate);
-
     double targetDistance = 0;
     Boolean isTargetValid = visionTargetTracker.isValid();
     if (isTargetValid) {
@@ -67,6 +64,7 @@ public class AutoAimCommand extends Command {
     if (Math.abs(previousPivotAngle - pivotAngle) > 1) {
       previousPivotAngle = pivotAngle;
       pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
+
       shooterSubsystem.setShooterLeftRPM(visionTargetTracker.computeShooterLeftSpeed(targetDistance));
       shooterSubsystem.setShooterRightRPM(visionTargetTracker.computeShooterRightSpeed(targetDistance));
     }
@@ -92,7 +90,7 @@ public class AutoAimCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (!visionTargetTracker.isValid() || timer.get() > time) {
+    if (timer.get() > time) {
       return true;
     }
 

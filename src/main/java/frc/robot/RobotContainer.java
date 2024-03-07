@@ -31,15 +31,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoAimCommand;
-import frc.robot.commands.AutoFireFarCommand;
-import frc.robot.commands.AutoFireLeftCommand;
-import frc.robot.commands.AutoFireLineCommand;
-import frc.robot.commands.AutoFireSubwooferCommand;
+import frc.robot.commands.AutoFarCommand;
+import frc.robot.commands.AutoFireCommand;
 import frc.robot.commands.AutoIntakeCommand;
+import frc.robot.commands.AutoLeftCommand;
+import frc.robot.commands.AutoLineCommand;
+import frc.robot.commands.AutoSubwooferCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.AutoStartShooterCommand;
-import frc.robot.commands.AutoTrackCommand;
 import frc.robot.constants.IDs;
 import frc.robot.constants.PathPlannerConstants;
 import frc.robot.constants.PathPlannerConstants.Swerve;
@@ -147,21 +146,16 @@ public class RobotContainer {
       operatorController::getBackButton,
       driverController::getRightBumper);
 
-  private final AutoTrackCommand autoTrackCommand = new AutoTrackCommand(swerveSubsystem, visionTargetTracker,
-      2.0f);
+  private final AutoSubwooferCommand autoSubwooferCommand = new AutoSubwooferCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
+  private final AutoLineCommand autoLineCommand = new AutoLineCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
+  private final AutoFarCommand autoFarCommand = new AutoFarCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
+  private final AutoLeftCommand autoLeftCommand = new AutoLeftCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
+  private final AutoFireCommand autoFireCommand = new AutoFireCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
 
-  private final AutoFireSubwooferCommand autoFireSubwooferCommand = new AutoFireSubwooferCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
-
-  private final AutoFireLineCommand autoFireLineCommand = new AutoFireLineCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
-
-  private final AutoFireFarCommand autoFireFarCommand = new AutoFireFarCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
-
-  private final AutoFireLeftCommand autoFireLeftCommand = new AutoFireLeftCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
+  private final AutoAimCommand autoAimCommand = new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem, shooterSubsystem, 2.0f);
 
   private final AutoIntakeCommand autoIntakeCommand = new AutoIntakeCommand(feederDistanceSensorSubsystem,
       feederSubsystem, intakeSubsystem, 5.0);
-
-  private final AutoStartShooterCommand autoStartShooterCommand = new AutoStartShooterCommand(shooterSubsystem);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -182,12 +176,12 @@ public class RobotContainer {
 
     // Register Named Commands
     NamedCommands.registerCommand("Intake", Commands.print("Intaking")); // autoIntakeCommand
-    NamedCommands.registerCommand("Start Shooter", Commands.print("Starting Shooter")); // autoStartShooterCommand
     NamedCommands.registerCommand("Aim", Commands.print("Aiming")); // autoTrackCommand
-    NamedCommands.registerCommand("Fire Subwoofer", Commands.print("Firing Subwoofer")); // autoFireSubwooferCommand
-    NamedCommands.registerCommand("Fire Line", Commands.print("Firing Line")); // autoFireLineCommand
-    NamedCommands.registerCommand("Fire Far", Commands.print("Firing Far")); // autoFireFarCommand
-    NamedCommands.registerCommand("Fire Left", Commands.print("Firing Left")); // autoFireLeftCommand
+    NamedCommands.registerCommand("Subwoofer", Commands.print("Subwoofer")); // autoSubwooferCommand
+    NamedCommands.registerCommand("Line", Commands.print("Line")); // autoLineCommand
+    NamedCommands.registerCommand("Far", Commands.print("Far")); // autoFarCommand
+    NamedCommands.registerCommand("Left", Commands.print("Left")); // autoLeftCommand
+    NamedCommands.registerCommand("Fire", Commands.print("Fire")); // autoFireCommand
 
     autoChooser = AutoBuilder.buildAutoChooser("Test");
     SmartDashboard.putData("Auto Chooser", autoChooser);

@@ -15,16 +15,10 @@ import frc.robot.subsystems.ShooterSubsystem;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class AutoFireFarCommand extends SequentialCommandGroup {
+public class AutoFireCommand extends SequentialCommandGroup {
   /** Creates a new AutoFire. */
-  public AutoFireFarCommand(FeederSubsystem feederSubsystem, PivotSubsystem pivotSubsystem, ShooterSubsystem shooterSubsystem) {
+  public AutoFireCommand(FeederSubsystem feederSubsystem, PivotSubsystem pivotSubsystem, ShooterSubsystem shooterSubsystem) {
     addCommands(
-      new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(0)), // Need values
-      new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0)),
-      new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0)),
-
-      new WaitCommand(0.2),
-
       new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT)),
       new WaitCommand(0.2),
       new InstantCommand(() -> feederSubsystem.setSpeed(0)),
