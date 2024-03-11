@@ -214,12 +214,14 @@ public class RobotContainer {
     autoChooser.setDefaultOption("Test X", AutoBuilder.buildAuto("Test X"));
     autoChooser.addOption("Test Y", AutoBuilder.buildAuto("Test Y"));
     autoChooser.addOption("Test Rotate", AutoBuilder.buildAuto("Test Rotate"));
-    autoChooser.addOption("Center Notes 3,2,1,4", AutoBuilder.buildAuto("Center Notes 3,2,1,4"));
+    autoChooser.addOption("Center Notes 3,2,1,4", AutoBuilder.buildAuto("Center Notes 3,2,1,4,5"));
     autoChooser.addOption("Center Notes 2,3,6", AutoBuilder.buildAuto("Center Notes 2,3,6"));
     autoChooser.addOption("Right 1,2,3,4", AutoBuilder.buildAuto("Right 1,2,3,4"));
     autoChooser.addOption("Right Notes 4,5,6", AutoBuilder.buildAuto("Right Notes 4,5,6"));
-    autoChooser.addOption("Left 3,2,1,4", AutoBuilder.buildAuto("Left 3,2,1,4"));
+    autoChooser.addOption("Left Notes 3,2,1,4", AutoBuilder.buildAuto("Left 3,2,1,4,5"));
     autoChooser.addOption("Left Notes 8,7,6", AutoBuilder.buildAuto("Left Notes 8,7,6"));
+    autoChooser.addOption("Center Notes 2,3,1,4,5", AutoBuilder.buildAuto("Center Notes 2,3,1,4,5"));
+    autoChooser.addOption("Right Middle Sweep", AutoBuilder.buildAuto("Right Middle Sweep"));
   }
 
   public Command getAutonomousCommand() {

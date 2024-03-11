@@ -175,19 +175,63 @@
           }
         },
         {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Aim"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.5
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Fire"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note 1 to Line Shot"
+                  "pathName": "Note 4 from Note 1"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Line"
+                  "name": "Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 4 to Far Shot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Far"
                 }
               }
             ]
@@ -225,7 +269,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note 4 from Line Shot"
+                  "pathName": "Note 5 from Far"
                 }
               },
               {
@@ -244,7 +288,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note 4 to Far Shot"
+                  "pathName": "Note 5 to Far"
                 }
               },
               {
