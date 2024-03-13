@@ -46,7 +46,7 @@ public class SwerveDriveConstants {
     public static final double DRIVE_ENCODER_TO_METERS = (WHEEL_CIRCUMFERENCE / (DRIVE_GEAR_RATIO * 2048.0));
 
     /** Multiply the output of {@code getSelectedSensorVelocity()} by this to get the current velocity, in meters per second, on a swerve module. */
-    public static final double DRIVE_ENCODER_VELOCITY_TO_METERS_PER_SECOND = (600.0 * WHEEL_CIRCUMFERENCE) / (2048.0 * 60 * DRIVE_GEAR_RATIO);
+    public static final double DRIVE_ENCODER_VELOCITY_TO_METERS_PER_SECOND = 10 * DRIVE_ENCODER_TO_METERS;
 
     // Used for position and velocity conversions on the NEO turning motor on the swerve modules.
     public static final double TURNING_ENCODER_TO_RAD = (2 * Math.PI) / TURNING_GEAR_RATIO;
