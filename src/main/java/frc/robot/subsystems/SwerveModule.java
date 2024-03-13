@@ -2,13 +2,17 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.SensorTimeBase;
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -16,6 +20,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.constants.SwerveDriveConstants;
 import frc.robot.constants.SwerveDriveConstants.SwerveModuleConfigurations;
 
@@ -23,6 +28,9 @@ import frc.robot.constants.SwerveDriveConstants.SwerveModuleConfigurations;
  * Represents a Swerve Module on the robot. Contains movement and turning functionality for the wheel.
 */
 public class SwerveModule {
+
+    private static final boolean USE_NEW_PID_FEEDBACK_CONTROLLERS = true; // turn on to use built-in motor control
+
     private final TalonFX driveMotor;
     private final CANSparkMax turningMotor;
     private final CANCoder turningEncoder;
@@ -32,6 +40,8 @@ public class SwerveModule {
 
     private PIDController turningPidController;
     public PIDController velocityPidController;
+
+    private SparkPIDController internalTurningPIDController;
 
     /**
      * Constructs a new SwerveModule. 
@@ -59,6 +69,23 @@ public class SwerveModule {
         );
         turningPidController.enableContinuousInput(-Math.PI, Math.PI);
         resetEncoders();
+
+        // Internal motor controller configuration
+        if (USE_NEW_PID_FEEDBACK_CONTROLLERS) {
+            // Drive motor
+            TalonFXConfiguration driveConfig = new TalonFXConfiguration();
+            driveConfig.primaryPID.selectedFeedbackSensor = TalonFXFeedbackDevice.IntegratedSensor.toFeedbackDevice();
+            // double kF = 1023.0 / ((12.0 / 2.0) / SwerveDriveConstants.DRIVE_ENCODER_VELOCITY_TO_METERS_PER_SECOND); // kF copied from 2910 (probably wrong)
+            double kF = 1023.0 / (SwerveDriveConstants.PHYSICAL_MAX_SPEED_METERS_PER_SECOND / SwerveDriveConstants.DRIVE_ENCODER_VELOCITY_TO_METERS_PER_SECOND); // kF based on our calculated max speed (demanding max speed with this constant will yield 1023)
+            driveConfig.slot0.kF = kF;
+            driveConfig.slot0.kP = 0.0; // TODO: tune this
+
+            driveMotor.configAllSettings(driveConfig);
+
+            // Turning motor
+            internalTurningPIDController = turningMotor.getPIDController();
+            internalTurningPIDController.setD(0.2);
+        }
     }
     protected void setBrakeMode(boolean brake) {
         driveMotor.setNeutralMode(brake ? NeutralMode.Brake : NeutralMode.Coast);
@@ -136,11 +163,30 @@ public class SwerveModule {
         // For example, if you want to make the robot move in the opposite direction, this will make it so the wheel will simply spin backwards instead of turning the whole wheel around.
         state = SwerveModuleState.optimize(state, getState().angle);
 
-        // Calculates the (estimated) power needed for the wheel to reach the speed needed.
-        double output = (state.speedMetersPerSecond / SwerveDriveConstants.PHYSICAL_MAX_SPEED_METERS_PER_SECOND);
-        driveMotor.set(TalonFXControlMode.PercentOutput, output);
-        
-        turningMotor.set(turningPidController.calculate(getTurningPosition(), state.angle.getRadians()));
+
+        if (USE_NEW_PID_FEEDBACK_CONTROLLERS) {
+            driveMotor.set(
+                TalonFXControlMode.Velocity, state.speedMetersPerSecond / SwerveDriveConstants.DRIVE_ENCODER_VELOCITY_TO_METERS_PER_SECOND);
+
+            internalTurningPIDController.setReference(getTurningPosition(), CANSparkBase.ControlType.kPosition);
+            
+            
+            // Monitor real and target module state
+            if (config.driveMotorID == 10) {
+                SmartDashboard.putNumber("Target Velocity", state.speedMetersPerSecond);
+                SmartDashboard.putNumber("Real Velocity", getDriveVelocity());
+                SmartDashboard.putNumber("Target Angle", state.angle.getRadians());
+                SmartDashboard.putNumber("Real Angle", getTurningPosition());
+            }
+        } 
+
+        else {
+            // Calculates the (estimated) power needed for the wheel to reach the speed needed.
+            double output = (state.speedMetersPerSecond / SwerveDriveConstants.PHYSICAL_MAX_SPEED_METERS_PER_SECOND);
+            driveMotor.set(TalonFXControlMode.PercentOutput, output);
+
+            turningMotor.set(turningPidController.calculate(getTurningPosition(), state.angle.getRadians()));
+        }
     }
 
     /** Sets the speed of both motors to 0. */
