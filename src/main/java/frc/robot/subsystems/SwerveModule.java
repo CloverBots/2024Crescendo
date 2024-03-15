@@ -77,14 +77,23 @@ public class SwerveModule {
             driveConfig.primaryPID.selectedFeedbackSensor = TalonFXFeedbackDevice.IntegratedSensor.toFeedbackDevice();
             // double kF = 1023.0 / ((12.0 / 2.0) / SwerveDriveConstants.DRIVE_ENCODER_VELOCITY_TO_METERS_PER_SECOND); // kF copied from 2910 (probably wrong)
             double kF = 1023.0 / (SwerveDriveConstants.PHYSICAL_MAX_SPEED_METERS_PER_SECOND / SwerveDriveConstants.DRIVE_ENCODER_VELOCITY_TO_METERS_PER_SECOND); // kF based on our calculated max speed (demanding max speed with this constant will yield 1023)
+            SmartDashboard.putNumber("drive kF", kF);
+            kF *= 1.0005;
             driveConfig.slot0.kF = kF;
-            driveConfig.slot0.kP = 0.0; // TODO: tune this
+            driveConfig.slot0.kP = 0.05; // TODO: tune this
 
             driveMotor.configAllSettings(driveConfig);
 
             // Turning motor
             internalTurningPIDController = turningMotor.getPIDController();
-            internalTurningPIDController.setD(0.2);
+            internalTurningPIDController.setP(0.2);
+            internalTurningPIDController.setI(0.0);
+            internalTurningPIDController.setD(0.0);
+            internalTurningPIDController.setFF(0.0);
+            internalTurningPIDController.setIZone(0.0);
+            internalTurningPIDController.setPositionPIDWrappingMaxInput(Math.PI);
+            internalTurningPIDController.setPositionPIDWrappingMinInput(-Math.PI);
+            internalTurningPIDController.setPositionPIDWrappingEnabled(true);
         }
     }
     protected void setBrakeMode(boolean brake) {
@@ -168,7 +177,7 @@ public class SwerveModule {
             driveMotor.set(
                 TalonFXControlMode.Velocity, state.speedMetersPerSecond / SwerveDriveConstants.DRIVE_ENCODER_VELOCITY_TO_METERS_PER_SECOND);
 
-            internalTurningPIDController.setReference(getTurningPosition(), CANSparkBase.ControlType.kPosition);
+            internalTurningPIDController.setReference(state.angle.getRadians(), CANSparkBase.ControlType.kPosition);
             
             
             // Monitor real and target module state
