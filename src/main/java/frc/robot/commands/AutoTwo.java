@@ -55,7 +55,7 @@ public class AutoTwo extends SequentialCommandGroup {
                         pivotSubsystem),  
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-64),
-                        Units.inchesToMeters(72), -60, 10.0, false), // -64, 72, -60, 1.5, false
+                        Units.inchesToMeters(72), -60, 1.5, false), // -64, 72, -60, 1.5, false
 
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
                         shooterSubsystem, 1.0f),
@@ -78,13 +78,13 @@ public class AutoTwo extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new DriveToDistanceCommand(swerveSubsystem,
                                 Units.inchesToMeters(-12 * 24 - 6),
-                                Units.inchesToMeters(142),
-                                0, 10.0, false),// -12 * 24 - 6, 142, 0, 4.0, false
+                                Units.inchesToMeters(157),
+                                0, 3.0, false),// -12 * 24 - 6, 142, 0, 4.0, false
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
                                 intakeSubsystem, 5)), 
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90),
-                        Units.inchesToMeters(140), -60, 10.0, false), // -90, 140, -60, 3.5, false
+                        Units.inchesToMeters(140), -60, 1.5, false), // -90, 140, -60, 3.5, false
                 
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000),
                         shooterSubsystem),
@@ -94,7 +94,7 @@ public class AutoTwo extends SequentialCommandGroup {
                         pivotSubsystem), 
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90),
-                        Units.inchesToMeters(72), -50, 10.0, false), // -90, 72, -50, 2.0, false
+                        Units.inchesToMeters(72), -50, 1.0, false), // -90, 72, -50, 2.0, false
                 
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
                         shooterSubsystem, 1.0f),
