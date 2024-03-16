@@ -63,12 +63,12 @@ public class AutoFive extends SequentialCommandGroup {
                         () -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE),
                         pivotSubsystem),
                 new ParallelCommandGroup(
-                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-48), Units.inchesToMeters(38),
+                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-50), Units.inchesToMeters(38),
                                 -30, 1.5, false),
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 1.5)),
 
                  
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-48), Units.inchesToMeters(38), -30,
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-50), Units.inchesToMeters(38), -30,
                         1.0, true),
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(1500), shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(1500), shooterSubsystem),

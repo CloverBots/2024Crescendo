@@ -77,7 +77,7 @@ public class AutoTwo extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new DriveToDistanceCommand(swerveSubsystem,
                                 Units.inchesToMeters(-12 * 24 - 6),
-                                Units.inchesToMeters(136),
+                                Units.inchesToMeters(142),
                                 0, 4.0, false),
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
                                 intakeSubsystem, 5)),
