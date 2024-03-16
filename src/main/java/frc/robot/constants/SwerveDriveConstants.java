@@ -38,7 +38,7 @@ public class SwerveDriveConstants {
     /** The maximum acceleration for the robot's X and Y movement. */
     public static final double teleOpMaxAccelerationMetersPerSecond = 3;
 
-    public static final double AUTO_MAX_SPEED = 2;
+    public static final double AUTO_MAX_SPEED = 5; // 2
     public static final double AUTO_MAX_ACCELERATION = 1;
     // public static final double AUTO_MAX_ANGULAR_ACCELERATION = 1;
 

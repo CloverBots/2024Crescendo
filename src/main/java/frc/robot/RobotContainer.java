@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoFive;
 import frc.robot.commands.AutoFour;
 import frc.robot.commands.AutoOne;
+import frc.robot.commands.AutoSeven;
 import frc.robot.commands.AutoThree;
 import frc.robot.commands.AutoTwo;
 import frc.robot.commands.DriveFromControllerCommand;
@@ -160,11 +161,11 @@ public class RobotContainer {
         swerveSubsystem.zeroHeading();
     }
 
-    private void configureAutoChooser() {
-        chooser.setDefaultOption("Auto 3 Note LEFT", new AutoOne(swerveSubsystem, feederSubsystem, pivotSubsystem,
+    private void configureAutoChooser() { // TO-DO reset default
+        chooser.addOption("Auto 3 Note LEFT", new AutoOne(swerveSubsystem, feederSubsystem, pivotSubsystem,
                 shooterSubsystem, feederDistanceSensorSubsystem,
                 intakeSubsystem, visionTargetTracker));
-        chooser.addOption("Auto 2 Note", new AutoTwo(swerveSubsystem, feederSubsystem, pivotSubsystem,
+        chooser.setDefaultOption("Auto 2 Note", new AutoTwo(swerveSubsystem, feederSubsystem, pivotSubsystem,
                 shooterSubsystem, feederDistanceSensorSubsystem,
                 intakeSubsystem, visionTargetTracker));
         chooser.addOption("Auto 1 Note Amp", new AutoFour(swerveSubsystem, feederSubsystem, pivotSubsystem,
@@ -175,6 +176,7 @@ public class RobotContainer {
                 intakeSubsystem, visionTargetTracker));
         chooser.addOption("Auto 4 Note CENTER", new AutoFive(swerveSubsystem, feederSubsystem, pivotSubsystem,
                 shooterSubsystem, feederDistanceSensorSubsystem, intakeSubsystem, visionTargetTracker));
+        chooser.addOption("Auto 3 Note Middle Line", new AutoSeven(swerveSubsystem, feederSubsystem, pivotSubsystem, shooterSubsystem, feederDistanceSensorSubsystem, intakeSubsystem, visionTargetTracker));
 
     }
 
