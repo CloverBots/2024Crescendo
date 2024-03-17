@@ -333,8 +333,8 @@ public class ShooterCommand extends Command {
 
                 }
 
-                shooterLeftRPM = 0; // TO-DO RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
-                shooterRightRPM = 0; // TO-DO RobotContainer.SHOOTER_SPEAKER_RIGHT_RPM;
+                shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
+                shooterRightRPM = RobotContainer.SHOOTER_SPEAKER_RIGHT_RPM;
                 feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
                 pivotAngle = RobotContainer.SHOOTER_SPEAKER_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
