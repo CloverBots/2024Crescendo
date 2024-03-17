@@ -83,8 +83,8 @@ public class AutoSeven extends SequentialCommandGroup {
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
                                 intakeSubsystem, 3)),
 
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90),
-                        Units.inchesToMeters(130), -60, 1.5, false), // -72, 140, -60, 3.5, false
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-12 * 12 - 6),
+                        Units.inchesToMeters(130), -50, 1.5, false), // -72, 140, -60, 3.5, false
 
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000),
                         shooterSubsystem),
@@ -110,12 +110,8 @@ public class AutoSeven extends SequentialCommandGroup {
                 new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE)),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-120),
-                        Units.inchesToMeters(36),
-                        0, 1.0, false),
-
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-136),
-                        Units.inchesToMeters(32),
-                        0, 0.3, false),
+                        Units.inchesToMeters(28),
+                        0, 1.5, false),
                 
                 new ParallelCommandGroup(
                         new DriveToDistanceCommand(swerveSubsystem,
@@ -131,10 +127,14 @@ public class AutoSeven extends SequentialCommandGroup {
                         shooterSubsystem),
                 new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(25),
                         pivotSubsystem),
+
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-120),
+                        Units.inchesToMeters(5),
+                        0, 1.5, false),
                     
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-64),
-                        Units.inchesToMeters(0),
-                        -10, 1.0, false),
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-96),
+                        Units.inchesToMeters(-24),
+                        -20, 1.0, false),
 
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
                         shooterSubsystem, 1.0f),
