@@ -208,7 +208,8 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Gyro/Heading", getHeading());
         // SmartDashboard.putNumber("Gyro Roll", gyro.getRoll());
         // SmartDashboard.putNumber("Gyro Pitch", gyro.getPitch());
-
+        SmartDashboard.putBoolean("Gyro/Connected", gyro.isConnected());
+        SmartDashboard.putBoolean("Gyro/Calibrated", !gyro.isCalibrating()); // true if done calibrating
         SmartDashboard.putString("Odometer Robot Location", getPose().getTranslation().toString());
         SmartDashboard.putString("Odometer Robot Rotation", getPose().getRotation().toString());
 
@@ -234,6 +235,8 @@ public class SwerveSubsystem extends SubsystemBase {
         //     SmartDashboard.putNumber("talon "+SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
         //         modules[i].getDriveVelocity());
         // }
+
+
     }
 
     /**

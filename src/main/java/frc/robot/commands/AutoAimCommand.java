@@ -14,7 +14,7 @@ import frc.robot.subsystems.SwerveSubsystem;
 
 public class AutoAimCommand extends Command {
 
-  private PIDController lockToTagXController = new PIDController(0.075, 0.03, 0.005);
+  private PIDController lockToTagXController = new PIDController(5.0, .3, 0); // 0.075, 0.03, 0.005
   private SwerveSubsystem swerve;
   private PivotSubsystem pivotSubsystem;
   private VisionTargetTracker visionTargetTracker;
@@ -30,7 +30,7 @@ public class AutoAimCommand extends Command {
     this.swerve = swerve;
     this.pivotSubsystem = pivotSubsystem;
     this.shooterSubsystem = shooterSubsystem;
-    this.lockToTagXController = new PIDController(14.0, 0.7, 0.3);
+    this.lockToTagXController = new PIDController(5.0, .3, 0); // 14.0, 0.7, 0.3 TO-DO Why is this here? Also why do we have three different rotational PIDs
     this.lockToTagXController.setTolerance(2);
     this.visionTargetTracker = visionTargetTracker;
     this.time = time;

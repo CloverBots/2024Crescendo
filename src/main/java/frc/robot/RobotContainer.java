@@ -4,31 +4,17 @@
 
 package frc.robot;
 
-import java.nio.file.Paths;
-import java.util.List;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.AutoFarCommand;
@@ -40,12 +26,9 @@ import frc.robot.commands.AutoSubwooferCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.constants.IDs;
-import frc.robot.constants.PathPlannerConstants;
-import frc.robot.constants.PathPlannerConstants.Swerve;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.PathSwerveSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -102,11 +85,20 @@ public class RobotContainer {
   public static final double SHOOTER_SPEAKER_LEFT_RPM = 2000; // 2000
   public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 64; // 64
 
+  // OVER STAGE
+  public static final double SHOOTER_OVER_STAGE_RIGHT_RPM = 2500;
+  public static final double SHOOTER_OVER_STAGE_LEFT_RPM = 3500;
+  public static final double SHOOTER_OVER_STAGE_PIVOT_ANGLE = 70;
+
+  // UNDER STAGE
+  public static final double SHOOTER_UNDER_STAGE_RIGHT_RPM = 3000;
+  public static final double SHOOTER_UNDER_STAGE_LEFT_RPM = 3000;
+  public static final double SHOOTER_UNDER_STAGE_PIVOT_ANGLE = 10;
+
 
   private final Field2d field;
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
-  private final PathSwerveSubsystem pathSwerveSubsystem = new PathSwerveSubsystem();
   private final FeederSubsystem feederSubsystem = new FeederSubsystem();
   private final FeederDistanceSensorSubsystem feederDistanceSensorSubsystem = new FeederDistanceSensorSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
@@ -167,12 +159,12 @@ public class RobotContainer {
     field = new Field2d();
     SmartDashboard.putData("Field", field);
 
-    PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
+    /* PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
       field.getObject("target pose").setPose(pose);
     });
     PathPlannerLogging.setLogActivePathCallback((poses) -> {
       field.getObject("path").setPoses(poses);
-    });
+    }); */
 
     // Register Named Commands
     NamedCommands.registerCommand("Intake", Commands.print("Intaking")); // autoIntakeCommand
@@ -215,7 +207,7 @@ public class RobotContainer {
     autoChooser.addOption("Test Y", AutoBuilder.buildAuto("Test Y"));
     autoChooser.addOption("Test Rotate", AutoBuilder.buildAuto("Test Rotate"));
     autoChooser.addOption("Center Notes 3,2,1,4", AutoBuilder.buildAuto("Center Notes 3,2,1,4,5"));
-    autoChooser.addOption("Center Notes 2,3,6", AutoBuilder.buildAuto("Center Notes 2,3,6"));
+    autoChooser.addOption("Center Notes 2,3,6,7", AutoBuilder.buildAuto("Center Notes 2,3,6,7"));
     autoChooser.addOption("Right 1,2,3,4", AutoBuilder.buildAuto("Right 1,2,3,4"));
     autoChooser.addOption("Right Notes 4,5,6", AutoBuilder.buildAuto("Right Notes 4,5,6"));
     autoChooser.addOption("Left Notes 3,2,1,4", AutoBuilder.buildAuto("Left 3,2,1,4,5"));

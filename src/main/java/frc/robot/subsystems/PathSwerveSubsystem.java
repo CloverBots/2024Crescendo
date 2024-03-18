@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.IDs;
-import frc.robot.constants.PathPlannerConstants;
 import frc.robot.constants.SwerveDriveConstants;
 import frc.robot.constants.SwerveDriveConstants.SwerveModuleConfigurations;
 
@@ -44,10 +43,10 @@ public class PathSwerveSubsystem extends SubsystemBase {
         new SwerveModule(SwerveModuleConfigurations.values()[3])
     };
     kinematics = new SwerveDriveKinematics(
-        PathPlannerConstants.Swerve.flModuleOffset,
-        PathPlannerConstants.Swerve.frModuleOffset,
-        PathPlannerConstants.Swerve.blModuleOffset,
-        PathPlannerConstants.Swerve.brModuleOffset);
+        SwerveDriveConstants.PathPlannerSwerve.flModuleOffset,
+        SwerveDriveConstants.PathPlannerSwerve.frModuleOffset,
+        SwerveDriveConstants.PathPlannerSwerve.blModuleOffset,
+        SwerveDriveConstants.PathPlannerSwerve.brModuleOffset);
     odometry = new SwerveDriveOdometry(kinematics, gyro.getRotation2d(), getPositions());
 
     // Configure AutoBuilder
@@ -56,7 +55,7 @@ public class PathSwerveSubsystem extends SubsystemBase {
         this::resetPose,
         this::getSpeeds,
         this::driveRobotRelative,
-        PathPlannerConstants.Swerve.pathFollowerConfig,
+        SwerveDriveConstants.PathPlannerSwerve.pathFollowerConfig,
         () -> {
           // Boolean supplier that controls when the path will be mirrored for the red
           // alliance

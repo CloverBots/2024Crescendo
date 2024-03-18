@@ -23,9 +23,9 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class DriveToDistanceCommand extends Command {
   private SwerveSubsystem swerveSubsystem;
 
-  private PIDController driveDistanceControllerX = new PIDController(6.0, 0.5, 0.4); // 6.0, 0.25, 0.4
-  private PIDController driveDistanceControllerY = new PIDController(6.0, 0.5, 0.4); //
-  private PIDController rotationController = new PIDController(5.0, .3, 0); // 13, .025, 1.2
+  private PIDController driveDistanceControllerX = new PIDController(3.0, 0, 0); // 6.0, 0.5, 0.4
+  private PIDController driveDistanceControllerY = new PIDController(3.0, 0, 0); //
+  private PIDController rotationController = new PIDController(5.0, .3, 0); // 5, .3, 0
 
   double xPos, yPos, angle;
   boolean rotateOnly;
@@ -121,11 +121,11 @@ public class DriveToDistanceCommand extends Command {
   @Override
   public void execute() {
     double xSpeed = driveDistanceControllerX.calculate(swerveSubsystem.getPose().getX());
+    double ySpeed = driveDistanceControllerY.calculate(swerveSubsystem.getPose().getY());
 
     // xSpeed = xLimiter.calculate(xSpeed);
     xSpeed = MathUtil.clamp(xSpeed, -SwerveDriveConstants.AUTO_MAX_SPEED, SwerveDriveConstants.AUTO_MAX_SPEED);
 
-    double ySpeed = driveDistanceControllerY.calculate(swerveSubsystem.getPose().getY());
     // ySpeed = yLimiter.calculate(ySpeed);
     ySpeed = MathUtil.clamp(ySpeed, -SwerveDriveConstants.AUTO_MAX_SPEED, SwerveDriveConstants.AUTO_MAX_SPEED);
 

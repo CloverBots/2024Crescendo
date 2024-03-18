@@ -72,6 +72,7 @@ public class PivotSubsystem extends PIDSubsystem {
 
     @Override
     public void useOutput(double output, double setpoint) {
+        // System.out.println("pivot PID output: " + output + " current angle: " + getPivotAbsolutePosition() + " setpoint: " + setpoint); //TO-DO remove
         output = MathUtil.clamp(output, -MAX_PIVOT_POWER_PID, MAX_PIVOT_POWER_PID);
         speed = output;
         // checkLimits();
@@ -150,4 +151,5 @@ public class PivotSubsystem extends PIDSubsystem {
         encoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
         cancoder.configAllSettings(encoderConfig);
     }
+
 }

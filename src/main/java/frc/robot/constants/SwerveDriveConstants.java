@@ -4,6 +4,10 @@
 
 package frc.robot.constants;
 
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -91,4 +95,21 @@ public class SwerveDriveConstants {
          new Translation2d(-wheelBase / 2, -trackWidth / 2), // BR
          new Translation2d(-wheelBase / 2, trackWidth / 2) // FR
      );
+
+    public static final class PathPlannerSwerve {
+        public static final Translation2d flModuleOffset = new Translation2d(wheelBase / 2, trackWidth / 2);
+        public static final Translation2d frModuleOffset = new Translation2d(-wheelBase / 2, trackWidth / 2);
+        public static final Translation2d blModuleOffset = new Translation2d(wheelBase / 2, -trackWidth / 2);
+        public static final Translation2d brModuleOffset = new Translation2d(-wheelBase / 2, -trackWidth / 2);
+
+        public static final double maxModuleSpeed = 2; // M/S
+
+        public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
+            new PIDConstants(6.0, 0.5, 0.4), // Translation constants 
+            new PIDConstants(5.0, .3, 0), // Rotation constants 
+            maxModuleSpeed, // Change to the constant above once tested
+            flModuleOffset.getNorm(), // Drive base radius (distance from center to furthest module) 
+            new ReplanningConfig()
+    );
+  }
 }
