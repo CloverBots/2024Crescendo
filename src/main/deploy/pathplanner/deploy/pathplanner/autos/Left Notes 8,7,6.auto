@@ -12,15 +12,41 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Subwoofer"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Podium from Left"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Left"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "wait",
+          "type": "race",
           "data": {
-            "waitTime": 0.5
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Aim"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.5
+                }
+              }
+            ]
           }
         },
         {
@@ -36,7 +62,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note 8 from Left"
+                  "pathName": "Note 8 from Podium"
                 }
               },
               {
