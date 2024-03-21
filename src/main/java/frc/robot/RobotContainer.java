@@ -80,7 +80,7 @@ public class RobotContainer {
     public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 64; // 64
 
     // OVER STAGE
-    public static final double SHOOTER_OVER_STAGE_RIGHT_RPM = 2500;
+    public static final double SHOOTER_OVER_STAGE_RIGHT_RPM = 2500; // TO-DO use these
     public static final double SHOOTER_OVER_STAGE_LEFT_RPM = 3500;
     public static final double SHOOTER_OVER_STAGE_PIVOT_ANGLE = 70;
 
