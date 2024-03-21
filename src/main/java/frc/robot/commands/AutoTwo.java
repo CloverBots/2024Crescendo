@@ -46,7 +46,7 @@ public class AutoTwo extends SequentialCommandGroup {
                         new Pose2d(new Translation2d(),
                                 new Rotation2d(Units.degreesToRadians(-60 * inverted)))),
                 // Shoot ring
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(100),
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000),
                         shooterSubsystem), 
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3000),
                         shooterSubsystem),
