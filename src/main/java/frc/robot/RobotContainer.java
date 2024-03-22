@@ -29,6 +29,7 @@ import frc.robot.constants.IDs;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.PathSwerveSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -97,7 +98,7 @@ public class RobotContainer {
 
 
   private final Field2d field;
-  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+  private final SendableChooser<Command> autoChooser;
   private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
   private final FeederSubsystem feederSubsystem = new FeederSubsystem();
   private final FeederDistanceSensorSubsystem feederDistanceSensorSubsystem = new FeederDistanceSensorSubsystem();
@@ -167,14 +168,14 @@ public class RobotContainer {
     }); */
 
     // Register Named Commands
-    NamedCommands.registerCommand("Intake", Commands.print("Intaking")); // autoIntakeCommand
-    NamedCommands.registerCommand("Aim", Commands.print("Aiming")); // autoTrackCommand
-    NamedCommands.registerCommand("Subwoofer", Commands.print("Subwoofer")); // autoSubwooferCommand
-    NamedCommands.registerCommand("Line", Commands.print("Line")); // autoLineCommand
-    NamedCommands.registerCommand("Far", Commands.print("Far")); // autoFarCommand
-    NamedCommands.registerCommand("Left", Commands.print("Left")); // autoLeftCommand
-    NamedCommands.registerCommand("Fire", Commands.print("Fire")); // autoFireCommand
-
+    NamedCommands.registerCommand("Intake", Commands.print("xxx")); // autoIntakeCommand
+    NamedCommands.registerCommand("Aim", Commands.print("xxx")); // autoTrackCommand
+    NamedCommands.registerCommand("Subwoofer", Commands.print("xxx")); // autoSubwooferCommand
+    NamedCommands.registerCommand("Line", Commands.print("xxx")); // autoLineCommand
+    NamedCommands.registerCommand("Far", Commands.print("xxx")); // autoFarCommand
+    NamedCommands.registerCommand("Left", Commands.print("xxx")); // autoLeftCommand
+    NamedCommands.registerCommand("Fire", Commands.print("xxx")); // autoFireCommand
+    autoChooser = AutoBuilder.buildAutoChooser("Test");
     configureAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
     
@@ -203,18 +204,18 @@ public class RobotContainer {
   }
 
   private void configureAutoChooser() {
-    autoChooser.setDefaultOption("Test X", AutoBuilder.buildAuto("Test X"));
-    autoChooser.addOption("Test Y", AutoBuilder.buildAuto("Test Y"));
-    autoChooser.addOption("Test Rotate", AutoBuilder.buildAuto("Test Rotate"));
-    autoChooser.addOption("Center Notes 3,2,1,4", AutoBuilder.buildAuto("Center Notes 3,2,1,4,5"));
-    autoChooser.addOption("Center Notes 2,3,6,7", AutoBuilder.buildAuto("Center Notes 2,3,6,7"));
-    autoChooser.addOption("Right 1,2,3,4", AutoBuilder.buildAuto("Right 1,2,3,4"));
-    autoChooser.addOption("Right Notes 4,5,6", AutoBuilder.buildAuto("Right Notes 4,5,6"));
-    autoChooser.addOption("Right Notes 1,4,5,6", AutoBuilder.buildAuto("Right Notes 1,4,5,6"));
-    autoChooser.addOption("Left Notes 3,2,1,4", AutoBuilder.buildAuto("Left 3,2,1,4,5"));
-    autoChooser.addOption("Left Notes 8,7,6", AutoBuilder.buildAuto("Left Notes 8,7,6"));
-    autoChooser.addOption("Center Notes 2,3,1,4,5", AutoBuilder.buildAuto("Center Notes 2,3,1,4,5"));
-    autoChooser.addOption("Right Middle Sweep", AutoBuilder.buildAuto("Right Middle Sweep"));
+    // autoChooser.setDefaultOption("Test X", AutoBuilder.buildAuto("Test X"));
+    // autoChooser.addOption("Test Y", AutoBuilder.buildAuto("Test Y"));
+    // autoChooser.addOption("Test Rotate", AutoBuilder.buildAuto("Test Rotate"));
+    // autoChooser.addOption("Center Notes 3,2,1,4", AutoBuilder.buildAuto("Center Notes 3,2,1,4,5"));
+    // autoChooser.addOption("Center Notes 2,3,6,7", AutoBuilder.buildAuto("Center Notes 2,3,6,7"));
+    // autoChooser.addOption("Right Notes 1,2,3,4", AutoBuilder.buildAuto("Right 1,2,3,4"));
+    // autoChooser.addOption("Right Notes 4,5,6", AutoBuilder.buildAuto("Right Notes 4,5,6"));
+    // autoChooser.addOption("Right Notes 1,4,5,6", AutoBuilder.buildAuto("Right Notes 1,4,5,6"));
+    // autoChooser.addOption("Left Notes 3,2,1,4", AutoBuilder.buildAuto("Left 3,2,1,4"));
+    // autoChooser.addOption("Left Notes 8,7,6", AutoBuilder.buildAuto("Left Notes 8,7,6"));
+    // autoChooser.addOption("Center Notes 2,3,1,4,5", AutoBuilder.buildAuto("Center Notes 2,3,1,4,5"));
+    // autoChooser.addOption("Right Middle Sweep", AutoBuilder.buildAuto("Right Middle Sweep")); 
   }
 
   public Command getAutonomousCommand() {

@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -10,7 +12,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.IDs;
@@ -30,6 +34,8 @@ public class SwerveSubsystem extends SubsystemBase {
     private final AHRS gyro = new AHRS(IDs.AHRS_PORT_ID);
 
     private final Timer resyncTimer = new Timer();
+    
+    private Field2d field = new Field2d();
 
     /** This will track the robot's X and Y position, as well as its rotation. */
     private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(SwerveDriveConstants.swerveKinematics,
@@ -53,6 +59,31 @@ public class SwerveSubsystem extends SubsystemBase {
             } catch (Exception e) {
             }
         }).start();
+    // Configure AutoBuilder
+
+    AutoBuilder.configureHolonomic(
+        this::getPose,
+        this::resetPose,
+        this::getSpeeds,
+        this::driveRobotRelative,
+        SwerveDriveConstants.PathPlannerSwerve.pathFollowerConfig,
+        () -> {
+          // Boolean supplier that controls when the path will be mirrored for the red
+          // alliance
+          // This will flip the path being followed to the red side of the field.
+          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+          var alliance = DriverStation.getAlliance();
+          if (alliance.isPresent()) {
+            return alliance.get() == DriverStation.Alliance.Red;
+          }
+          return false;
+        },
+        this);
+
+        PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
+        SmartDashboard.putData("Field", field);
+
         SmartDashboard.putBoolean("reset odometry", false);
         SmartDashboard.putBoolean("resync turn encoders", false);
         this.modules = new SwerveModule[4];
@@ -68,6 +99,25 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
+
+    public void resetPose(Pose2d pose) {
+        odometer.resetPosition(gyro.getRotation2d(), getModulePositions(), pose);
+      }
+    
+      public ChassisSpeeds getSpeeds() {
+        return SwerveDriveConstants.swerveKinematics.toChassisSpeeds(getModuleStates());
+      }
+    
+      public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
+        driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getPose().getRotation()));
+      }
+    
+      public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+        ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+    
+        SwerveModuleState[] targetStates = SwerveDriveConstants.swerveKinematics.toSwerveModuleStates(targetSpeeds);
+        setModuleStates(targetStates);
+      }
     /**
      * Called once every time the robot is enabled.
      */
@@ -278,7 +328,13 @@ public class SwerveSubsystem extends SubsystemBase {
                 modules[3].getPosition()
         };
     }
-
+    public SwerveModuleState[] getModuleStates() {
+        SwerveModuleState[] states = new SwerveModuleState[modules.length];
+        for (int i = 0; i < modules.length; i++) {
+          states[i] = modules[i].getState();
+        }
+        return states;
+    }
     /**
      * Sets the desired {@code SwerveModuleState} for every swerve module
      * 
