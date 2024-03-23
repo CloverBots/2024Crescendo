@@ -29,7 +29,6 @@ import frc.robot.constants.IDs;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.PathSwerveSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -168,13 +167,13 @@ public class RobotContainer {
     }); */
 
     // Register Named Commands
-    NamedCommands.registerCommand("Intake", Commands.print("xxx")); // autoIntakeCommand
-    NamedCommands.registerCommand("Aim", Commands.print("xxx")); // autoTrackCommand
-    NamedCommands.registerCommand("Subwoofer", Commands.print("xxx")); // autoSubwooferCommand
-    NamedCommands.registerCommand("Line", Commands.print("xxx")); // autoLineCommand
-    NamedCommands.registerCommand("Far", Commands.print("xxx")); // autoFarCommand
-    NamedCommands.registerCommand("Left", Commands.print("xxx")); // autoLeftCommand
-    NamedCommands.registerCommand("Fire", Commands.print("xxx")); // autoFireCommand
+    NamedCommands.registerCommand("Intake", Commands.print("Intake")); // autoIntakeCommand
+    NamedCommands.registerCommand("Aim", Commands.print("Aim")); // autoAimCommand
+    NamedCommands.registerCommand("Subwoofer", Commands.print("Subwoofer")); // autoSubwooferCommand
+    NamedCommands.registerCommand("Line", Commands.print("Line")); // autoLineCommand
+    NamedCommands.registerCommand("Far", Commands.print("Far")); // autoFarCommand
+    NamedCommands.registerCommand("Left", Commands.print("Left")); // autoLeftCommand
+    NamedCommands.registerCommand("Fire", Commands.print("Fire")); // autoFireCommand
     autoChooser = AutoBuilder.buildAutoChooser("Test");
     configureAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);

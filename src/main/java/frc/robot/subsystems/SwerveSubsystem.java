@@ -239,6 +239,8 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
 
+        field.setRobotPose(getPose());
+
         // Updates the odometer with the current rotation and distance travelled on each
         // module.
         odometer.update(getRotation2d(), getModulePositions());
