@@ -54,7 +54,7 @@ public class RobotContainer {
     public static final double INTAKE_SPEED = 1;
     public static final double FEEDER_SPEED_INTAKE = 0.5;
     public static final double FEEDER_SPEED_SHOOT = 0.8;
-    public final static double FEEDER_TIME = 2;
+    public final static double FEEDER_TIME = 1;
     public static final double DEFAULT_SPEAKER_PIVOT_ANGLE = 20;
 
     public static final double CLIMBER_READY_POSITION = 90;
@@ -138,7 +138,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
+        // swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
         shooterSubsystem.setDefaultCommand(shooterCommand);
 
         configureAutoChooser();

@@ -16,7 +16,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;// 0.1 * WHEEL_DIAMETER_METERS * Math.PI;
     private static final double ENCODER_VELOCITY_CONVERSION_FACTOR = 1.3;// ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
     private static final double MAX_RPM = 5000;
-    private static final double DEFAULT_SHOOTER_SPEED = 200;
+    private static final double DEFAULT_SHOOTER_SPEED = 0;
 
     private static final double SHOOTER_P = 0.0004;//0.01; // 8e-5;
     private static final double SHOOTER_I = 0.0;
