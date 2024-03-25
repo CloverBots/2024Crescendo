@@ -22,7 +22,7 @@ import frc.robot.constants.IDs;
 
 public class PivotSubsystem extends PIDSubsystem {
 
-    private final static double MAX_PIVOT_POWER_PID = 0.2; 
+    private final static double MAX_PIVOT_POWER_PID = 0.6; 
 
     private final CANSparkMax pivotLeadMotor;
     private final CANSparkMax pivotFollowMotor;
@@ -42,7 +42,7 @@ public class PivotSubsystem extends PIDSubsystem {
 
     public PivotSubsystem() {
 
-        super(new PIDController(0.025, 0, 0)); // TO-DO change as power increases
+        super(new PIDController(0.01, 0.0025, 0)); // P=0.025, I=0, D = 0
         getController().setTolerance(0.5);
         getController().enableContinuousInput(0, 360); // Sets the PID to treat zero and 2 pi as the same value.
         disable(); // start with PID disabled
@@ -72,7 +72,7 @@ public class PivotSubsystem extends PIDSubsystem {
 
     @Override
     public void useOutput(double output, double setpoint) {
-        // System.out.println("pivot PID output: " + output + " current angle: " + getPivotAbsolutePosition() + " setpoint: " + setpoint); //TO-DO remove
+        
         output = MathUtil.clamp(output, -MAX_PIVOT_POWER_PID, MAX_PIVOT_POWER_PID);
         speed = output;
         // checkLimits();

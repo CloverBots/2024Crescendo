@@ -25,6 +25,7 @@ import frc.robot.commands.AutoLineCommand;
 import frc.robot.commands.AutoSubwooferCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.autoYEETCommand;
 import frc.robot.constants.IDs;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
@@ -60,12 +61,7 @@ public class RobotContainer {
   public static final double INTAKE_SPEED = 1;
   public static final double FEEDER_SPEED_INTAKE = 0.5;
   public static final double FEEDER_SPEED_SHOOT = 0.8;
-  public final static double FEEDER_TIME = 2;
-  public static final double DEFAULT_SPEAKER_PIVOT_ANGLE = 20;
-
-  public static final double CLIMBER_READY_POSITION = 90;
-  public static final double CLIMBER_RAISED_POSITION = 15;
-  public static final double CLIMBER_PIVOT_SPEED = 0.5;
+  public final static double FEEDER_TIME = 1;
 
   // PARKED SHOOTER
   public static final double SHOOTER_PARKED_PIVOT_ANGLE = 10;
@@ -143,6 +139,7 @@ public class RobotContainer {
   private final AutoFarCommand autoFarCommand = new AutoFarCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
   private final AutoLeftCommand autoLeftCommand = new AutoLeftCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
   private final AutoFireCommand autoFireCommand = new AutoFireCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
+  private final autoYEETCommand autoYEETCommand = new autoYEETCommand(intakeSubsystem, pivotSubsystem, shooterSubsystem, feederSubsystem);
 
   private final AutoAimCommand autoAimCommand = new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem, shooterSubsystem, 2.0f);
 
@@ -174,6 +171,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Far", Commands.print("Far")); // autoFarCommand
     NamedCommands.registerCommand("Left", Commands.print("Left")); // autoLeftCommand
     NamedCommands.registerCommand("Fire", Commands.print("Fire")); // autoFireCommand
+    NamedCommands.registerCommand("YEET", Commands.print("YEET")); // autoYEETCommand
     autoChooser = AutoBuilder.buildAutoChooser("Test");
     configureAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);

@@ -45,7 +45,7 @@ public class ShooterCommand extends Command {
     private boolean readyToFire = false;
 
     public enum ACTION {
-        NONE, INTAKE, EJECT, AMP, SPEAKER, DEFAULT_SPEAKER, TRAP, FIRE, PARK, TUNING, CLIMB_AUTO_READY, CLIMB_AUTO_LIFT,
+        NONE, INTAKE, EJECT, AMP, SPEAKER, DEFAULT_SPEAKER, TRAP, FIRE, PARK, TUNING, LOB_HIGH, LOB_LOW,
         CLIMB_MANUAL
     }
 
@@ -105,7 +105,7 @@ public class ShooterCommand extends Command {
         pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE);
         pivotSubsystem.enable();
         SmartDashboard.putBoolean("Camera", true);
-        ledSubsystem.setLEDChannelB();
+        ledSubsystem.setLEDGreen();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -145,6 +145,8 @@ public class ShooterCommand extends Command {
 
             case AMP:
             case TRAP:
+            case LOB_LOW:
+            case LOB_HIGH:
             case DEFAULT_SPEAKER:
 
                 shooterSubsystem.setShooterLeftRPM(shooterLeftRPM);
@@ -193,12 +195,7 @@ public class ShooterCommand extends Command {
                 break;
 
             case NONE:
-                ledSubsystem.setLEDChannelB();
-                break;
-
-            case CLIMB_AUTO_LIFT:
-            case CLIMB_AUTO_READY:
-                pivotSubsystem.setSpeed(pivotSpeed);
+                ledSubsystem.setLEDGreen();
                 break;
 
             case CLIMB_MANUAL:
@@ -260,12 +257,12 @@ public class ShooterCommand extends Command {
         } else if (backButton.get()) {
             mode = ACTION.CLIMB_MANUAL;
             modeChanged = true;
-        } else if (dPad.get() == 0) { // disabled
-            // mode = ACTION.CLIMB_AUTO_READY;
-            // modeChanged = true;
-        } else if (dPad.get() == 180) { // disabled
-            // mode = ACTION.CLIMB_AUTO_LIFT;
-            // modeChanged = true;
+        } else if (dPad.get() == 0) { 
+            mode = ACTION.LOB_HIGH;
+            modeChanged = true;
+        } else if (dPad.get() == 180) { 
+            mode = ACTION.LOB_LOW;
+            modeChanged = true;
         }
     }
 
@@ -365,26 +362,22 @@ public class ShooterCommand extends Command {
 
                 break;
 
-            case CLIMB_AUTO_LIFT:
-                shooterLeftRPM = 0;
-                shooterRightRPM = 0;
-                feederSpeed = 0;
-                pivotSubsystem.disable();
-                pivotAngle = RobotContainer.CLIMBER_RAISED_POSITION;
+            case LOB_LOW:
+                shooterLeftRPM = RobotContainer.SHOOTER_UNDER_STAGE_LEFT_RPM;
+                shooterRightRPM = RobotContainer.SHOOTER_UNDER_STAGE_RIGHT_RPM;
+                feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
+                pivotAngle = RobotContainer.SHOOTER_UNDER_STAGE_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
-                pivotSpeed = -RobotContainer.CLIMBER_PIVOT_SPEED;
-                DriveFromControllerCommand.lockOnMode = false;
+                pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
                 break;
 
-            case CLIMB_AUTO_READY:
-                shooterLeftRPM = 0;
-                shooterRightRPM = 0;
-                feederSpeed = 0;
-                pivotSubsystem.disable();
-                pivotAngle = RobotContainer.CLIMBER_READY_POSITION;
+            case LOB_HIGH:
+                shooterLeftRPM = RobotContainer.SHOOTER_OVER_STAGE_LEFT_RPM;
+                shooterRightRPM = RobotContainer.SHOOTER_OVER_STAGE_RIGHT_RPM;
+                feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
+                pivotAngle = RobotContainer.SHOOTER_OVER_STAGE_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
-                pivotSpeed = RobotContainer.CLIMBER_PIVOT_SPEED; // negative is up
-                DriveFromControllerCommand.lockOnMode = false;
+                pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
                 break;
 
             case CLIMB_MANUAL:
@@ -437,7 +430,7 @@ public class ShooterCommand extends Command {
                 if (feederDistanceSensorSubsystem.isNoteLoaded()) {
                     intakeSubsystem.setIntakeSpeed(0);
                     feederSubsystem.setSpeed(0);
-                    ledSubsystem.setLEDChannelA();
+                    ledSubsystem.setLEDRed();
                     mode = ACTION.NONE;
                     modeChanged = true;
                     noteLoaded = true;
@@ -457,7 +450,7 @@ public class ShooterCommand extends Command {
                     mode = ACTION.NONE;
                     modeChanged = true;
                     noteLoaded = false;
-                    ledSubsystem.setLEDChannelB();
+                    ledSubsystem.setLEDGreen();
                 }
 
                 break;
@@ -477,10 +470,12 @@ public class ShooterCommand extends Command {
             case SPEAKER:
             case DEFAULT_SPEAKER:
             case TRAP:
+            case LOB_LOW:
+            case LOB_HIGH:
             case TUNING:
                 if (shooterSubsystem.isShooterAtTargetRpm() && pivotSubsystem.pivotReady() && noteLoaded) {
                     readyToFire = true;
-                    ledSubsystem.setLEDChannelC();
+                    ledSubsystem.setLEDBlue();
                 } else {
                     readyToFire = false;
                 }
@@ -489,7 +484,7 @@ public class ShooterCommand extends Command {
                 if (firing && timer.get() > RobotContainer.FEEDER_TIME) {
                     firing = false;
                     readyToFire = false;
-                    ledSubsystem.setLEDChannelB();
+                    ledSubsystem.setLEDGreen();
                     mode = ACTION.PARK;
                     DriveFromControllerCommand.lockOnMode = false;
                     modeChanged = true;
@@ -497,22 +492,6 @@ public class ShooterCommand extends Command {
                 break;
 
             case NONE:
-                break;
-
-            case CLIMB_AUTO_LIFT:
-                if (pivotSubsystem.getPivotAbsolutePosition() < pivotAngle) {
-                    pivotSubsystem.setSpeed(0);
-                    mode = ACTION.NONE;
-                    modeChanged = true;
-                }
-                break;
-
-            case CLIMB_AUTO_READY:
-                if (pivotSubsystem.getPivotAbsolutePosition() > pivotAngle) {
-                    pivotSubsystem.setSpeed(0);
-                    mode = ACTION.NONE;
-                    modeChanged = true;
-                }
                 break;
 
             case CLIMB_MANUAL:

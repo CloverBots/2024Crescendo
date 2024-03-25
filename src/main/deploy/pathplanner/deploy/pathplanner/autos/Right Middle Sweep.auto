@@ -49,37 +49,19 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Mid Field Sweep"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Note 8 to Far"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Far"
-          }
-        },
-        {
-          "type": "race",
+          "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "Aim"
+                  "pathName": "Mid Field Sweep"
                 }
               },
               {
-                "type": "wait",
+                "type": "named",
                 "data": {
-                  "waitTime": 0.5
+                  "name": "YEET"
                 }
               }
             ]
@@ -89,6 +71,12 @@
           "type": "named",
           "data": {
             "name": "Fire"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note 8 to Wall"
           }
         }
       ]
