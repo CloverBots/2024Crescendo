@@ -30,6 +30,7 @@ import frc.robot.constants.IDs;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
@@ -100,6 +101,7 @@ public class RobotContainer {
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final PivotSubsystem pivotSubsystem = new PivotSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
 
   private final XboxController driverController = new XboxController(IDs.CONTROLLER_DRIVE_PORT);
   private final XboxController operatorController = new XboxController(IDs.CONTROLLER_OPERATOR_PORT);
@@ -222,6 +224,7 @@ public class RobotContainer {
   /** Will run once any time the robot is disabled. */
   public void onDisable() {
     swerveSubsystem.setBrakeMode(false);
+    ledSubsystem.setLEDDisplay();
   }
 
   /**

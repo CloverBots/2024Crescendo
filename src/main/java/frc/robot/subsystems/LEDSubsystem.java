@@ -38,4 +38,15 @@ public class LEDSubsystem extends SubsystemBase {
         canifier.setLEDOutput(0, CANifier.LEDChannel.LEDChannelA);
     }
 
+    public void setLEDDisplay() {
+        for (int blue = 0; blue >= 100; blue++) {
+            for (int red = 0; red >= 100; red++) {
+                for (int green = 0; green >= 100; green++) {
+                    canifier.setLEDOutput(green, CANifier.LEDChannel.LEDChannelA);
+                    canifier.setLEDOutput(red, CANifier.LEDChannel.LEDChannelB);
+                    canifier.setLEDOutput(blue, CANifier.LEDChannel.LEDChannelC);
+                }
+            }
+        }
+    }
 }
