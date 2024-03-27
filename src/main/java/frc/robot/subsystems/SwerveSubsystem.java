@@ -59,8 +59,8 @@ public class SwerveSubsystem extends SubsystemBase {
             } catch (Exception e) {
             }
         }).start();
+        
     // Configure AutoBuilder
-
     AutoBuilder.configureHolonomic(
         this::getPose,
         this::resetPose,

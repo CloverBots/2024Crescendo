@@ -105,8 +105,8 @@ public class SwerveDriveConstants {
         public static final double maxModuleSpeed = 2; // M/S
 
         public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
-            new PIDConstants(6.0, 0.5, 0.4), // Translation constants 
-            new PIDConstants(5.0, .3, 0), // Rotation constants 
+            new PIDConstants(5.0,0,0), // Translation constants 
+            new PIDConstants(7.0,0,0), // Rotation constants 
             maxModuleSpeed, // Change to the constant above once tested
             flModuleOffset.getNorm(), // Drive base radius (distance from center to furthest module) 
             new ReplanningConfig()
