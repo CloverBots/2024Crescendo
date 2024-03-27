@@ -1,5 +1,9 @@
 package frc.robot;
 
+/* Camera is configured with 1280x800 120fps, 840 Exposure, 10 Black Level Offset, 6 Sensor Gain, 1200 Red Balance
+ * 1975 Blue Balance, Normal Stream Rate, and 320x240
+ */
+
 public class VisionConfiguration {
     private final double targetHeight;
     private final double cameraHeight;

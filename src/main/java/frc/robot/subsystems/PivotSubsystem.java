@@ -108,7 +108,7 @@ public class PivotSubsystem extends PIDSubsystem {
     }
 
     public boolean pivotReady() {
-        if (Math.abs(getPivotAbsolutePosition() - getSetpoint()) < 1.5) {
+        if (Math.abs(getPivotAbsolutePosition() - getSetpoint()) < 1) {
             return true;
         } else {
             return false;

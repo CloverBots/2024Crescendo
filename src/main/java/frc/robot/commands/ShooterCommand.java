@@ -257,7 +257,7 @@ public class ShooterCommand extends Command {
         } else if (backButton.get()) {
             mode = ACTION.CLIMB_MANUAL;
             modeChanged = true;
-        } else if (dPad.get() == 0) { 
+        } else if (dPad.get() == 0) { // 0 is up on dpad
             mode = ACTION.LOB_HIGH;
             modeChanged = true;
         } else if (dPad.get() == 180) { 
@@ -277,6 +277,7 @@ public class ShooterCommand extends Command {
                 pivotAngle = RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
+                DriveFromControllerCommand.lockOnMode = false;
 
                 break;
 
@@ -314,7 +315,7 @@ public class ShooterCommand extends Command {
                 shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
                 shooterRightRPM = RobotContainer.SHOOTER_SPEAKER_RIGHT_RPM;
                 feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
-                pivotAngle = RobotContainer.SHOOTER_SPEAKER_PIVOT_ANGLE;
+                pivotAngle = RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 previousPivotAngle = pivotAngle;
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
