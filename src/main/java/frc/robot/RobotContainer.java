@@ -153,7 +153,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
+    //swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
     shooterSubsystem.setDefaultCommand(shooterCommand);
 
     field = new Field2d();
@@ -212,7 +212,7 @@ public class RobotContainer {
   /** Will run once any time the robot is disabled. */
   public void onDisable() {
     swerveSubsystem.setBrakeMode(false);
-    ledSubsystem.conformToState(State.BREATHING_GREEN);
+    ledSubsystem.conformToState(State.OFF);
   }
 
   /**

@@ -103,8 +103,8 @@ public class LEDSubsystem extends SubsystemBase {
         // B: Red
         // C: Blue
         canifier.setLEDOutput(r, LEDChannel.LEDChannelB);
-        canifier.setLEDOutput(b, LEDChannel.LEDChannelA);
-        canifier.setLEDOutput(g, LEDChannel.LEDChannelC);
+        canifier.setLEDOutput(b, LEDChannel.LEDChannelC);
+        canifier.setLEDOutput(g, LEDChannel.LEDChannelA);
     }
 
     public void conformToState(State state) {
@@ -123,6 +123,7 @@ public class LEDSubsystem extends SubsystemBase {
         checkSystem();
 
         double timestamp = Timer.getFPGATimestamp();
+
         if (currentState == State.RAINBOW && currentState.isCycleColors == true) {
             stateHue += 2;
             if (stateHue >= (360 - State.RAINBOW.startingHue)) {
