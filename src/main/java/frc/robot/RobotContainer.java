@@ -77,7 +77,7 @@ public class RobotContainer {
     // SPEAKER SHOOTER
     public static final double SHOOTER_SPEAKER_RIGHT_RPM = 2500; // 2500
     public static final double SHOOTER_SPEAKER_LEFT_RPM = 2000; // 2000
-    public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 69; // 64
+    public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 69; // 69
 
     // OVER STAGE
     public static final double SHOOTER_OVER_STAGE_RIGHT_RPM = 2500; // TO-DO use these
@@ -138,7 +138,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
+        //swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
         shooterSubsystem.setDefaultCommand(shooterCommand);
 
         configureAutoChooser();

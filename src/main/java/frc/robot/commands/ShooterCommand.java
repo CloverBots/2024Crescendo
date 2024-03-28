@@ -137,12 +137,6 @@ public class ShooterCommand extends Command {
                 break;
 
             case TUNING:
-                shooterRightRPM = SmartDashboard.getNumber("Shooter right RPM", 0);
-                shooterLeftRPM = SmartDashboard.getNumber("Shooter left RPM", 0);
-                pivotAngle = SmartDashboard.getNumber("Shooter angle", 50);
-                pivotAngle = checkAngleLimits(pivotAngle);
-                pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
-
             case AMP:
             case TRAP:
             case LOB_LOW:
