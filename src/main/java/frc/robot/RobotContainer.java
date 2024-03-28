@@ -34,6 +34,7 @@ import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.LEDSubsystem.State;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -158,12 +159,12 @@ public class RobotContainer {
     field = new Field2d();
     SmartDashboard.putData("Field", field);
 
-    /* PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
+    PathPlannerLogging.setLogTargetPoseCallback((pose) -> {
       field.getObject("target pose").setPose(pose);
     });
     PathPlannerLogging.setLogActivePathCallback((poses) -> {
       field.getObject("path").setPoses(poses);
-    }); */
+    });
 
     // Register Named Commands
     NamedCommands.registerCommand("Intake", Commands.print("Intake")); // autoIntakeCommand
@@ -202,20 +203,7 @@ public class RobotContainer {
     swerveSubsystem.zeroHeading();
   }
 
-  private void configureAutoChooser() {
-    // autoChooser.setDefaultOption("Test X", AutoBuilder.buildAuto("Test X"));
-    // autoChooser.addOption("Test Y", AutoBuilder.buildAuto("Test Y"));
-    // autoChooser.addOption("Test Rotate", AutoBuilder.buildAuto("Test Rotate"));
-    // autoChooser.addOption("Center Notes 3,2,1,4", AutoBuilder.buildAuto("Center Notes 3,2,1,4,5"));
-    // autoChooser.addOption("Center Notes 2,3,6,7", AutoBuilder.buildAuto("Center Notes 2,3,6,7"));
-    // autoChooser.addOption("Right Notes 1,2,3,4", AutoBuilder.buildAuto("Right 1,2,3,4"));
-    // autoChooser.addOption("Right Notes 4,5,6", AutoBuilder.buildAuto("Right Notes 4,5,6"));
-    // autoChooser.addOption("Right Notes 1,4,5,6", AutoBuilder.buildAuto("Right Notes 1,4,5,6"));
-    // autoChooser.addOption("Left Notes 3,2,1,4", AutoBuilder.buildAuto("Left 3,2,1,4"));
-    // autoChooser.addOption("Left Notes 8,7,6", AutoBuilder.buildAuto("Left Notes 8,7,6"));
-    // autoChooser.addOption("Center Notes 2,3,1,4,5", AutoBuilder.buildAuto("Center Notes 2,3,1,4,5"));
-    // autoChooser.addOption("Right Middle Sweep", AutoBuilder.buildAuto("Right Middle Sweep")); 
-  }
+  private void configureAutoChooser() {}
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
@@ -224,7 +212,7 @@ public class RobotContainer {
   /** Will run once any time the robot is disabled. */
   public void onDisable() {
     swerveSubsystem.setBrakeMode(false);
-    ledSubsystem.setLEDDisplay();
+    ledSubsystem.conformToState(State.BREATHING_GREEN);
   }
 
   /**

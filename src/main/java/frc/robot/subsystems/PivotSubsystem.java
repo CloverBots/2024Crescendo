@@ -108,7 +108,7 @@ public class PivotSubsystem extends PIDSubsystem {
     }
 
     public boolean pivotReady() {
-        if (Math.abs(getPivotAbsolutePosition() - getSetpoint()) < 1.5) {
+        if (Math.abs(getPivotAbsolutePosition() - getSetpoint()) < 1) {
             return true;
         } else {
             return false;
@@ -151,5 +151,4 @@ public class PivotSubsystem extends PIDSubsystem {
         encoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
         cancoder.configAllSettings(encoderConfig);
     }
-
 }

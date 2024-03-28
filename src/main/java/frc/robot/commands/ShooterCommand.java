@@ -15,6 +15,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.LEDSubsystem.State;
 
 public class ShooterCommand extends Command {
 
@@ -105,7 +106,7 @@ public class ShooterCommand extends Command {
         pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE);
         pivotSubsystem.enable();
         SmartDashboard.putBoolean("Camera", true);
-        ledSubsystem.setLEDGreen();
+        ledSubsystem.conformToState(State.RAINBOW);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -195,7 +196,7 @@ public class ShooterCommand extends Command {
                 break;
 
             case NONE:
-                ledSubsystem.setLEDGreen();
+                ledSubsystem.conformToState(State.SOLID_GREEN);
                 break;
 
             case CLIMB_MANUAL:
@@ -257,7 +258,7 @@ public class ShooterCommand extends Command {
         } else if (backButton.get()) {
             mode = ACTION.CLIMB_MANUAL;
             modeChanged = true;
-        } else if (dPad.get() == 0) { 
+        } else if (dPad.get() == 0) { // 0 is up on dpad
             mode = ACTION.LOB_HIGH;
             modeChanged = true;
         } else if (dPad.get() == 180) { 
@@ -277,6 +278,7 @@ public class ShooterCommand extends Command {
                 pivotAngle = RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
+                DriveFromControllerCommand.lockOnMode = false;
 
                 break;
 
@@ -314,7 +316,7 @@ public class ShooterCommand extends Command {
                 shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
                 shooterRightRPM = RobotContainer.SHOOTER_SPEAKER_RIGHT_RPM;
                 feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
-                pivotAngle = RobotContainer.SHOOTER_SPEAKER_PIVOT_ANGLE;
+                pivotAngle = RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 previousPivotAngle = pivotAngle;
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
@@ -430,7 +432,7 @@ public class ShooterCommand extends Command {
                 if (feederDistanceSensorSubsystem.isNoteLoaded()) {
                     intakeSubsystem.setIntakeSpeed(0);
                     feederSubsystem.setSpeed(0);
-                    ledSubsystem.setLEDRed();
+                    ledSubsystem.conformToState(State.SOLID_RED);;
                     mode = ACTION.NONE;
                     modeChanged = true;
                     noteLoaded = true;
@@ -450,7 +452,7 @@ public class ShooterCommand extends Command {
                     mode = ACTION.NONE;
                     modeChanged = true;
                     noteLoaded = false;
-                    ledSubsystem.setLEDGreen();
+                    ledSubsystem.conformToState(State.SOLID_GREEN);
                 }
 
                 break;
@@ -475,7 +477,7 @@ public class ShooterCommand extends Command {
             case TUNING:
                 if (shooterSubsystem.isShooterAtTargetRpm() && pivotSubsystem.pivotReady() && noteLoaded) {
                     readyToFire = true;
-                    ledSubsystem.setLEDBlue();
+                    ledSubsystem.conformToState(State.SOLID_BLUE);
                 } else {
                     readyToFire = false;
                 }
@@ -484,7 +486,7 @@ public class ShooterCommand extends Command {
                 if (firing && timer.get() > RobotContainer.FEEDER_TIME) {
                     firing = false;
                     readyToFire = false;
-                    ledSubsystem.setLEDGreen();
+                    ledSubsystem.conformToState(State.SOLID_GREEN);
                     mode = ACTION.PARK;
                     DriveFromControllerCommand.lockOnMode = false;
                     modeChanged = true;
