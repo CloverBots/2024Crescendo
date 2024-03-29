@@ -15,6 +15,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.LEDSubsystem.State;
 
 public class ShooterCommand extends Command {
 
@@ -37,6 +38,8 @@ public class ShooterCommand extends Command {
     private double previousPivotAngle;
     private double pivotSpeed = 0;
     private Timer timer;
+    private Timer matchTime;
+    private boolean blinkOn = false;
 
     private double previousVisionTx, previousVisionTy;
 
@@ -52,7 +55,7 @@ public class ShooterCommand extends Command {
     private ACTION mode;
     private boolean modeChanged = false;
 
-    public ShooterCommand(FeederDistanceSensorSubsystem feederDistanceSensorSubsystem, 
+    public ShooterCommand(FeederDistanceSensorSubsystem feederDistanceSensorSubsystem,
             ShooterSubsystem shooterSubsystem,
             PivotSubsystem pivotSubsystem,
             FeederSubsystem feederSubsystem,
@@ -87,9 +90,11 @@ public class ShooterCommand extends Command {
         this.backButton = backButton;
         this.dPad = dPad;
         this.fireButton = fireButton;
-        ledSubsystem = new LEDSubsystem();
+        ledSubsystem = LEDSubsystem.getInstance();
 
         timer = new Timer();
+        matchTime = new Timer();
+
         mode = ACTION.NONE;
 
         addRequirements(shooterSubsystem);
@@ -105,12 +110,18 @@ public class ShooterCommand extends Command {
         pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE);
         pivotSubsystem.enable();
         SmartDashboard.putBoolean("Camera", true);
-        ledSubsystem.setLEDGreen();
+        matchTime.restart();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+
+        if (matchTime.get() > 5) {
+            matchTime.stop();
+            matchTime.reset();
+            blinkOn = true;
+        }
 
         SmartDashboard.putBoolean("Note Loaded", noteLoaded);
 
@@ -189,13 +200,13 @@ public class ShooterCommand extends Command {
                 break;
 
             case NONE:
-                ledSubsystem.setLEDGreen();
+                ledConformToState("Green");
                 break;
 
             case CLIMB_MANUAL:
                 if (Math.abs(leftJoystickY.getAsDouble()) > .05) {
                     pivotSpeed = -leftJoystickY.getAsDouble() / 2.2; // - is because joystick returns 1 for down, -1 for
-                                                                   // up
+                                                                     // up
 
                     if (pivotSpeed > 0.05 &&
                             pivotSubsystem.getPivotAbsolutePosition() > RobotContainer.PIVOT_UPPER_ENDPOINT) {
@@ -254,7 +265,7 @@ public class ShooterCommand extends Command {
         } else if (dPad.get() == 0) { // 0 is up on dpad
             mode = ACTION.LOB_HIGH;
             modeChanged = true;
-        } else if (dPad.get() == 180) { 
+        } else if (dPad.get() == 180) {
             mode = ACTION.LOB_LOW;
             modeChanged = true;
         }
@@ -425,7 +436,7 @@ public class ShooterCommand extends Command {
                 if (feederDistanceSensorSubsystem.isNoteLoaded()) {
                     intakeSubsystem.setIntakeSpeed(0);
                     feederSubsystem.setSpeed(0);
-                    ledSubsystem.setLEDRed();
+                    ledConformToState("Red");
                     mode = ACTION.NONE;
                     modeChanged = true;
                     noteLoaded = true;
@@ -445,7 +456,7 @@ public class ShooterCommand extends Command {
                     mode = ACTION.NONE;
                     modeChanged = true;
                     noteLoaded = false;
-                    ledSubsystem.setLEDGreen();
+                    ledConformToState("Green");
                 }
 
                 break;
@@ -470,7 +481,7 @@ public class ShooterCommand extends Command {
             case TUNING:
                 if (shooterSubsystem.isShooterAtTargetRpm() && pivotSubsystem.pivotReady() && noteLoaded) {
                     readyToFire = true;
-                    ledSubsystem.setLEDBlue();
+                    ledConformToState("Blue");
                 } else {
                     readyToFire = false;
                 }
@@ -479,7 +490,7 @@ public class ShooterCommand extends Command {
                 if (firing && timer.get() > RobotContainer.FEEDER_TIME) {
                     firing = false;
                     readyToFire = false;
-                    ledSubsystem.setLEDGreen();
+                    ledConformToState("Green");
                     mode = ACTION.PARK;
                     DriveFromControllerCommand.lockOnMode = false;
                     modeChanged = true;
@@ -495,6 +506,26 @@ public class ShooterCommand extends Command {
         }
 
         return false;
+    }
+
+    private void ledConformToState(String color) {
+        if (blinkOn) {
+            if (color.equals("Blue")) {
+                ledSubsystem.conformToState(State.FLASHING_BLUE);
+            } else if (color.equals("Red")) {
+                ledSubsystem.conformToState(State.FLASHING_RED);
+            } else if (color.equals("Green")) {
+                ledSubsystem.conformToState(State.FLASHING_GREEN);
+            }
+        } else {
+            if (color.equals("Blue")) {
+                ledSubsystem.conformToState(State.SOLID_BLUE);
+            } else if (color.equals("Red")) {
+                ledSubsystem.conformToState(State.SOLID_RED);
+            } else if (color.equals("Green")) {
+                ledSubsystem.conformToState(State.SOLID_GREEN);
+            }
+        }
     }
 
 }
