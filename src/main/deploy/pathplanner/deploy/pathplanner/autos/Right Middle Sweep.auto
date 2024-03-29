@@ -49,19 +49,75 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Note 4 to Middle Sweep"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "YEET"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Middle Sweep"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Middle Sweep"
+                  "pathName": "Note 8 from Middle Sweep"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "YEET"
+                  "name": "Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note 8 to Stage"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Far"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Aim"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.5
                 }
               }
             ]
@@ -71,12 +127,6 @@
           "type": "named",
           "data": {
             "name": "Fire"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Note 8 to Wall"
           }
         }
       ]

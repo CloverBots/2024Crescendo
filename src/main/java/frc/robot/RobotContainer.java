@@ -22,6 +22,7 @@ import frc.robot.commands.AutoFireCommand;
 import frc.robot.commands.AutoIntakeCommand;
 import frc.robot.commands.AutoLeftCommand;
 import frc.robot.commands.AutoLineCommand;
+import frc.robot.commands.AutoStageCommand;
 import frc.robot.commands.AutoSubwooferCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.ShooterCommand;
@@ -141,6 +142,7 @@ public class RobotContainer {
   private final AutoSubwooferCommand autoSubwooferCommand = new AutoSubwooferCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
   private final AutoLineCommand autoLineCommand = new AutoLineCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
   private final AutoFarCommand autoFarCommand = new AutoFarCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
+  private final AutoStageCommand autoStageCommand = new AutoStageCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
   private final AutoLeftCommand autoLeftCommand = new AutoLeftCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
   private final AutoFireCommand autoFireCommand = new AutoFireCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
   private final autoYEETCommand autoYEETCommand = new autoYEETCommand(intakeSubsystem, pivotSubsystem, shooterSubsystem, feederSubsystem);
@@ -173,6 +175,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Subwoofer", Commands.print("Subwoofer")); // autoSubwooferCommand
     NamedCommands.registerCommand("Line", Commands.print("Line")); // autoLineCommand
     NamedCommands.registerCommand("Far", Commands.print("Far")); // autoFarCommand
+    NamedCommands.registerCommand("Stage", Commands.print("Stage")); // autoStageCommand
     NamedCommands.registerCommand("Left", Commands.print("Left")); // autoLeftCommand
     NamedCommands.registerCommand("Fire", Commands.print("Fire")); // autoFireCommand
     NamedCommands.registerCommand("YEET", Commands.print("YEET")); // autoYEETCommand

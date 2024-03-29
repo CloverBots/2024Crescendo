@@ -61,7 +61,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Far"
+                  "name": "Stage"
                 }
               }
             ]
@@ -238,15 +238,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Note 6 to Far"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Far"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 6 to Far"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Far"
+                }
+              }
+            ]
           }
         },
         {
