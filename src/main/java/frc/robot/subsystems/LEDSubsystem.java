@@ -20,6 +20,16 @@ public class LEDSubsystem extends SubsystemBase {
     public static CANifier canifier = new CANifier(2);
 
     private static LEDSubsystem instance = null;
+    private State currentState = State.OFF;
+    public double stateHue = State.RAINBOW.startingHue;
+    public float saturation = 1.0f; // Ensures that the colors are on the outside of the color wheel
+    public float value = 0.5f; // Hardcoded brightness
+    public double startingTransTime = 0.0;
+    public boolean resetBreath = false;
+    boolean lit = false;
+    double lastOnTime = 0.0;
+    double lastOffTime = 0.0;
+    double transTime = 0.0;
 
     public static LEDSubsystem getInstance() {
         if (instance == null)
@@ -27,15 +37,10 @@ public class LEDSubsystem extends SubsystemBase {
         return instance;
     }
 
-    boolean lit = false;
-    double lastOnTime = 0.0;
-    double lastOffTime = 0.0;
-    double transTime = 0.0;
-
     public enum State {
         OFF(0.0, 0.0, 0.0, Double.POSITIVE_INFINITY, 0.0, false),
         SOLID_RED(255.0, 0.0, 0.0, Double.POSITIVE_INFINITY, 0, false),
-        SOLID_ORANGE(255.0, 165.0, 0.0, Double.POSITIVE_INFINITY, 0.0, false),
+        SOLID_ORANGE(255.0, 50.0, 0.0, Double.POSITIVE_INFINITY, 0.0, false),
         SOLID_YELLOW(255.0, 255.0, 0.0, Double.POSITIVE_INFINITY, 0.0, false),
         SOLID_GREEN(0.0, 255.0, 0.0, Double.POSITIVE_INFINITY, 0.0, false),
         SOLID_BLUE(0.0, 0.0, 255.0, Double.POSITIVE_INFINITY, 0.0, false),
@@ -49,7 +54,13 @@ public class LEDSubsystem extends SubsystemBase {
         FLASHING_PURPLE(255.0, 0.0, 255.0, 0.125, 0.125, false),
         FLASHING_PINK(255.0, 20.0, 30.0, 0.125, 0.125, false),
         RAINBOW(0, true),
-        BREATHING_GREEN(120, 10.0, true);
+        BREATHING_RED(0, 5.0, true),
+        BREATHING_ORANGE(30, 5.0, true),
+        BREATHING_YELLOW(60, 5.0, true),
+        BREATHING_GREEN(120, 5.0, true),
+        BREATHING_BLUE(240, 5.0, true),
+        BREATHING_PURPLE(300, 5.0, true),
+        BREATHING_PINK(300, 5.0, true);
 
         double red, green, blue, onTime, offTime, cycleTime, transitionTime;
         float startingHue;
@@ -83,8 +94,6 @@ public class LEDSubsystem extends SubsystemBase {
         }
     }
 
-    private State currentState = State.OFF;
-
     public State getState() {
         return currentState;
     }
@@ -102,25 +111,18 @@ public class LEDSubsystem extends SubsystemBase {
         // A: Green
         // B: Red
         // C: Blue
+        canifier.setLEDOutput(g, LEDChannel.LEDChannelA);
         canifier.setLEDOutput(r, LEDChannel.LEDChannelB);
         canifier.setLEDOutput(b, LEDChannel.LEDChannelC);
-        canifier.setLEDOutput(g, LEDChannel.LEDChannelA);
     }
 
     public void conformToState(State state) {
         setState(state);
     }
 
-    public double stateHue = State.RAINBOW.startingHue;
-    public float saturation = 1.0f; // Ensures that the colors are on the outside of the color wheel
-    public float value = 0.3f; // Hardcoded brightness
-    public double startingTransTime = 0.0;
-    public boolean resetBreath = false;
-
     @Override
     public void periodic() {
         outputTelemetry();
-        checkSystem();
 
         double timestamp = Timer.getFPGATimestamp();
 
@@ -156,7 +158,7 @@ public class LEDSubsystem extends SubsystemBase {
 
             setLEDs(rgb[0], rgb[1], rgb[2]);
 
-        } else if (currentState == State.BREATHING_GREEN && currentState.isCycleColors == true) {
+        } else if (isBreathing(currentState) && currentState.isCycleColors == true) {
             if (startingTransTime <= currentState.transitionTime && !resetBreath) {
                 startingTransTime += currentState.transitionTime / 50.0;
             } else if (resetBreath) {
@@ -175,7 +177,7 @@ public class LEDSubsystem extends SubsystemBase {
 
             double valueBasedOnTime = currentState.transitionTime - startingTransTime;
 
-            rgb = HSVtoRGB.convert(State.BREATHING_GREEN.startingHue, 0.922f, valueBasedOnTime * 0.6);
+            rgb = HSVtoRGB.convert(getState().startingHue, 0.922f, valueBasedOnTime * 0.6);
 
             rgb[0] = averageR.process(rgb[0]);
             rgb[1] = averageG.process(rgb[1]);
@@ -200,7 +202,14 @@ public class LEDSubsystem extends SubsystemBase {
         SmartDashboard.putString("leds state", getState().name());
     }
 
-    public boolean checkSystem() {
-        return true;
+    private boolean isBreathing(State currentState) {
+        if (currentState == State.BREATHING_RED || currentState == State.BREATHING_ORANGE
+                || currentState == State.BREATHING_YELLOW || currentState == State.BREATHING_GREEN ||
+                currentState == State.BREATHING_BLUE || currentState == State.BREATHING_PURPLE
+                || currentState == State.BREATHING_PINK) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

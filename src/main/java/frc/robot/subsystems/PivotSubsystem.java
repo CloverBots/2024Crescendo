@@ -42,7 +42,7 @@ public class PivotSubsystem extends PIDSubsystem {
 
     public PivotSubsystem() {
 
-        super(new PIDController(0.01, 0.0025, 0)); // P=0.025, I=0, D = 0
+        super(new PIDController(0.02, 0.0045, 0)); // P=0.01, I=0.0025, D = 0
         getController().setTolerance(0.5);
         getController().enableContinuousInput(0, 360); // Sets the PID to treat zero and 2 pi as the same value.
         disable(); // start with PID disabled
@@ -147,7 +147,7 @@ public class PivotSubsystem extends PIDSubsystem {
         CANCoderConfiguration encoderConfig = new CANCoderConfiguration();
         encoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
         encoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-        encoderConfig.magnetOffsetDegrees = -202.84; // Need Offset
+        encoderConfig.magnetOffsetDegrees = -202.2; // -202.84
         encoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
         cancoder.configAllSettings(encoderConfig);
     }

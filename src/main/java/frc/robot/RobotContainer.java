@@ -64,6 +64,8 @@ public class RobotContainer {
   public static final double FEEDER_SPEED_INTAKE = 0.5;
   public static final double FEEDER_SPEED_SHOOT = 0.8;
   public final static double FEEDER_TIME = 1;
+  
+  public static final double CLIMBER_PIVOT_SPEED = 0.5;
 
   // PARKED SHOOTER
   public static final double SHOOTER_PARKED_PIVOT_ANGLE = 10;
@@ -71,7 +73,7 @@ public class RobotContainer {
   // AMP SHOOTER
   public static final double SHOOTER_AMP_RIGHT_RPM = 600;
   public static final double SHOOTER_AMP_LEFT_RPM = 600;
-  public static final double SHOOTER_AMP_PIVOT_ANGLE = 77; // 77
+  public static final double SHOOTER_AMP_PIVOT_ANGLE = 72; // 72
 
   // TRAP SHOOTER
   public static final double SHOOTER_TRAP_RIGHT_RPM = 20;
@@ -81,10 +83,10 @@ public class RobotContainer {
   // SPEAKER SHOOTER
   public static final double SHOOTER_SPEAKER_RIGHT_RPM = 2500; // 2500
   public static final double SHOOTER_SPEAKER_LEFT_RPM = 2000; // 2000
-  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 64; // 64
+  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 69; // 69
 
   // OVER STAGE
-  public static final double SHOOTER_OVER_STAGE_RIGHT_RPM = 2500;
+  public static final double SHOOTER_OVER_STAGE_RIGHT_RPM = 2500; // TO-DO use these
   public static final double SHOOTER_OVER_STAGE_LEFT_RPM = 3500;
   public static final double SHOOTER_OVER_STAGE_PIVOT_ANGLE = 70;
 
@@ -92,7 +94,6 @@ public class RobotContainer {
   public static final double SHOOTER_UNDER_STAGE_RIGHT_RPM = 3000;
   public static final double SHOOTER_UNDER_STAGE_LEFT_RPM = 3000;
   public static final double SHOOTER_UNDER_STAGE_PIVOT_ANGLE = 10;
-
 
   private final Field2d field;
   private final SendableChooser<Command> autoChooser;
@@ -102,7 +103,7 @@ public class RobotContainer {
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final PivotSubsystem pivotSubsystem = new PivotSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
+  private final LEDSubsystem ledSubsystem = LEDSubsystem.getInstance();
 
   private final XboxController driverController = new XboxController(IDs.CONTROLLER_DRIVE_PORT);
   private final XboxController operatorController = new XboxController(IDs.CONTROLLER_OPERATOR_PORT);
@@ -153,7 +154,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    //swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
+    swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
     shooterSubsystem.setDefaultCommand(shooterCommand);
 
     field = new Field2d();
@@ -197,6 +198,7 @@ public class RobotContainer {
 
   public void onAutonomousEnable() {
     swerveSubsystem.setBrakeMode(true);
+    ledSubsystem.conformToState(State.BREATHING_GREEN);
   }
 
   public void resetGyro() {
@@ -212,7 +214,7 @@ public class RobotContainer {
   /** Will run once any time the robot is disabled. */
   public void onDisable() {
     swerveSubsystem.setBrakeMode(false);
-    ledSubsystem.conformToState(State.OFF);
+    ledSubsystem.conformToState(State.RAINBOW);
   }
 
   /**
