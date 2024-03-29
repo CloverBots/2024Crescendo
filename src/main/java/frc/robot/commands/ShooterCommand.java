@@ -117,7 +117,7 @@ public class ShooterCommand extends Command {
     @Override
     public void execute() {
 
-        if (matchTime.get() > 5) {
+        if (matchTime.get() > Double.POSITIVE_INFINITY) { // TO-DO need time
             matchTime.stop();
             matchTime.reset();
             blinkOn = true;

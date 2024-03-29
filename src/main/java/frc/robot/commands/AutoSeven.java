@@ -46,33 +46,24 @@ public class AutoSeven extends SequentialCommandGroup {
                         new Pose2d(new Translation2d(),
                                 new Rotation2d(Units.degreesToRadians(-60 * inverted)))),
                 // Shoot ring
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000),
-                        shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3000),
-                        shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(40),
-                        pivotSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2000), shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(2500), shooterSubsystem),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(66), pivotSubsystem),
 
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-64),
-                        Units.inchesToMeters(72), -55, 1.5, false), // -64, 72, -60, 1.5, false
+                new WaitCommand(0.7),
 
-                new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
-                        shooterSubsystem, 1.0f),
-
-                new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT),
-                        feederSubsystem),
+                new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT), feederSubsystem),
                 new WaitCommand(0.2),
                 new InstantCommand(() -> feederSubsystem.setSpeed(0), feederSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(500),
-                        shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(500),
-                        shooterSubsystem),
-
-                // Get 3
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(500), shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(500), shooterSubsystem),
                 new InstantCommand(
                         () -> pivotSubsystem.setPivotControllerSetpoint(
                                 RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE),
                         pivotSubsystem),
+
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-64),
+                        Units.inchesToMeters(72), -55, 1.0, false), // -64, 72, -60, 1.5, false
 
                 new ParallelCommandGroup(
                         new DriveToDistanceCommand(swerveSubsystem,
@@ -92,8 +83,8 @@ public class AutoSeven extends SequentialCommandGroup {
                 new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(30),
                         pivotSubsystem),
 
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-72),
-                        Units.inchesToMeters(48), -50, 1.3, false), // -90, 72, -50, 2.0, false
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-70),
+                        Units.inchesToMeters(50), -50, 1.3, false), // -90, 72, -50, 2.0, false
 
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
                         shooterSubsystem, 1.0f),
@@ -106,14 +97,15 @@ public class AutoSeven extends SequentialCommandGroup {
                         shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(500),
                         shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE)),
+                new InstantCommand(
+                        () -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE)),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-115),
-                        Units.inchesToMeters(33),
+                        Units.inchesToMeters(30),
                         0, 1.0, false),
-                
+
                 new WaitCommand(0.1),
-                
+
                 new ParallelCommandGroup(
                         new DriveToDistanceCommand(swerveSubsystem,
                                 Units.inchesToMeters(-12 * 24 - 6),
@@ -121,21 +113,23 @@ public class AutoSeven extends SequentialCommandGroup {
                                 0, 2.5, false), // -12 * 24 - 6, 142, 0, 4.0, false
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
                                 intakeSubsystem, 2.5)),
-                                
+
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3500),
                         shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3500),
                         shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(25),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(20),
                         pivotSubsystem),
 
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-120),
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-150),
                         Units.inchesToMeters(5),
                         0, 1.5, false),
-                    
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-96),
+
+                new WaitCommand(0.1),
+
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-108),
                         Units.inchesToMeters(-24),
-                        -10, 1.0, false),
+                        -10, 0.8, false),
 
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
                         shooterSubsystem, 1.0f),
@@ -148,34 +142,7 @@ public class AutoSeven extends SequentialCommandGroup {
                         shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0),
                         shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE))
-                
-                /* new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-166),
-                        Units.inchesToMeters(24),
-                        0, 2.0, false),
-                
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3500),
-                        shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3500),
-                        shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(25),
-                        pivotSubsystem),
-
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-84),
-                        Units.inchesToMeters(72), -50, 1.5, false), // -90, 72, -50, 2.0, false
-                
-                new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
-                        shooterSubsystem, 1.0f),
-
-                new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT),
-                        feederSubsystem),
-                new WaitCommand(0.2),
-                new InstantCommand(() -> feederSubsystem.setSpeed(0), feederSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0),
-                        shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0),
-                        shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE)) */
-        );
+                new InstantCommand(
+                        () -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE)));
     }
 }

@@ -52,7 +52,7 @@ public class AutoFour extends SequentialCommandGroup {
                 // Shoot ring
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2000), shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(2500), shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(65), pivotSubsystem),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(66), pivotSubsystem),
 
                 new WaitCommand(1.8),
 

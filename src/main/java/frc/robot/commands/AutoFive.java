@@ -48,9 +48,9 @@ public class AutoFive extends SequentialCommandGroup {
                 // Shoot ring
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2000), shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(2500), shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(65), pivotSubsystem),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(66), pivotSubsystem),
 
-                new WaitCommand(1.8),
+                new WaitCommand(0.8),
 
                 new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT), feederSubsystem),
                 new WaitCommand(0.2),
@@ -63,12 +63,12 @@ public class AutoFive extends SequentialCommandGroup {
                         () -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE),
                         pivotSubsystem),
                 new ParallelCommandGroup(
-                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-50), Units.inchesToMeters(38),
+                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-55), Units.inchesToMeters(42),
                                 -30, 1.5, false), // -50, 38, -30, 1.5
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 1.5)),
 
                  
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-50), Units.inchesToMeters(38), -30,
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-55), Units.inchesToMeters(42), -30,
                         1.0, true), // -50, 38, -30, 1.0
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(1500), shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(1500), shooterSubsystem),
@@ -86,11 +86,11 @@ public class AutoFive extends SequentialCommandGroup {
                         pivotSubsystem),
                 
                 new ParallelCommandGroup(
-                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-67),
+                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-74),
                                 Units.inchesToMeters(0), 75, 1.5, false), // -67, 0, 75, 1.5
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 1.5)),
 
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-67), Units.inchesToMeters(0), 0,
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-74), Units.inchesToMeters(0), 0,
                         1.5, true), // -67, 0, 0, 1.5
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(1500), shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(1500), shooterSubsystem),
@@ -108,11 +108,11 @@ public class AutoFive extends SequentialCommandGroup {
                         pivotSubsystem),
 
                  new ParallelCommandGroup(
-                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-67),
-                                Units.inchesToMeters(-45), 75, 1.5, false), // -67, -45, 75, 1.5
+                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-74),
+                                Units.inchesToMeters(-54), 75, 1.5, false), // -67, -45, 75, 1.5
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 1.5)),
                 
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-67), Units.inchesToMeters(-45), 30,
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-74), Units.inchesToMeters(-54), 25,
                         1.0, true), // -67, -45, 30, 1.0
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(1500), shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(1500), shooterSubsystem),

@@ -35,7 +35,7 @@ public class LEDSubsystem extends SubsystemBase {
     public enum State {
         OFF(0.0, 0.0, 0.0, Double.POSITIVE_INFINITY, 0.0, false),
         SOLID_RED(255.0, 0.0, 0.0, Double.POSITIVE_INFINITY, 0, false),
-        SOLID_ORANGE(255.0, 165.0, 0.0, Double.POSITIVE_INFINITY, 0.0, false),
+        SOLID_ORANGE(255.0, 50.0, 0.0, Double.POSITIVE_INFINITY, 0.0, false),
         SOLID_YELLOW(255.0, 255.0, 0.0, Double.POSITIVE_INFINITY, 0.0, false),
         SOLID_GREEN(0.0, 255.0, 0.0, Double.POSITIVE_INFINITY, 0.0, false),
         SOLID_BLUE(0.0, 0.0, 255.0, Double.POSITIVE_INFINITY, 0.0, false),
@@ -49,7 +49,8 @@ public class LEDSubsystem extends SubsystemBase {
         FLASHING_PURPLE(255.0, 0.0, 255.0, 0.125, 0.125, false),
         FLASHING_PINK(255.0, 20.0, 30.0, 0.125, 0.125, false),
         RAINBOW(0, true),
-        BREATHING_GREEN(120, 10.0, true);
+        BREATHING_GREEN(107, 5.0, true),
+        BREATHING_BLUE(150, 5.0, true);
 
         double red, green, blue, onTime, offTime, cycleTime, transitionTime;
         float startingHue;
@@ -113,7 +114,7 @@ public class LEDSubsystem extends SubsystemBase {
 
     public double stateHue = State.RAINBOW.startingHue;
     public float saturation = 1.0f; // Ensures that the colors are on the outside of the color wheel
-    public float value = 0.3f; // Hardcoded brightness
+    public float value = 0.5f; // Hardcoded brightness
     public double startingTransTime = 0.0;
     public boolean resetBreath = false;
 

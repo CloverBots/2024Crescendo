@@ -48,15 +48,15 @@ public class AutoOne extends SequentialCommandGroup {
                 // Shoot ring
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2000), shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(2500), shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(65), pivotSubsystem),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(66), pivotSubsystem),
 
                 new WaitCommand(1.8),
 
                 new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT), feederSubsystem),
                 new WaitCommand(0.2),
                 new InstantCommand(() -> feederSubsystem.setSpeed(0), feederSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0), shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0), shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(500), shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(500), shooterSubsystem),
 
                 // Get 3
                 new InstantCommand(

@@ -14,6 +14,7 @@ import frc.robot.commands.AutoFive;
 import frc.robot.commands.AutoFour;
 import frc.robot.commands.AutoOne;
 import frc.robot.commands.AutoSeven;
+import frc.robot.commands.AutoSix;
 import frc.robot.commands.AutoThree;
 import frc.robot.commands.AutoTwo;
 import frc.robot.commands.DriveFromControllerCommand;
@@ -69,7 +70,7 @@ public class RobotContainer {
     // AMP SHOOTER
     public static final double SHOOTER_AMP_RIGHT_RPM = 600;
     public static final double SHOOTER_AMP_LEFT_RPM = 600;
-    public static final double SHOOTER_AMP_PIVOT_ANGLE = 77; // 77
+    public static final double SHOOTER_AMP_PIVOT_ANGLE = 72; // 72
 
     // TRAP SHOOTER
     public static final double SHOOTER_TRAP_RIGHT_RPM = 20;
@@ -141,7 +142,7 @@ public class RobotContainer {
      * The container for the robot. Contains subsystems, OI devices, and commands.
      */
     public RobotContainer() {
-        //swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
+        swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
         shooterSubsystem.setDefaultCommand(shooterCommand);
 
         configureAutoChooser();
@@ -189,14 +190,17 @@ public class RobotContainer {
                 intakeSubsystem, visionTargetTracker));
         chooser.addOption("Auto 4 Note CENTER", new AutoFive(swerveSubsystem, feederSubsystem, pivotSubsystem,
                 shooterSubsystem, feederDistanceSensorSubsystem, intakeSubsystem, visionTargetTracker));
-        chooser.addOption("Auto 3 Note Middle Line", new AutoSeven(swerveSubsystem, feederSubsystem, pivotSubsystem, shooterSubsystem, feederDistanceSensorSubsystem, intakeSubsystem, visionTargetTracker));
+        chooser.addOption("Auto 3 Note Middle Line", new AutoSeven(swerveSubsystem, feederSubsystem, pivotSubsystem,
+                shooterSubsystem, feederDistanceSensorSubsystem, intakeSubsystem, visionTargetTracker));
+        chooser.addOption("Auto 3 Note RIGHT", new AutoSix(swerveSubsystem, feederSubsystem, pivotSubsystem,
+                shooterSubsystem, feederDistanceSensorSubsystem, intakeSubsystem, visionTargetTracker));
 
     }
 
     /** Will run once any time the robot is disabled. */
     public void onDisable() {
         swerveSubsystem.setBrakeMode(false);
-        ledSubsystem.conformToState(State.OFF);
+        ledSubsystem.conformToState(State.RAINBOW);
     }
 
     /**

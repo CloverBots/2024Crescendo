@@ -44,93 +44,105 @@ public class AutoSix extends SequentialCommandGroup {
 
         addCommands(
                 new ResetOdometryCommand(swerveSubsystem,
-                        new Pose2d(new Translation2d(), new Rotation2d())),
-                // Shoot ring
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2000), shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(2500), shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(65), pivotSubsystem),
+                        new Pose2d(new Translation2d(),
+                                new Rotation2d())),
 
-                new WaitCommand(1.8),
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90), Units.inchesToMeters(-8), 0,
+                        1.0, false),
 
-                new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT), feederSubsystem),
-                new WaitCommand(0.2),
-                new InstantCommand(() -> feederSubsystem.setSpeed(0), feederSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0), shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0), shooterSubsystem),
-
-                // Get 3
-                new InstantCommand(
-                        () -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE),
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000),
+                        shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3000),
+                        shooterSubsystem),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(30),
                         pivotSubsystem),
-                new ParallelCommandGroup(
-                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-50), Units.inchesToMeters(38),
-                                -30, 1.5, false), // -50, 38, -30, 1.5
-                        new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 1.5)),
 
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-50), Units.inchesToMeters(38), -30,
-                        1.0, true), // -50, 38, -30, 1.0
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(1500), shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(1500), shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(45), pivotSubsystem),
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-100), Units.inchesToMeters(40), 20,
+                        1.0, false),
 
-                new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem, shooterSubsystem, 1.5f),
-
+                new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
+                        shooterSubsystem, 1.0f),
                 new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT), feederSubsystem),
                 new WaitCommand(0.2),
                 new InstantCommand(() -> feederSubsystem.setSpeed(0), feederSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0), shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0), shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0),
+                        shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0),
+                        shooterSubsystem),
                 new InstantCommand(
                         () -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE),
                         pivotSubsystem),
 
                 new ParallelCommandGroup(
-                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-67),
-                                Units.inchesToMeters(0), 75, 1.5, false), // -67, 0, 75, 1.5
-                        new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 1.5)),
+                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-12 * 24 - 6),
+                                Units.inchesToMeters(6),
+                                0, 2.5, false), // -50, 38, -30, 1.5
+                        new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
+                                intakeSubsystem, 2.5)),
 
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-67), Units.inchesToMeters(0), 0,
-                        1.5, true), // -67, 0, 0, 1.5
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(1500), shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(1500), shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(40), pivotSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000),
+                        shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3000),
+                        shooterSubsystem),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(30),
+                        pivotSubsystem),
 
-                new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem, shooterSubsystem, 1.0f),
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-100), Units.inchesToMeters(40), 25,
+                        2.0, false),
+
+                new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
+                        shooterSubsystem, 1.5f),
 
                 new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT), feederSubsystem),
                 new WaitCommand(0.2),
                 new InstantCommand(() -> feederSubsystem.setSpeed(0), feederSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0), shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0), shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0),
+                        shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0),
+                        shooterSubsystem),
                 new InstantCommand(
                         () -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE),
                         pivotSubsystem),
 
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-12 * 14 - 6),
+                        Units.inchesToMeters(40), 0,
+                        1.0, false),
+
                 new ParallelCommandGroup(
-                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-67),
-                                Units.inchesToMeters(-45), 75, 1.5, false), // -67, -45, 75, 1.5
-                        new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 1.5)),
+                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-12 * 23 - 6),
+                                Units.inchesToMeters(84),
+                                0, 2.5, false), // -50, 38, -30, 1.5
+                        new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
+                                intakeSubsystem, 2.5)),
 
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-67), Units.inchesToMeters(-45), 30,
-                        1.0, true), // -67, -45, 30, 1.0
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(1500), shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(1500), shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(40), pivotSubsystem),
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-12 * 14 - 6),
+                        Units.inchesToMeters(40), 0,
+                        1.0, false),
 
-                new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem, shooterSubsystem, 1.5f),
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000),
+                        shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3000),
+                        shooterSubsystem),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(30),
+                        pivotSubsystem),
+
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-100), Units.inchesToMeters(40), 25,
+                        2.0, false),
+
+                new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
+                        shooterSubsystem, 1.0f),
 
                 new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT), feederSubsystem),
                 new WaitCommand(0.2),
                 new InstantCommand(() -> feederSubsystem.setSpeed(0), feederSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0), shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0), shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0),
+                        shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0),
+                        shooterSubsystem),
                 new InstantCommand(
                         () -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE),
-                        pivotSubsystem),
-                        
-                new ParallelCommandGroup(
-                        new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(0), Units.inchesToMeters(0), 0,
-                                0, false),
-                        new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 5.0)));
+                        pivotSubsystem)
+
+        );
     }
 }
