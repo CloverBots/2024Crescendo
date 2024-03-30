@@ -45,11 +45,11 @@ public class LEDSubsystem extends SubsystemBase {
         FLASHING_ORANGE(255.0, 165.0, 0.0, 0.125, 0.125, false),
         FLASHING_YELLOW(255.0, 255.0, 0.0, 0.125, 0.125, false),
         FLASHING_GREEN(0.0, 255.0, 0.0, 0.125, 0.125, false),
-        FLASHING_BLUE(0.0, 0.0, 255.0, 0.0625, 0.0625, false),
+        FLASHING_BLUE(0.0, 0.0, 255.0, 0.125, 0.125, false),
         FLASHING_PURPLE(255.0, 0.0, 255.0, 0.125, 0.125, false),
         FLASHING_PINK(255.0, 20.0, 30.0, 0.125, 0.125, false),
         RAINBOW(0, true),
-        BREATHING_GREEN(107, 5.0, true),
+        BREATHING_GREEN(120, 10.0, true),
         BREATHING_BLUE(150, 5.0, true);
 
         double red, green, blue, onTime, offTime, cycleTime, transitionTime;
@@ -176,7 +176,7 @@ public class LEDSubsystem extends SubsystemBase {
 
             double valueBasedOnTime = currentState.transitionTime - startingTransTime;
 
-            rgb = HSVtoRGB.convert(State.BREATHING_GREEN.startingHue, 0.922f, valueBasedOnTime * 0.6);
+            rgb = HSVtoRGB.convert(State.BREATHING_GREEN.startingHue, 1.0f, valueBasedOnTime * 0.6);
 
             rgb[0] = averageR.process(rgb[0]);
             rgb[1] = averageG.process(rgb[1]);

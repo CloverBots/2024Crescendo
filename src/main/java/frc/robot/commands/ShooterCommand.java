@@ -117,7 +117,7 @@ public class ShooterCommand extends Command {
     @Override
     public void execute() {
 
-        if (matchTime.get() > Double.POSITIVE_INFINITY) { // TO-DO need time
+        if (matchTime.get() > 110) {
             matchTime.stop();
             matchTime.reset();
             blinkOn = true;
@@ -255,7 +255,6 @@ public class ShooterCommand extends Command {
             // re-purposing Y button mode = ACTION.TRAP;
             mode = ACTION.DEFAULT_SPEAKER;
             modeChanged = true;
-             ledSubsystem.conformToState(State.SOLID_PINK);
         } else if (startButton.get() && mode != ACTION.TUNING) {
             mode = ACTION.TUNING;
             modeChanged = true;

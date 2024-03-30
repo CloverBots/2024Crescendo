@@ -68,9 +68,9 @@ public class RobotContainer {
     public static final double SHOOTER_PARKED_PIVOT_ANGLE = 10;
 
     // AMP SHOOTER
-    public static final double SHOOTER_AMP_RIGHT_RPM = 600;
-    public static final double SHOOTER_AMP_LEFT_RPM = 600;
-    public static final double SHOOTER_AMP_PIVOT_ANGLE = 72; // 72
+    public static final double SHOOTER_AMP_RIGHT_RPM = 700;
+    public static final double SHOOTER_AMP_LEFT_RPM = 700;
+    public static final double SHOOTER_AMP_PIVOT_ANGLE = 70; // 72
 
     // TRAP SHOOTER
     public static final double SHOOTER_TRAP_RIGHT_RPM = 20;
@@ -80,12 +80,12 @@ public class RobotContainer {
     // SPEAKER SHOOTER
     public static final double SHOOTER_SPEAKER_RIGHT_RPM = 2500; // 2500
     public static final double SHOOTER_SPEAKER_LEFT_RPM = 2000; // 2000
-    public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 69; // 69
+    public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 66; // 69
 
     // OVER STAGE
-    public static final double SHOOTER_OVER_STAGE_RIGHT_RPM = 2500; // TO-DO use these
-    public static final double SHOOTER_OVER_STAGE_LEFT_RPM = 3500;
-    public static final double SHOOTER_OVER_STAGE_PIVOT_ANGLE = 70;
+    public static final double SHOOTER_OVER_STAGE_RIGHT_RPM = 3000;
+    public static final double SHOOTER_OVER_STAGE_LEFT_RPM = 2500;
+    public static final double SHOOTER_OVER_STAGE_PIVOT_ANGLE = 60;
 
     // UNDER STAGE
     public static final double SHOOTER_UNDER_STAGE_RIGHT_RPM = 3000;
@@ -220,9 +220,9 @@ public class RobotContainer {
     private void configureBindings() {
 
         // used during tuning
-        SmartDashboard.putNumber("Shooter right RPM", 0.5);
-        SmartDashboard.putNumber("Shooter left RPM", 0.5);
-        SmartDashboard.putNumber("Shooter angle", 25);
+        SmartDashboard.putNumber("Shooter right RPM", 2500);
+        SmartDashboard.putNumber("Shooter left RPM", 2000);
+        SmartDashboard.putNumber("Shooter angle", 66);
 
     }
 
