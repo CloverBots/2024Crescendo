@@ -69,25 +69,27 @@ public class AutoSeven extends SequentialCommandGroup {
                         new DriveToDistanceCommand(swerveSubsystem,
                                 Units.inchesToMeters(-12 * 24 - 6),
                                 Units.inchesToMeters(157),
-                                0, 3.0, false), // -12 * 24 - 6, 157, 0, 4.0, false
+                                0, 2.5, false), // -12 * 24 - 6, 157, 0, 4.0, false
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
-                                intakeSubsystem, 3)),
+                                intakeSubsystem, 2.5)),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-12 * 12 - 6),
                         Units.inchesToMeters(130), -50, 1.5, false), // -72, 140, -60, 3.5, false
 
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000),
                         shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3000),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3500),
                         shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(30),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(37),
                         pivotSubsystem),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-70),
-                        Units.inchesToMeters(50), -50, 1.3, false), // -90, 72, -50, 2.0, false
-
+                        Units.inchesToMeters(50), -40, 1.3, false), // -90, 72, -50, 2.0, false
+                
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
                         shooterSubsystem, 1.0f),
+
+                new WaitCommand(0.2),
 
                 new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT),
                         feederSubsystem),
@@ -101,18 +103,18 @@ public class AutoSeven extends SequentialCommandGroup {
                         () -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE)),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-115),
-                        Units.inchesToMeters(30),
+                        Units.inchesToMeters(38),
                         0, 1.0, false),
 
                 new WaitCommand(0.1),
 
                 new ParallelCommandGroup(
                         new DriveToDistanceCommand(swerveSubsystem,
-                                Units.inchesToMeters(-12 * 24 - 6),
+                                Units.inchesToMeters(-12 * 23),
                                 Units.inchesToMeters(17),
-                                0, 2.5, false), // -12 * 24 - 6, 142, 0, 4.0, false
+                                0, 2.0, false), // -12 * 24 - 6, 142, 0, 4.0, false
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
-                                intakeSubsystem, 2.5)),
+                                intakeSubsystem, 2.0)),
 
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3500),
                         shooterSubsystem),
@@ -127,8 +129,8 @@ public class AutoSeven extends SequentialCommandGroup {
 
                 new WaitCommand(0.1),
 
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-108),
-                        Units.inchesToMeters(-24),
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-80),
+                        Units.inchesToMeters(-30),
                         -10, 0.8, false),
 
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,

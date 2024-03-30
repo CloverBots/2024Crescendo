@@ -185,6 +185,7 @@ public class ShooterCommand extends Command {
 
                 shooterSubsystem.setShooterLeftRPM(shooterLeftRPM);
                 shooterSubsystem.setShooterRightRPM(shooterRightRPM);
+                ledSubsystem.conformToState(State.SOLID_PINK);
 
                 SmartDashboard.putNumber("target distance", visionTargetTracker.computeTargetDistance());
                 break;
@@ -246,13 +247,15 @@ public class ShooterCommand extends Command {
         } else if (aButton.get() && mode != ACTION.AMP) {
             mode = ACTION.AMP;
             modeChanged = true;
+            ledSubsystem.conformToState(State.SOLID_YELLOW);
         } else if (bButton.get() && mode != ACTION.SPEAKER) {
             mode = ACTION.SPEAKER;
             modeChanged = true;
-        } else if (yButton.get() && mode != ACTION.TRAP) {
+        } else if (yButton.get() && mode != ACTION.DEFAULT_SPEAKER) {
             // re-purposing Y button mode = ACTION.TRAP;
             mode = ACTION.DEFAULT_SPEAKER;
             modeChanged = true;
+             ledSubsystem.conformToState(State.SOLID_PINK);
         } else if (startButton.get() && mode != ACTION.TUNING) {
             mode = ACTION.TUNING;
             modeChanged = true;
@@ -262,12 +265,15 @@ public class ShooterCommand extends Command {
         } else if (backButton.get()) {
             mode = ACTION.CLIMB_MANUAL;
             modeChanged = true;
+             ledSubsystem.conformToState(State.SOLID_PURPLE);
         } else if (dPad.get() == 0) { // 0 is up on dpad
             mode = ACTION.LOB_HIGH;
             modeChanged = true;
+             ledSubsystem.conformToState(State.SOLID_ORANGE);
         } else if (dPad.get() == 180) {
             mode = ACTION.LOB_LOW;
             modeChanged = true;
+             ledSubsystem.conformToState(State.SOLID_ORANGE);
         }
     }
 
