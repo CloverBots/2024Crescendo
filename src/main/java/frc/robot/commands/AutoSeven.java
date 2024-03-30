@@ -136,6 +136,8 @@ public class AutoSeven extends SequentialCommandGroup {
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
                         shooterSubsystem, 1.0f),
 
+                new WaitCommand(0.2),
+
                 new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT),
                         feederSubsystem),
                 new WaitCommand(0.2),
