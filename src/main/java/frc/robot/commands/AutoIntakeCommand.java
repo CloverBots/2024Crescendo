@@ -42,8 +42,8 @@ public class AutoIntakeCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        intakeSubsystem.setIntakeSpeed(0.1); // RobotContainer.INTAKE_SPEED
-        feederSubsystem.setSpeed(0.1); // RobotContainer.FEEDER_SPEED_INTAKE
+        intakeSubsystem.setIntakeSpeed(RobotContainer.INTAKE_SPEED);
+        feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_INTAKE);
     }
 
     // Called once the command ends or is interrupted.

@@ -19,7 +19,7 @@ public class DriveFromControllerCommand extends Command {
 
     private final SwerveSubsystem swerveSubsystem;
     private VisionTargetTracker limelight;
-    private final Supplier<Double> leftStickX, leftStickY, rightStickX, rightStickY, crawlTrigger, slowRotate;
+    private final Supplier<Double> leftStickX, leftStickY, rightStickX, rightStickY, crawlTrigger, fastRotate;
     private final Supplier<Boolean> yButton, bButton, aButton, xButton, startButton;
     private final Supplier<Integer> dPad;
     private final SlewRateLimiter translationLimiter, turningLimiter;
@@ -65,7 +65,7 @@ public class DriveFromControllerCommand extends Command {
         this.startButton = startButton;
 
         this.crawlTrigger = crawlTrigger;
-        this.slowRotate = slowRotate;
+        this.fastRotate = slowRotate;
         this.dPad = dPad;
 
         this.translationLimiter = new SlewRateLimiter(SwerveDriveConstants.teleOpMaxAccelerationMetersPerSecond);
@@ -156,14 +156,12 @@ public class DriveFromControllerCommand extends Command {
         // Slows both rotation and translation if the crawl trigger is pressed.
         if (crawlTrigger.get() >= 0.5) {
             turningSpeedMultiplier = SwerveDriveConstants.teleOpSlowAngularSpeed;
-        } else {
+        } // Fast rotate if crawl is not pressed and fast rotate is
+        else if (fastRotate.get() >= 0.5 && crawlTrigger.get() <= 0.5) {
             turningSpeedMultiplier = SwerveDriveConstants.teleOpMaxAngularSpeed;
         }
-        // If the slow rotate trigger is pressed, it will only slow down the rotation.
-        if (slowRotate.get() >= 0.5 || crawlTrigger.get() >= 0.5) {
-            turningSpeedMultiplier = SwerveDriveConstants.teleOpSlowAngularSpeed;
-        } else {
-            turningSpeedMultiplier = SwerveDriveConstants.teleOpMaxAngularSpeed;
+        else {
+            turningSpeedMultiplier = SwerveDriveConstants.teleOpNormalAngularSpeed;
         }
         turningSpeed = turningLimiter.calculate(turningSpeed);
         turningSpeed *= turningSpeedMultiplier;
