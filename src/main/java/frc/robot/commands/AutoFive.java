@@ -33,15 +33,6 @@ public class AutoFive extends SequentialCommandGroup {
             ShooterSubsystem shooterSubsystem, FeederDistanceSensorSubsystem feederDistanceSensorSubsystem,
             IntakeSubsystem intakeSubsystem, VisionTargetTracker visionTargetTracker) {
 
-        Optional<Alliance> side = DriverStation.getAlliance();
-        int inverted = 1; // default Blue
-
-        if (side.isPresent()) {
-            if (side.get() == Alliance.Red) {
-                inverted = -1;
-            }
-        }
-
         addCommands(
                 new ResetOdometryCommand(swerveSubsystem,
                         new Pose2d(new Translation2d(), new Rotation2d())),
@@ -70,8 +61,8 @@ public class AutoFive extends SequentialCommandGroup {
                  
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-55), Units.inchesToMeters(42), -30,
                         1.0, true), // -50, 38, -30, 1.0
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(1500), shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(1500), shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2500), shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(2500), shooterSubsystem),
                 new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(45), pivotSubsystem),
 
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem, shooterSubsystem, 1.5f),
@@ -112,7 +103,7 @@ public class AutoFive extends SequentialCommandGroup {
                                 Units.inchesToMeters(-54), 75, 1.5, false), // -67, -45, 75, 1.5
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem, 1.5)),
                 
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-74), Units.inchesToMeters(-54), 25,
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-74), Units.inchesToMeters(-54), 22,
                         1.0, true), // -67, -45, 30, 1.0
                 new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(1500), shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(1500), shooterSubsystem),
