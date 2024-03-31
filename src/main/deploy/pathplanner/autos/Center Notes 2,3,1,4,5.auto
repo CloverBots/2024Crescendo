@@ -3,7 +3,7 @@
   "startingPose": {
     "position": {
       "x": 1.32,
-      "y": 5.54
+      "y": 5.42
     },
     "rotation": 0
   },
@@ -175,9 +175,41 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Aim"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 1 Shot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Stage"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Aim"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.5
+                }
+              }
+            ]
           }
         },
         {
@@ -193,7 +225,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note 4 from Note 1"
+                  "pathName": "Note 4 from Note 1 Shot"
                 }
               },
               {

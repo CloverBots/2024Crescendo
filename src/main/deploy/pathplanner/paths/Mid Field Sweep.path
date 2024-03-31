@@ -8,24 +8,40 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.660487180129289,
-        "y": 6.9085276198721415
+        "x": 8.47585609303598,
+        "y": 6.916956374163195
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.487051340299864,
-        "y": 4.075742235991514
+        "x": 8.270256540513081,
+        "y": 4.126676732781015
       },
       "prevControl": {
-        "x": 8.487051340299864,
-        "y": 4.2757422359915145
+        "x": 8.270256540513081,
+        "y": 4.326676732781015
       },
       "nextControl": {
-        "x": 8.487051340299864,
-        "y": 3.875742235991514
+        "x": 8.270256540513081,
+        "y": 3.926676732781015
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.270256540513081,
+        "y": 0.7930268454454622
+      },
+      "prevControl": {
+        "x": 8.270256540513081,
+        "y": 1.0626201361707044
+      },
+      "nextControl": {
+        "x": 8.270256540513081,
+        "y": 0.7783411631223989
       },
       "isLocked": false,
       "linkedName": null
@@ -33,11 +49,11 @@
     {
       "anchor": {
         "x": 8.0,
-        "y": 0.7515553059275135
+        "y": 0.75
       },
       "prevControl": {
-        "x": 8.906187953220977,
-        "y": 0.40468362626866133
+        "x": 8.108714034959377,
+        "y": 0.7342841161532057
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,13 +62,13 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.2,
-      "rotationDegrees": 59.65213813312365,
+      "waypointRelativePos": 0.15,
+      "rotationDegrees": -90.0,
       "rotateFast": false
     },
     {
-      "waypointRelativePos": 1.6,
-      "rotationDegrees": 45.0,
+      "waypointRelativePos": 2.0,
+      "rotationDegrees": 0,
       "rotateFast": false
     }
   ],
@@ -66,7 +82,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -1.5074357587750034,
     "rotateFast": false
   },
   "reversed": false,
@@ -76,4 +92,5 @@
     "velocity": 0
   },
   "useDefaultConstraints": true
+}raints": true
 }

@@ -3,7 +3,7 @@
   "startingPose": {
     "position": {
       "x": 1.32,
-      "y": 5.54
+      "y": 5.42
     },
     "rotation": 0
   },
@@ -162,7 +162,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note 6 from Line Shot"
+                  "pathName": "Note 7 from Line"
                 }
               },
               {
@@ -177,13 +177,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Note 6 to Far"
+            "pathName": "Note 7 to Stage"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Line"
+            "name": "Stage"
           }
         },
         {
@@ -218,7 +218,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note 7 from Far"
+                  "pathName": "Note 6 from Stage"
                 }
               },
               {
@@ -233,13 +233,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Note 7 to Far"
+            "pathName": "Note 6 to Stage"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Far"
+            "name": "Stage"
           }
         },
         {

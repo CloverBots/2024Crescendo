@@ -150,7 +150,7 @@ public class RobotContainer {
   private final AutoAimCommand autoAimCommand = new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem, shooterSubsystem, 2.0f);
 
   private final AutoIntakeCommand autoIntakeCommand = new AutoIntakeCommand(feederDistanceSensorSubsystem,
-      feederSubsystem, intakeSubsystem, 5.0);
+      feederSubsystem, intakeSubsystem);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -170,7 +170,7 @@ public class RobotContainer {
     });
 
     // Register Named Commands
-    NamedCommands.registerCommand("Intake", Commands.print("Intake")); // autoIntakeCommand
+    NamedCommands.registerCommand("Intake", autoIntakeCommand); // autoIntakeCommand
     NamedCommands.registerCommand("Aim", Commands.print("Aim")); // autoAimCommand
     NamedCommands.registerCommand("Subwoofer", Commands.print("Subwoofer")); // autoSubwooferCommand
     NamedCommands.registerCommand("Line", Commands.print("Line")); // autoLineCommand

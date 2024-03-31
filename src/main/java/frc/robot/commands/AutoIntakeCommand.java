@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
@@ -12,21 +11,15 @@ public class AutoIntakeCommand extends Command {
     private final FeederDistanceSensorSubsystem feederDistanceSensorSubsystem;
     private final FeederSubsystem feederSubsystem;
     private final IntakeSubsystem intakeSubsystem;
-    private Timer timer;
-    private double setTime;
 
     public AutoIntakeCommand(FeederDistanceSensorSubsystem feederDistanceSensorSubsystem,
             FeederSubsystem feederSubsystem,
-            IntakeSubsystem intakeSubsystem,
-            double setTime) {
+            IntakeSubsystem intakeSubsystem) {
 
         this.feederDistanceSensorSubsystem = feederDistanceSensorSubsystem;
 
         this.feederSubsystem = feederSubsystem;
         this.intakeSubsystem = intakeSubsystem;
-
-        timer = new Timer();
-        this.setTime = setTime;
 
         addRequirements(feederDistanceSensorSubsystem);
         addRequirements(feederSubsystem);
@@ -35,9 +28,7 @@ public class AutoIntakeCommand extends Command {
 
     // Called when the command is initially scheduled.
     @Override
-    public void initialize() {
-        timer.start();
-    }
+    public void initialize() {}
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
@@ -55,7 +46,7 @@ public class AutoIntakeCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        if (feederDistanceSensorSubsystem.isNoteLoaded() || timer.get() > setTime) {
+        if (feederDistanceSensorSubsystem.isNoteLoaded()) {
             return true;
         } else {
             return false;

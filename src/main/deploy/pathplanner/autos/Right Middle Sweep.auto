@@ -51,13 +51,51 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Mid Field Sweep"
+            "pathName": "Note 4 to Middle Sweep"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "YEET"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Middle Sweep"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 8 from Middle Sweep"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Note 8 to Far"
+            "pathName": "Note 8 to Stage"
           }
         },
         {
