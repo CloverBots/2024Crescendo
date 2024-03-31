@@ -11,9 +11,11 @@ public class VisionConfiguration {
 
     /**
      * Constructs a new {@link VisionConfiguration} instance.
+     * 
      * @param targetHeight The height of the target, usually in inches.
-     * @param cameraHeight The height of the camera off the ground, usually in inches.
-     * @param cameraPitch The pitch of the camera in degrees.
+     * @param cameraHeight The height of the camera off the ground, usually in
+     *                     inches.
+     * @param cameraPitch  The pitch of the camera in degrees.
      */
     public VisionConfiguration(double targetHeight, double cameraHeight, double cameraPitch) {
         this.targetHeight = targetHeight;

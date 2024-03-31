@@ -13,9 +13,9 @@ import frc.robot.constants.IDs;
 
 public class FeederSubsystem extends SubsystemBase {
 
-private final CANSparkMax feederMotor;
+  private final CANSparkMax feederMotor;
 
-private final int CURRENT_LIMIT = 100;
+  private final int CURRENT_LIMIT = 100;
 
   public FeederSubsystem() {
     this.feederMotor = new CANSparkMax(IDs.FEEDER_MOTOR, MotorType.kBrushless);

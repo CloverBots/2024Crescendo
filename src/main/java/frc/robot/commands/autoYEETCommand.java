@@ -17,13 +17,13 @@ import frc.robot.subsystems.ShooterSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class autoYEETCommand extends ParallelCommandGroup {
   /** Creates a new autoYEETCommand. */
-  public autoYEETCommand(IntakeSubsystem intakeSubsystem, PivotSubsystem pivotSubsystem, ShooterSubsystem shooterSubsystem, FeederSubsystem feederSubsystem) {
+  public autoYEETCommand(IntakeSubsystem intakeSubsystem, PivotSubsystem pivotSubsystem,
+      ShooterSubsystem shooterSubsystem, FeederSubsystem feederSubsystem) {
     addCommands(
-      new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE)),
-      new InstantCommand(() -> intakeSubsystem.setIntakeSpeed(RobotContainer.INTAKE_SPEED)),
-      new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(RobotContainer.SHOOTER_UNDER_STAGE_LEFT_RPM)),
-      new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(RobotContainer.SHOOTER_UNDER_STAGE_RIGHT_RPM)),
-      new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT))
-    );
+        new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE)),
+        new InstantCommand(() -> intakeSubsystem.setIntakeSpeed(RobotContainer.INTAKE_SPEED)),
+        new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(RobotContainer.SHOOTER_UNDER_STAGE_LEFT_RPM)),
+        new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(RobotContainer.SHOOTER_UNDER_STAGE_RIGHT_RPM)),
+        new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT)));
   }
 }

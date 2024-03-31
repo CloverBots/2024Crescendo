@@ -35,7 +35,6 @@ public class DriveFromControllerCommand extends Command {
     private PIDController rotationController;
     private PIDController lockToTagXController;
 
-
     public DriveFromControllerCommand(
             SwerveSubsystem swerveSubsystem,
             Supplier<Double> leftStickX,
@@ -72,11 +71,11 @@ public class DriveFromControllerCommand extends Command {
         this.translationLimiter = new SlewRateLimiter(SwerveDriveConstants.teleOpMaxAccelerationMetersPerSecond);
         this.turningLimiter = new SlewRateLimiter(SwerveDriveConstants.teleOpMaxAngularAccelerationUnitsPerSecond);
 
-        //using degrees
+        // using degrees
         this.rotationController = new PIDController(5.0, .3, 0); // 0.017, 0, 0
         this.rotationController.enableContinuousInput(0, 2 * Math.PI);
         this.lockToTagXController = new PIDController(0.075, 0.03, 0.005);
-        
+
         // this.pointedRotationController = new PIDController(0.07, 0.02, 0);
         // this.pointedRotationController.enableContinuousInput(0, 360);
 
@@ -89,7 +88,7 @@ public class DriveFromControllerCommand extends Command {
 
     @Override
     public void execute() {
-        
+
         // Start calculating our speeds
         ChassisSpeeds speeds = calculateSpeeds();
 
@@ -101,8 +100,10 @@ public class DriveFromControllerCommand extends Command {
         // Feed the calculated speeds to the swerve subsystem
         swerveSubsystem.setSpeed(speeds, fieldOriented);
     }
+
     /**
-     * Correctly handles all the toggle buttons on the controller (field oriented, point mode, etc.)
+     * Correctly handles all the toggle buttons on the controller (field oriented,
+     * point mode, etc.)
      */
     private void handleToggleButtons() {
         if ((dPad.get() == 0) && fieldOrientedCache == false) {
@@ -121,36 +122,47 @@ public class DriveFromControllerCommand extends Command {
             swerveSubsystem.zeroHeading();
         }
     }
+
     /**
-     * Calculates the translation (X/Y) speeds and turning speeds from the controller, depending on the current mode.
+     * Calculates the translation (X/Y) speeds and turning speeds from the
+     * controller, depending on the current mode.
+     * 
      * @return
      */
     private ChassisSpeeds calculateSpeeds() {
         double rotationSpeed;
 
         // Uses the ABYX buttons if any of them are pressed
-        if (isTurnButtonPressed()) rotationSpeed = calculateTurningSpeedHotkey();
+        if (isTurnButtonPressed())
+            rotationSpeed = calculateTurningSpeedHotkey();
 
         // Locks on if no rotation stick input
         else if (lockOnMode && Math.abs(rightStickX.get()) < JOYSTICK_DEADZONE) {
             rotationSpeed = calculateLockOnRotationSpeed();
         }
-        // If none of those buttons are pressed, check to see if pointed turning is enabled.
+        // If none of those buttons are pressed, check to see if pointed turning is
+        // enabled.
         else if (pointedTurning) {
             rotationSpeed = calculateTurningSpeedPointed(rightStickX.get(), rightStickY.get());
         }
         // If none of those above are true, use the normal cont1rols.
-        else rotationSpeed = calculateTurningSpeedsNormal(rightStickX.get());
-        
-        // Calculate the Translation speeds, invert joystick for robot relative
-        double[] xySpeeds = calculateTranslationSpeeds(invertJoystick * leftStickX.get(), invertJoystick * leftStickY.get());
+        else
+            rotationSpeed = calculateTurningSpeedsNormal(rightStickX.get());
 
-        // Contains the calculated translation and rotation speeds. Since the X and Y directions are the opposite in WPILib compared to the controller, we swap them here.
+        // Calculate the Translation speeds, invert joystick for robot relative
+        double[] xySpeeds = calculateTranslationSpeeds(invertJoystick * leftStickX.get(),
+                invertJoystick * leftStickY.get());
+
+        // Contains the calculated translation and rotation speeds. Since the X and Y
+        // directions are the opposite in WPILib compared to the controller, we swap
+        // them here.
         return new ChassisSpeeds(xySpeeds[1], xySpeeds[0], rotationSpeed);
     }
+
     private double calculateTurningSpeedsNormal(double turningSpeed) {
 
-        // Apply a deadzone. This will prevent the robot from moving at very small values
+        // Apply a deadzone. This will prevent the robot from moving at very small
+        // values
         turningSpeed = Math.abs(turningSpeed) > JOYSTICK_DEADZONE ? turningSpeed : 0.0;
 
         double turningSpeedMultiplier; // The max speed of the robot if the stick is pressed all the way.
@@ -161,16 +173,17 @@ public class DriveFromControllerCommand extends Command {
         } // Fast rotate if crawl is not pressed and fast rotate is
         else if (fastRotate.get() >= 0.5 && crawlTrigger.get() <= 0.5) {
             turningSpeedMultiplier = SwerveDriveConstants.teleOpMaxAngularSpeed;
-        }
-        else {
+        } else {
             turningSpeedMultiplier = SwerveDriveConstants.teleOpNormalAngularSpeed;
         }
         turningSpeed = turningLimiter.calculate(turningSpeed);
         turningSpeed *= turningSpeedMultiplier;
         return turningSpeed;
     }
+
     /**
      * Tries to point the robot in the same direction of the right joystick.
+     * 
      * @param rx The X value of the joystick.
      * @param ry The Y value of the joystick
      * @return The turning speed calculated by the PID controller
@@ -179,83 +192,102 @@ public class DriveFromControllerCommand extends Command {
         ry = -ry;
         rx = -rx;
         // Apply a deadzone to the joystick
-        if (Math.hypot(rx, ry) < POINTED_JOYSTICK_DEADZONE) return 0;
+        if (Math.hypot(rx, ry) < POINTED_JOYSTICK_DEADZONE)
+            return 0;
         double angle = Math.atan2(rx, ry);
-        angle *= (180/Math.PI);
+        angle *= (180 / Math.PI);
         boolean sign = angle < 0;
         angle = Math.abs(angle);
         angle = angle % 360;
-        if (sign) angle = 360-angle;
+        if (sign)
+            angle = 360 - angle;
         // SmartDashboard.putNumber("Joystick/Angle", angle);
         return -rotationController.calculate(swerveSubsystem.getHeading(), angle);
     }
+
     /**
-     * Automatically points the robot in the four cardinal directions relative to the A B Y X buttons.
-     * For example, pressing Y (which is on top of the four buttons) will point the robot forward, or to 0 radians.
+     * Automatically points the robot in the four cardinal directions relative to
+     * the A B Y X buttons.
+     * For example, pressing Y (which is on top of the four buttons) will point the
+     * robot forward, or to 0 radians.
+     * 
      * @return The calculated turning speed
      */
     private double calculateTurningSpeedHotkey() {
         double angle; // The desired angle of the robot
         if (yButton.get()) {
-            angle = Units.degreesToRadians(180.0); 
-        }
-        else if (bButton.get()) {
+            angle = Units.degreesToRadians(180.0);
+        } else if (bButton.get()) {
             angle = Units.degreesToRadians(-120);
-        }
-        else if (aButton.get()) {
+        } else if (aButton.get()) {
             angle = 0;
-        }
-        else if (xButton.get()) {
+        } else if (xButton.get()) {
             angle = Units.degreesToRadians(120);
-        } 
-        
-        else return 0; // Returns a speed of 0 if none of the buttons are pressed.
+        }
+
+        else
+            return 0; // Returns a speed of 0 if none of the buttons are pressed.
         // SmartDashboard.putNumber("Joystick/Angle", angle);
         return -rotationController.calculate(swerveSubsystem.getPose().getRotation().getRadians(), angle);
     }
+
     /**
-     * Calculates the Translation (X and Y) speeds of the robot from the controller joystick.
+     * Calculates the Translation (X and Y) speeds of the robot from the controller
+     * joystick.
+     * 
      * @param xSpeed The raw X value of the joystick.
      * @param ySpeed The raw Y value of the joystick.
-     * @return A double[] array of length 2, containing the calculated X and Y speeds respectively.
+     * @return A double[] array of length 2, containing the calculated X and Y
+     *         speeds respectively.
      */
     private double[] calculateTranslationSpeeds(double xSpeed, double ySpeed) {
         double[] xySpeeds = new double[2]; // Will contain the calculated X and Y speeds
 
-        double speedMultiplier; // The maximum speed of the robot in any direction if the joystick is pressed all the way
+        double speedMultiplier; // The maximum speed of the robot in any direction if the joystick is pressed
+                                // all the way
 
         // Max speed decresed if crawl trigger is pressed
-        if (crawlTrigger.get() >= 0.5) speedMultiplier = SwerveDriveConstants.TELEOP_SLOW_SPEED_METERS_PER_SECOND;
+        if (crawlTrigger.get() >= 0.5)
+            speedMultiplier = SwerveDriveConstants.TELEOP_SLOW_SPEED_METERS_PER_SECOND;
 
         // Use default max speed if it is not pressed
-        else speedMultiplier = SwerveDriveConstants.TELEOP_MAX_SPEED_METERS_PER_SECOND;
-        
-        /* 
-        * This is the Magnitude. It is the hypotenuse of the X and Y speeds.
-        * It can be thought of as the distance the joystick is from the center when it is pressed.
-        * If you press the joystick all the way forward, it will always be 1.0 no matter what direction it is.
-        * This is used to make sure that speed calculations, such as scaling and the deadzones, are always consistant regardless of the direction the robot is travelling in.
-        */
+        else
+            speedMultiplier = SwerveDriveConstants.TELEOP_MAX_SPEED_METERS_PER_SECOND;
+
+        /*
+         * This is the Magnitude. It is the hypotenuse of the X and Y speeds.
+         * It can be thought of as the distance the joystick is from the center when it
+         * is pressed.
+         * If you press the joystick all the way forward, it will always be 1.0 no
+         * matter what direction it is.
+         * This is used to make sure that speed calculations, such as scaling and the
+         * deadzones, are always consistant regardless of the direction the robot is
+         * travelling in.
+         */
         double magnitude = Math.hypot(ySpeed, xSpeed);
 
-        // Apply the deadzone. This will prevent the robot from moving at very small values
+        // Apply the deadzone. This will prevent the robot from moving at very small
+        // values
         magnitude = Math.abs(magnitude) > JOYSTICK_DEADZONE ? magnitude : 0.0;
 
-        // Most controllers are not completely circular (meaning the magnitude can go above 1.0 in certain directions), so we cap it at 1.0.
+        // Most controllers are not completely circular (meaning the magnitude can go
+        // above 1.0 in certain directions), so we cap it at 1.0.
         magnitude = Math.min(magnitude, 1);
 
-        // Apply a power curve. This makes it so that the robot will move slower at lower inputs compared to if it weren't. This makes small movements easier. 
+        // Apply a power curve. This makes it so that the robot will move slower at
+        // lower inputs compared to if it weren't. This makes small movements easier.
         magnitude = Math.pow(magnitude, 3);
 
         // Limits the acceleration for translation
         magnitude = translationLimiter.calculate(magnitude);
 
         magnitude *= speedMultiplier; // Scales the magnitude
-        
-        // Multiply the raw X and Y inputs by the magnitude to get the correct X and Y translation speeds
+
+        // Multiply the raw X and Y inputs by the magnitude to get the correct X and Y
+        // translation speeds
         xSpeed *= magnitude;
         ySpeed *= magnitude;
-        
+
         xySpeeds[0] = xSpeed;
         xySpeeds[1] = ySpeed;
 
@@ -264,12 +296,13 @@ public class DriveFromControllerCommand extends Command {
 
     /**
      * Tells if any of the ABYX buttons is currently pressed.
+     * 
      * @return {@code true} if any one of these buttons are pressed.
      */
     private boolean isTurnButtonPressed() {
         return aButton.get() || bButton.get() || yButton.get() || xButton.get();
     }
-    
+
     @Override
     public void end(boolean interrupted) {
         swerveSubsystem.stopModules(); // Stop all swerve modules if the command ends.

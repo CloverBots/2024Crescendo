@@ -4,18 +4,14 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.VisionTargetTracker;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.SwerveSubsystem;
 
 public class AutoAimCommand extends Command {
 
-  private PIDController lockToTagXController = new PIDController(5.0, .3, 0); // 0.075, 0.03, 0.005
-  private SwerveSubsystem swerve;
   private PivotSubsystem pivotSubsystem;
   private VisionTargetTracker visionTargetTracker;
   private ShooterSubsystem shooterSubsystem;
@@ -24,14 +20,10 @@ public class AutoAimCommand extends Command {
   private float time;
   private Timer timer;
 
-  public AutoAimCommand(SwerveSubsystem swerve, VisionTargetTracker visionTargetTracker, PivotSubsystem pivotSubsystem,
+  public AutoAimCommand(VisionTargetTracker visionTargetTracker, PivotSubsystem pivotSubsystem,
       ShooterSubsystem shooterSubsystem, float time) {
-    addRequirements(swerve);
-    this.swerve = swerve;
     this.pivotSubsystem = pivotSubsystem;
     this.shooterSubsystem = shooterSubsystem;
-    this.lockToTagXController = new PIDController(5.0, .3, 0); 
-    this.lockToTagXController.setTolerance(1);
     this.visionTargetTracker = visionTargetTracker;
     this.time = time;
     timer = new Timer();
@@ -40,7 +32,6 @@ public class AutoAimCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    lockToTagXController.reset();
     pivotAngle = pivotSubsystem.getSetpoint();
     previousPivotAngle = pivotAngle;
     timer.start();
@@ -49,9 +40,6 @@ public class AutoAimCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double calculate = -lockToTagXController.calculate(visionTargetTracker.getTx(), 0);
-    swerve.setSpeed(0, 0, calculate, true);
-
     double targetDistance = 0;
     Boolean isTargetValid = visionTargetTracker.isValid();
     if (isTargetValid) {
@@ -94,6 +82,6 @@ public class AutoAimCommand extends Command {
       return true;
     }
 
-    return lockToTagXController.atSetpoint() && pivotSubsystem.atSetpoint() && shooterSubsystem.isShooterAtTargetRpm();
+    return pivotSubsystem.atSetpoint() && shooterSubsystem.isShooterAtTargetRpm();
   }
 }

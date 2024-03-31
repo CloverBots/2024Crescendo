@@ -18,7 +18,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private static final double MAX_RPM = 5000;
     private static final double DEFAULT_SHOOTER_SPEED = 0;
 
-    private static final double SHOOTER_P = 0.0004;//0.01; // 8e-5;
+    private static final double SHOOTER_P = 0.0004;// 0.01; // 8e-5;
     private static final double SHOOTER_I = 0.0;
     private static final double SHOOTER_D = 0.0;
     private static final double SHOOTER_Iz = 0;
@@ -106,26 +106,25 @@ public class ShooterSubsystem extends SubsystemBase {
          * com.revrobotics.CANSparkMax.ControlType.kVelocity
          * com.revrobotics.CANSparkMax.ControlType.kVoltage
          */
-        
+
         if (rpm > MAX_RPM) {
             rpm = MAX_RPM;
         }
         targetRpmLeft = rpm;
 
-        pidControllerLeft.setReference(rpm, CANSparkMax.ControlType.kVelocity); 
-        
-         
+        pidControllerLeft.setReference(rpm, CANSparkMax.ControlType.kVelocity);
+
     }
 
     public void setShooterRightRPM(double rpm) {
-        
+
         if (rpm > MAX_RPM) {
             rpm = MAX_RPM;
         }
-        
+
         targetRpmRight = rpm;
 
-        pidControllerRight.setReference(rpm, CANSparkMax.ControlType.kVelocity);  
+        pidControllerRight.setReference(rpm, CANSparkMax.ControlType.kVelocity);
     }
 
     public void setDefaultShooterRPM() {
@@ -136,7 +135,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public boolean isShooterAtTargetRpm() {
         // If both are within 95% of the target, return true
         if (encoderLeft.getVelocity() > (targetRpmLeft * 0.95)
-             && encoderRight.getVelocity() > (targetRpmRight * 0.95)) {
+                && encoderRight.getVelocity() > (targetRpmRight * 0.95)) {
             return true;
         }
 
@@ -145,9 +144,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public boolean isShooterRunning() {
         if (encoderLeft.getVelocity() > 0
-             && encoderRight.getVelocity() > 0) {
+                && encoderRight.getVelocity() > 0) {
             return true;
-        } 
+        }
 
         return false;
     }

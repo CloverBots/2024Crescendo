@@ -34,7 +34,7 @@ public class SwerveSubsystem extends SubsystemBase {
     private final AHRS gyro = new AHRS(IDs.AHRS_PORT_ID);
 
     private final Timer resyncTimer = new Timer();
-    
+
     private Field2d field = new Field2d();
 
     /** This will track the robot's X and Y position, as well as its rotation. */
@@ -59,23 +59,23 @@ public class SwerveSubsystem extends SubsystemBase {
             } catch (Exception e) {
             }
         }).start();
-        
-    // Configure AutoBuilder
-    AutoBuilder.configureHolonomic(
-        this::getPose,
-        this::resetPose,
-        this::getSpeeds,
-        this::driveRobotRelative,
-        SwerveDriveConstants.PathPlannerSwerve.pathFollowerConfig,
-        () -> {
-        // Mirrors autos for red side. Default is blue
-          var alliance = DriverStation.getAlliance();
-          if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Red;
-          }
-          return false;
-        },
-        this);
+
+        // Configure AutoBuilder
+        AutoBuilder.configureHolonomic(
+                this::getPose,
+                this::resetPose,
+                this::getSpeeds,
+                this::driveRobotRelative,
+                SwerveDriveConstants.PathPlannerSwerve.pathFollowerConfig,
+                () -> {
+                    // Mirrors autos for red side. Default is blue
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                },
+                this);
 
         PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
         SmartDashboard.putData("Field", field);
@@ -95,25 +95,25 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
-
     public void resetPose(Pose2d pose) {
         odometer.resetPosition(gyro.getRotation2d(), getModulePositions(), pose);
-      }
-    
-      public ChassisSpeeds getSpeeds() {
+    }
+
+    public ChassisSpeeds getSpeeds() {
         return SwerveDriveConstants.swerveKinematics.toChassisSpeeds(getModuleStates());
-      }
-    
-      public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
+    }
+
+    public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
         driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getPose().getRotation()));
-      }
-    
-      public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+    }
+
+    public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
         ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
-    
+
         SwerveModuleState[] targetStates = SwerveDriveConstants.swerveKinematics.toSwerveModuleStates(targetSpeeds);
         setModuleStates(targetStates);
-      }
+    }
+
     /**
      * Called once every time the robot is enabled.
      */
@@ -157,7 +157,6 @@ public class SwerveSubsystem extends SubsystemBase {
         return angle;
         // return Math.IEEEremainder(-gyro.getAngle(), 360);
     }
-    
 
     /**
      * Gives the robot's heading as a {@code Rotation2d} instance.
@@ -199,7 +198,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(double vx, double vy, double omegaDegreesPerSecond, boolean fieldOriented) {
-        setSpeed(new ChassisSpeeds(vx, vy,Units.degreesToRadians(omegaDegreesPerSecond)), fieldOriented);
+        setSpeed(new ChassisSpeeds(vx, vy, Units.degreesToRadians(omegaDegreesPerSecond)), fieldOriented);
     }
 
     public void setSpeed(ChassisSpeeds chassisSpeeds, boolean fieldOriented) {
@@ -269,19 +268,20 @@ public class SwerveSubsystem extends SubsystemBase {
         }
         // Monitor absolute encoder values for configuration
         // for (int i=0; i<modules.length; i++) {
-        //     SmartDashboard.putNumber("abs "+SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
-        //         modules[i].getAbsolutePosition());
+        // SmartDashboard.putNumber("abs
+        // "+SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
+        // modules[i].getAbsolutePosition());
         // }
         // // Monitor encoder values for configuration
         // for (int i=0; i<modules.length; i++) {
-        //     SmartDashboard.putNumber(SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
-        //         Units.radiansToDegrees(modules[i].getTurningPosition()));
+        // SmartDashboard.putNumber(SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
+        // Units.radiansToDegrees(modules[i].getTurningPosition()));
         // }
         // for (int i=0; i<modules.length; i++) {
-        //     SmartDashboard.putNumber("talon "+SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
-        //         modules[i].getDriveVelocity());
+        // SmartDashboard.putNumber("talon
+        // "+SwerveDriveConstants.SwerveModuleConfigurations.values()[i].name(),
+        // modules[i].getDriveVelocity());
         // }
-
 
     }
 
@@ -324,13 +324,15 @@ public class SwerveSubsystem extends SubsystemBase {
                 modules[3].getPosition()
         };
     }
+
     public SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[modules.length];
         for (int i = 0; i < modules.length; i++) {
-          states[i] = modules[i].getState();
+            states[i] = modules[i].getState();
         }
         return states;
     }
+
     /**
      * Sets the desired {@code SwerveModuleState} for every swerve module
      * 

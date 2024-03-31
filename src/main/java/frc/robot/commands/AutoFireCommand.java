@@ -17,14 +17,14 @@ import frc.robot.subsystems.ShooterSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class AutoFireCommand extends SequentialCommandGroup {
   /** Creates a new AutoFire. */
-  public AutoFireCommand(FeederSubsystem feederSubsystem, PivotSubsystem pivotSubsystem, ShooterSubsystem shooterSubsystem) {
+  public AutoFireCommand(FeederSubsystem feederSubsystem, PivotSubsystem pivotSubsystem,
+      ShooterSubsystem shooterSubsystem) {
     addCommands(
-      new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT)),
-      new WaitCommand(0.2),
-      new InstantCommand(() -> feederSubsystem.setSpeed(0)),
-      new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE)),
-      new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2000)),
-      new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(2000))
-    );
+        new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT)),
+        new WaitCommand(0.2),
+        new InstantCommand(() -> feederSubsystem.setSpeed(0)),
+        new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE)),
+        new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2000)),
+        new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(2000)));
   }
 }

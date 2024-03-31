@@ -37,12 +37,12 @@ public class IntakeSubsystem extends SubsystemBase {
             return false;
         }
     }
-   
+
     public boolean isIntakeRunningBackward() {
         if (motor.get() < 0) {
             return true;
         } else {
             return false;
         }
-    } 
+    }
 }

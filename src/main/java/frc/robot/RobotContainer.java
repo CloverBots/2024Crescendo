@@ -17,13 +17,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoAimCommand;
-import frc.robot.commands.AutoFarCommand;
 import frc.robot.commands.AutoFireCommand;
 import frc.robot.commands.AutoIntakeCommand;
-import frc.robot.commands.AutoLeftCommand;
-import frc.robot.commands.AutoLineCommand;
-import frc.robot.commands.AutoStageCommand;
-import frc.robot.commands.AutoSubwooferCommand;
+import frc.robot.commands.AutoShooterCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.autoYEETCommand;
@@ -144,26 +140,6 @@ public class RobotContainer {
       driverController::getRightBumper,
       operatorController::getLeftBumper);
 
-  private final AutoSubwooferCommand autoSubwooferCommand = new AutoSubwooferCommand(feederSubsystem, pivotSubsystem,
-      shooterSubsystem);
-  private final AutoLineCommand autoLineCommand = new AutoLineCommand(feederSubsystem, pivotSubsystem,
-      shooterSubsystem);
-  private final AutoFarCommand autoFarCommand = new AutoFarCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
-  private final AutoStageCommand autoStageCommand = new AutoStageCommand(feederSubsystem, pivotSubsystem,
-      shooterSubsystem);
-  private final AutoLeftCommand autoLeftCommand = new AutoLeftCommand(feederSubsystem, pivotSubsystem,
-      shooterSubsystem);
-  private final AutoFireCommand autoFireCommand = new AutoFireCommand(feederSubsystem, pivotSubsystem,
-      shooterSubsystem);
-  private final autoYEETCommand autoYEETCommand = new autoYEETCommand(intakeSubsystem, pivotSubsystem, shooterSubsystem,
-      feederSubsystem);
-
-  private final AutoAimCommand autoAimCommand = new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
-      shooterSubsystem, 2.0f);
-
-  private final AutoIntakeCommand autoIntakeCommand = new AutoIntakeCommand(feederDistanceSensorSubsystem,
-      feederSubsystem, intakeSubsystem);
-
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -182,15 +158,7 @@ public class RobotContainer {
     });
 
     // Register Named Commands
-    NamedCommands.registerCommand("Intake", autoIntakeCommand);
-    NamedCommands.registerCommand("Aim", autoAimCommand);
-    NamedCommands.registerCommand("Subwoofer", autoSubwooferCommand);
-    NamedCommands.registerCommand("Line", autoLineCommand);
-    NamedCommands.registerCommand("Far", autoFarCommand);
-    NamedCommands.registerCommand("Stage", autoStageCommand);
-    NamedCommands.registerCommand("Left", autoLeftCommand);
-    NamedCommands.registerCommand("Fire", autoFireCommand);
-    NamedCommands.registerCommand("YEET", autoYEETCommand);
+    configureAutoCommands();
     autoChooser = AutoBuilder.buildAutoChooser("Test");
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -256,5 +224,25 @@ public class RobotContainer {
     SmartDashboard.putNumber("Shooter left RPM", 2000);
     SmartDashboard.putNumber("Shooter angle", 66);
 
+  }
+
+  private void configureAutoCommands() {
+    NamedCommands.registerCommand("Intake",
+        new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem));
+    NamedCommands.registerCommand("Aim",
+        new AutoAimCommand(visionTargetTracker, pivotSubsystem, shooterSubsystem, 2.0f));
+    NamedCommands.registerCommand("Subwoofer", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
+        SHOOTER_SPEAKER_PIVOT_ANGLE, SHOOTER_SPEAKER_LEFT_RPM, SHOOTER_SPEAKER_RIGHT_RPM));
+    NamedCommands.registerCommand("Line", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
+        55, 2500, 3000)); // TO-DO tune
+    NamedCommands.registerCommand("Far", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
+        33, 4000, 4500));
+    NamedCommands.registerCommand("Stage", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
+        35, 3000, 4000));
+    NamedCommands.registerCommand("Left", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
+        47, 3000, 3500));
+    NamedCommands.registerCommand("Fire", new AutoFireCommand(feederSubsystem, pivotSubsystem, shooterSubsystem));
+    NamedCommands.registerCommand("YEET",
+        new autoYEETCommand(intakeSubsystem, pivotSubsystem, shooterSubsystem, feederSubsystem));
   }
 }
