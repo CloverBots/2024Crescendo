@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -87,7 +88,7 @@ public class RobotContainer {
   // SPEAKER SHOOTER
   public static final double SHOOTER_SPEAKER_RIGHT_RPM = 2500; // 2500
   public static final double SHOOTER_SPEAKER_LEFT_RPM = 2000; // 2000
-  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 66; // 69
+  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 66; // 66
 
   // OVER STAGE
   public static final double SHOOTER_OVER_STAGE_RIGHT_RPM = 3000;
@@ -211,6 +212,12 @@ public class RobotContainer {
   public void onAutonomousEnable() {
     swerveSubsystem.setBrakeMode(true);
     resetGyro();
+    var alliance = DriverStation.getAlliance();
+    if (alliance.get() == DriverStation.Alliance.Red) {
+      ledSubsystem.conformToState(State.BREATHING_RED);
+    } else {
+      ledSubsystem.conformToState(State.BREATHING_BLUE);
+    }
   }
 
   public void resetGyro() {
