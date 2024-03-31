@@ -5,7 +5,7 @@
       "x": 1.3386144840268221,
       "y": 5.521816553472107
     },
-    "rotation": 1.0809241866607378
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
@@ -20,6 +20,6 @@
       ]
     }
   },
-  "folder": "Tests",
+  "folder": null,
   "choreoAuto": false
 }

@@ -116,6 +116,7 @@ public class DriveFromControllerCommand extends Command {
 
         if (startButton.get() == true) {
             swerveSubsystem.resetOdometry();
+            swerveSubsystem.zeroHeading();
         }
     }
     /**

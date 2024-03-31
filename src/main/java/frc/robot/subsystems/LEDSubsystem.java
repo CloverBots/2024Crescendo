@@ -177,7 +177,7 @@ public class LEDSubsystem extends SubsystemBase {
 
             double valueBasedOnTime = currentState.transitionTime - startingTransTime;
 
-            rgb = HSVtoRGB.convert(getState().startingHue, 0.922f, valueBasedOnTime * 0.6);
+            rgb = HSVtoRGB.convert(getState().startingHue, 1.0f, valueBasedOnTime * 0.6);
 
             rgb[0] = averageR.process(rgb[0]);
             rgb[1] = averageG.process(rgb[1]);

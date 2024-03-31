@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoAimCommand;
@@ -47,6 +46,7 @@ import frc.robot.subsystems.LEDSubsystem.State;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+
   private static final double VISION_TARGET_HEIGHT = 57.13; // AprilTag 4, 7
   private static final double CAMERA_HEIGHT = 8.75; // inches
   private static final double CAMERA_PITCH = 35; // degrees
@@ -55,9 +55,9 @@ public class RobotContainer {
   public final static double PIVOT_UPPER_ENDPOINT = 100;
 
   private final VisionConfiguration visionConfiguration = new VisionConfiguration(
-          VISION_TARGET_HEIGHT,
-          CAMERA_HEIGHT,
-          CAMERA_PITCH);
+      VISION_TARGET_HEIGHT,
+      CAMERA_HEIGHT,
+      CAMERA_PITCH);
 
   public final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
 
@@ -65,16 +65,19 @@ public class RobotContainer {
   public static final double FEEDER_SPEED_INTAKE = 0.5;
   public static final double FEEDER_SPEED_SHOOT = 0.8;
   public final static double FEEDER_TIME = 1;
-  
+  public static final double DEFAULT_SPEAKER_PIVOT_ANGLE = 20;
+
+  public static final double CLIMBER_READY_POSITION = 90;
+  public static final double CLIMBER_RAISED_POSITION = 15;
   public static final double CLIMBER_PIVOT_SPEED = 0.5;
 
   // PARKED SHOOTER
   public static final double SHOOTER_PARKED_PIVOT_ANGLE = 10;
 
   // AMP SHOOTER
-  public static final double SHOOTER_AMP_RIGHT_RPM = 600;
-  public static final double SHOOTER_AMP_LEFT_RPM = 600;
-  public static final double SHOOTER_AMP_PIVOT_ANGLE = 72; // 72
+  public static final double SHOOTER_AMP_RIGHT_RPM = 700;
+  public static final double SHOOTER_AMP_LEFT_RPM = 700;
+  public static final double SHOOTER_AMP_PIVOT_ANGLE = 70; // 72
 
   // TRAP SHOOTER
   public static final double SHOOTER_TRAP_RIGHT_RPM = 20;
@@ -84,12 +87,12 @@ public class RobotContainer {
   // SPEAKER SHOOTER
   public static final double SHOOTER_SPEAKER_RIGHT_RPM = 2500; // 2500
   public static final double SHOOTER_SPEAKER_LEFT_RPM = 2000; // 2000
-  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 69; // 69
+  public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 66; // 69
 
   // OVER STAGE
-  public static final double SHOOTER_OVER_STAGE_RIGHT_RPM = 2500; // TO-DO use these
-  public static final double SHOOTER_OVER_STAGE_LEFT_RPM = 3500;
-  public static final double SHOOTER_OVER_STAGE_PIVOT_ANGLE = 70;
+  public static final double SHOOTER_OVER_STAGE_RIGHT_RPM = 3000;
+  public static final double SHOOTER_OVER_STAGE_LEFT_RPM = 2500;
+  public static final double SHOOTER_OVER_STAGE_PIVOT_ANGLE = 60;
 
   // UNDER STAGE
   public static final double SHOOTER_UNDER_STAGE_RIGHT_RPM = 3000;
@@ -139,15 +142,22 @@ public class RobotContainer {
       operatorController::getBackButton,
       driverController::getRightBumper);
 
-  private final AutoSubwooferCommand autoSubwooferCommand = new AutoSubwooferCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
-  private final AutoLineCommand autoLineCommand = new AutoLineCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
+  private final AutoSubwooferCommand autoSubwooferCommand = new AutoSubwooferCommand(feederSubsystem, pivotSubsystem,
+      shooterSubsystem);
+  private final AutoLineCommand autoLineCommand = new AutoLineCommand(feederSubsystem, pivotSubsystem,
+      shooterSubsystem);
   private final AutoFarCommand autoFarCommand = new AutoFarCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
-  private final AutoStageCommand autoStageCommand = new AutoStageCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
-  private final AutoLeftCommand autoLeftCommand = new AutoLeftCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
-  private final AutoFireCommand autoFireCommand = new AutoFireCommand(feederSubsystem, pivotSubsystem, shooterSubsystem);
-  private final autoYEETCommand autoYEETCommand = new autoYEETCommand(intakeSubsystem, pivotSubsystem, shooterSubsystem, feederSubsystem);
+  private final AutoStageCommand autoStageCommand = new AutoStageCommand(feederSubsystem, pivotSubsystem,
+      shooterSubsystem);
+  private final AutoLeftCommand autoLeftCommand = new AutoLeftCommand(feederSubsystem, pivotSubsystem,
+      shooterSubsystem);
+  private final AutoFireCommand autoFireCommand = new AutoFireCommand(feederSubsystem, pivotSubsystem,
+      shooterSubsystem);
+  private final autoYEETCommand autoYEETCommand = new autoYEETCommand(intakeSubsystem, pivotSubsystem, shooterSubsystem,
+      feederSubsystem);
 
-  private final AutoAimCommand autoAimCommand = new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem, shooterSubsystem, 2.0f);
+  private final AutoAimCommand autoAimCommand = new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
+      shooterSubsystem, 2.0f);
 
   private final AutoIntakeCommand autoIntakeCommand = new AutoIntakeCommand(feederDistanceSensorSubsystem,
       feederSubsystem, intakeSubsystem);
@@ -170,19 +180,18 @@ public class RobotContainer {
     });
 
     // Register Named Commands
-    NamedCommands.registerCommand("Intake", autoIntakeCommand); // autoIntakeCommand
-    NamedCommands.registerCommand("Aim", Commands.print("Aim")); // autoAimCommand
-    NamedCommands.registerCommand("Subwoofer", Commands.print("Subwoofer")); // autoSubwooferCommand
-    NamedCommands.registerCommand("Line", Commands.print("Line")); // autoLineCommand
-    NamedCommands.registerCommand("Far", Commands.print("Far")); // autoFarCommand
-    NamedCommands.registerCommand("Stage", Commands.print("Stage")); // autoStageCommand
-    NamedCommands.registerCommand("Left", Commands.print("Left")); // autoLeftCommand
-    NamedCommands.registerCommand("Fire", Commands.print("Fire")); // autoFireCommand
-    NamedCommands.registerCommand("YEET", Commands.print("YEET")); // autoYEETCommand
+    NamedCommands.registerCommand("Intake", autoIntakeCommand);
+    NamedCommands.registerCommand("Aim", autoAimCommand);
+    NamedCommands.registerCommand("Subwoofer", autoSubwooferCommand);
+    NamedCommands.registerCommand("Line", autoLineCommand);
+    NamedCommands.registerCommand("Far", autoFarCommand);
+    NamedCommands.registerCommand("Stage", autoStageCommand);
+    NamedCommands.registerCommand("Left", autoLeftCommand);
+    NamedCommands.registerCommand("Fire", autoFireCommand);
+    NamedCommands.registerCommand("YEET", autoYEETCommand);
     autoChooser = AutoBuilder.buildAutoChooser("Test");
-    configureAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
-    
+
     configureBindings();
   }
 
@@ -201,14 +210,12 @@ public class RobotContainer {
 
   public void onAutonomousEnable() {
     swerveSubsystem.setBrakeMode(true);
-    ledSubsystem.conformToState(State.BREATHING_GREEN);
+    resetGyro();
   }
 
   public void resetGyro() {
     swerveSubsystem.zeroHeading();
   }
-
-  private void configureAutoChooser() {}
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
@@ -237,9 +244,9 @@ public class RobotContainer {
   private void configureBindings() {
 
     // used during tuning
-    SmartDashboard.putNumber("Shooter right RPM", 0.5);
-    SmartDashboard.putNumber("Shooter left RPM", 0.5);
-    SmartDashboard.putNumber("Shooter angle", 25);
+    SmartDashboard.putNumber("Shooter right RPM", 2500);
+    SmartDashboard.putNumber("Shooter left RPM", 2000);
+    SmartDashboard.putNumber("Shooter angle", 66);
 
   }
 }

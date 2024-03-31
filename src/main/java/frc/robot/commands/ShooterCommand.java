@@ -117,7 +117,7 @@ public class ShooterCommand extends Command {
     @Override
     public void execute() {
 
-        if (matchTime.get() > Double.POSITIVE_INFINITY) { // TO-DO need time
+        if (matchTime.get() > 110) {
             matchTime.stop();
             matchTime.reset();
             blinkOn = true;
@@ -185,6 +185,7 @@ public class ShooterCommand extends Command {
 
                 shooterSubsystem.setShooterLeftRPM(shooterLeftRPM);
                 shooterSubsystem.setShooterRightRPM(shooterRightRPM);
+                ledSubsystem.conformToState(State.SOLID_PINK);
 
                 SmartDashboard.putNumber("target distance", visionTargetTracker.computeTargetDistance());
                 break;
@@ -204,9 +205,10 @@ public class ShooterCommand extends Command {
                 break;
 
             case CLIMB_MANUAL:
-                ledSubsystem.conformToState(State.SOLID_PURPLE);
                 if (Math.abs(leftJoystickY.getAsDouble()) > .05) {
-                    pivotSpeed = -leftJoystickY.getAsDouble() / 2.2; // - is because joystick returns 1 for down, -1 for up
+                    pivotSpeed = -leftJoystickY.getAsDouble() / 2.2; // - is because joystick returns 1 for down, -1 for
+                                                                     // up
+
                     if (pivotSpeed > 0.05 &&
                             pivotSubsystem.getPivotAbsolutePosition() > RobotContainer.PIVOT_UPPER_ENDPOINT) {
                         pivotSpeed = 0;
@@ -245,10 +247,11 @@ public class ShooterCommand extends Command {
         } else if (aButton.get() && mode != ACTION.AMP) {
             mode = ACTION.AMP;
             modeChanged = true;
+            ledSubsystem.conformToState(State.SOLID_YELLOW);
         } else if (bButton.get() && mode != ACTION.SPEAKER) {
             mode = ACTION.SPEAKER;
             modeChanged = true;
-        } else if (yButton.get() && mode != ACTION.TRAP) {
+        } else if (yButton.get() && mode != ACTION.DEFAULT_SPEAKER) {
             // re-purposing Y button mode = ACTION.TRAP;
             mode = ACTION.DEFAULT_SPEAKER;
             modeChanged = true;
@@ -261,12 +264,15 @@ public class ShooterCommand extends Command {
         } else if (backButton.get()) {
             mode = ACTION.CLIMB_MANUAL;
             modeChanged = true;
+            ledSubsystem.conformToState(State.SOLID_PURPLE);
         } else if (dPad.get() == 0) { // 0 is up on dpad
             mode = ACTION.LOB_HIGH;
             modeChanged = true;
+            ledSubsystem.conformToState(State.SOLID_ORANGE);
         } else if (dPad.get() == 180) {
             mode = ACTION.LOB_LOW;
             modeChanged = true;
+            ledSubsystem.conformToState(State.SOLID_ORANGE);
         }
     }
 

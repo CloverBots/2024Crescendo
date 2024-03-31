@@ -15,9 +15,7 @@ public class AutoIntakeCommand extends Command {
     public AutoIntakeCommand(FeederDistanceSensorSubsystem feederDistanceSensorSubsystem,
             FeederSubsystem feederSubsystem,
             IntakeSubsystem intakeSubsystem) {
-
         this.feederDistanceSensorSubsystem = feederDistanceSensorSubsystem;
-
         this.feederSubsystem = feederSubsystem;
         this.intakeSubsystem = intakeSubsystem;
 

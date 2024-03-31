@@ -1,4 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
+//  Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
@@ -30,8 +30,8 @@ public class AutoAimCommand extends Command {
     this.swerve = swerve;
     this.pivotSubsystem = pivotSubsystem;
     this.shooterSubsystem = shooterSubsystem;
-    this.lockToTagXController = new PIDController(5.0, .3, 0); // 14.0, 0.7, 0.3 TO-DO Why is this here? Also why do we have three different rotational PIDs
-    this.lockToTagXController.setTolerance(2);
+    this.lockToTagXController = new PIDController(5.0, .3, 0); 
+    this.lockToTagXController.setTolerance(1);
     this.visionTargetTracker = visionTargetTracker;
     this.time = time;
     timer = new Timer();
