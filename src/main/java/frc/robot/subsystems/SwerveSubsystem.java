@@ -208,9 +208,9 @@ public class SwerveSubsystem extends SubsystemBase {
     public void setSpeed(ChassisSpeeds chassisSpeeds, boolean fieldOriented) {
         // Construct a ChassisSpeeds object, which will contain the movement and
         // rotation speeds that we want our robot to do.
-        SmartDashboard.putNumber("vx", chassisSpeeds.vxMetersPerSecond);
-        SmartDashboard.putNumber("vy", chassisSpeeds.vyMetersPerSecond);
-        SmartDashboard.putNumber("vTheta", chassisSpeeds.omegaRadiansPerSecond);
+        // SmartDashboard.putNumber("vx", chassisSpeeds.vxMetersPerSecond);
+        // SmartDashboard.putNumber("vy", chassisSpeeds.vyMetersPerSecond);
+        // SmartDashboard.putNumber("vTheta", chassisSpeeds.omegaRadiansPerSecond);
         if (fieldOriented) {
             // Driving will be relative to field.
             // If this is enabled, then pressing forward will always move the robot forward,
@@ -259,8 +259,6 @@ public class SwerveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Gyro/Heading", getHeading());
         // SmartDashboard.putNumber("Gyro Roll", gyro.getRoll());
         // SmartDashboard.putNumber("Gyro Pitch", gyro.getPitch());
-        SmartDashboard.putBoolean("Gyro/Connected", gyro.isConnected());
-        SmartDashboard.putBoolean("Gyro/Calibrated", !gyro.isCalibrating()); // true if done calibrating
         SmartDashboard.putString("Odometer Robot Location", getPose().getTranslation().toString());
         SmartDashboard.putString("Odometer Robot Rotation", getPose().getRotation().toString());
 

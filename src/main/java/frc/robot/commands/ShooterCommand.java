@@ -29,7 +29,7 @@ public class ShooterCommand extends Command {
     private final Supplier<Boolean> fireButton;
     private final Supplier<Double> intakeLoadTrigger, intakeEjectTrigger;
     private final DoubleSupplier leftJoystickY;
-    private final Supplier<Boolean> yButton, bButton, aButton, xButton, startButton, backButton;
+    private final Supplier<Boolean> yButton, bButton, aButton, xButton, startButton, backButton, trapButton;
     private final Supplier<Integer> dPad;
     private double shooterLeftRPM;
     private double shooterRightRPM;
@@ -71,7 +71,8 @@ public class ShooterCommand extends Command {
             DoubleSupplier leftJoystickY,
             Supplier<Integer> dPad,
             Supplier<Boolean> backButton,
-            Supplier<Boolean> fireButton) {
+            Supplier<Boolean> fireButton,
+            Supplier<Boolean> trapButton) {
 
         this.shooterSubsystem = shooterSubsystem;
         this.feederDistanceSensorSubsystem = feederDistanceSensorSubsystem;
@@ -90,6 +91,7 @@ public class ShooterCommand extends Command {
         this.backButton = backButton;
         this.dPad = dPad;
         this.fireButton = fireButton;
+        this.trapButton = trapButton;
         ledSubsystem = LEDSubsystem.getInstance();
 
         timer = new Timer();
@@ -109,7 +111,7 @@ public class ShooterCommand extends Command {
     public void initialize() {
         pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE);
         pivotSubsystem.enable();
-        SmartDashboard.putBoolean("Camera", true);
+        // SmartDashboard.putBoolean("Camera", true);
         matchTime.restart();
     }
 
@@ -252,7 +254,6 @@ public class ShooterCommand extends Command {
             mode = ACTION.SPEAKER;
             modeChanged = true;
         } else if (yButton.get() && mode != ACTION.DEFAULT_SPEAKER) {
-            // re-purposing Y button mode = ACTION.TRAP;
             mode = ACTION.DEFAULT_SPEAKER;
             modeChanged = true;
         } else if (startButton.get() && mode != ACTION.TUNING) {
@@ -273,6 +274,9 @@ public class ShooterCommand extends Command {
             mode = ACTION.LOB_LOW;
             modeChanged = true;
             ledSubsystem.conformToState(State.SOLID_ORANGE);
+        } else if (trapButton.get()) {
+            mode = ACTION.TRAP;
+            modeChanged = true;
         }
     }
 
@@ -315,10 +319,10 @@ public class ShooterCommand extends Command {
                 if (visionTargetTracker.isValid() && (previousVisionTy != visionTargetTracker.getTy()
                         || previousVisionTx != visionTargetTracker.getTx())) {
 
-                    SmartDashboard.putBoolean("Camera", true);
+                    // SmartDashboard.putBoolean("Camera", true);
 
                 } else if (visionTargetTracker.isValid()) {
-                    SmartDashboard.putBoolean("Camera", false);
+                    // SmartDashboard.putBoolean("Camera", false);
 
                 }
 
@@ -337,7 +341,7 @@ public class ShooterCommand extends Command {
                 if (visionTargetTracker.isValid() && (previousVisionTy != visionTargetTracker.getTy()
                         || previousVisionTx != visionTargetTracker.getTx())) {
                     // Looks like camera is working again!
-                    SmartDashboard.putBoolean("Camera", true);
+                    // SmartDashboard.putBoolean("Camera", true);
 
                 }
 

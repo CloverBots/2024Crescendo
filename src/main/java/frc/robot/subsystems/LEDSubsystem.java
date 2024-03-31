@@ -11,7 +11,6 @@ import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.CANifier.LEDChannel;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.LEDs.HSVtoRGB;
 import frc.robot.subsystems.LEDs.MovingAverage;
@@ -122,8 +121,6 @@ public class LEDSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        outputTelemetry();
-
         double timestamp = Timer.getFPGATimestamp();
 
         if (currentState == State.RAINBOW && currentState.isCycleColors == true) {
@@ -196,10 +193,6 @@ public class LEDSubsystem extends SubsystemBase {
                 lit = false;
             }
         }
-    }
-
-    public void outputTelemetry() {
-        SmartDashboard.putString("leds state", getState().name());
     }
 
     private boolean isBreathing(State currentState) {

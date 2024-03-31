@@ -185,7 +185,7 @@ public class DriveFromControllerCommand extends Command {
         angle = Math.abs(angle);
         angle = angle % 360;
         if (sign) angle = 360-angle;
-        SmartDashboard.putNumber("Joystick/Angle", angle);
+        // SmartDashboard.putNumber("Joystick/Angle", angle);
         return -rotationController.calculate(swerveSubsystem.getHeading(), angle);
     }
     /**
@@ -209,7 +209,7 @@ public class DriveFromControllerCommand extends Command {
         } 
         
         else return 0; // Returns a speed of 0 if none of the buttons are pressed.
-        SmartDashboard.putNumber("Joystick/Angle", angle);
+        // SmartDashboard.putNumber("Joystick/Angle", angle);
         return -rotationController.calculate(swerveSubsystem.getPose().getRotation().getRadians(), angle);
     }
     /**
