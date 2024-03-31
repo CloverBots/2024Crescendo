@@ -81,9 +81,9 @@ public class RobotContainer {
   public static final double SHOOTER_AMP_PIVOT_ANGLE = 70; // 72
 
   // TRAP SHOOTER
-  public static final double SHOOTER_TRAP_RIGHT_RPM = 20;
-  public static final double SHOOTER_TRAP_LEFT_RPM = 20;
-  public static final double SHOOTER_TRAP_PIVOT_ANGLE = 50;
+  public static final double SHOOTER_TRAP_RIGHT_RPM = 2000;
+  public static final double SHOOTER_TRAP_LEFT_RPM = 2000;
+  public static final double SHOOTER_TRAP_PIVOT_ANGLE = 60;
 
   // SPEAKER SHOOTER
   public static final double SHOOTER_SPEAKER_RIGHT_RPM = 2500; // 2500
@@ -141,7 +141,8 @@ public class RobotContainer {
       operatorController::getLeftY,
       operatorController::getPOV,
       operatorController::getBackButton,
-      driverController::getRightBumper);
+      driverController::getRightBumper,
+      operatorController::getLeftBumper);
 
   private final AutoSubwooferCommand autoSubwooferCommand = new AutoSubwooferCommand(feederSubsystem, pivotSubsystem,
       shooterSubsystem);
