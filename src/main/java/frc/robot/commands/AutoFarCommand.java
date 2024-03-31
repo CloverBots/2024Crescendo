@@ -17,9 +17,9 @@ public class AutoFarCommand extends ParallelCommandGroup {
   /** Creates a new AutoFire. */
   public AutoFarCommand(FeederSubsystem feederSubsystem, PivotSubsystem pivotSubsystem, ShooterSubsystem shooterSubsystem) {
     addCommands(
-      new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(0)), // Need values
-      new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0)),
-      new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0))
+      new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(33)), // Need values
+      new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(4000)),
+      new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(4500))
     );
   }
 }

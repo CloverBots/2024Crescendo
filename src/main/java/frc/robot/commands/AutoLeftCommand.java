@@ -17,9 +17,9 @@ public class AutoLeftCommand extends ParallelCommandGroup {
   /** Creates a new AutoFire. */
   public AutoLeftCommand(FeederSubsystem feederSubsystem, PivotSubsystem pivotSubsystem, ShooterSubsystem shooterSubsystem) {
     addCommands(
-      new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(0)), // Need values
-      new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0)),
-      new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0))
+      new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(47)), // Need values
+      new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000)),
+      new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3500))
     );
   }
 }

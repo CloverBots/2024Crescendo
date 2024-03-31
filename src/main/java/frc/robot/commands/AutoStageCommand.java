@@ -17,9 +17,9 @@ public class AutoStageCommand extends ParallelCommandGroup {
   /** Creates a new AutoFire. */
   public AutoStageCommand(FeederSubsystem feederSubsystem, PivotSubsystem pivotSubsystem, ShooterSubsystem shooterSubsystem) {
     addCommands(
-      new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(0)), // Need values
-      new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0)),
-      new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0))
+      new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(35)), // Need values
+      new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000)),
+      new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(4000))
     );
   }
 }

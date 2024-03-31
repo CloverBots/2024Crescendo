@@ -22,7 +22,7 @@ public class LEDSubsystem extends SubsystemBase {
     private State currentState = State.OFF;
     public double stateHue = State.RAINBOW.startingHue;
     public float saturation = 1.0f; // Ensures that the colors are on the outside of the color wheel
-    public float value = 0.5f; // Hardcoded brightness
+    public float value = 0.5f; // Hardcoded brightness for rainbow
     public double startingTransTime = 0.0;
     public boolean resetBreath = false;
     boolean lit = false;
@@ -59,7 +59,7 @@ public class LEDSubsystem extends SubsystemBase {
         BREATHING_GREEN(120, 10.0, true),
         BREATHING_BLUE(240, 10.0, true),
         BREATHING_PURPLE(300, 10.0, true),
-        BREATHING_PINK(300, 10.0, true);
+        BREATHING_PINK(360, 10.0, true);
 
         double red, green, blue, onTime, offTime, cycleTime, transitionTime;
         float startingHue;

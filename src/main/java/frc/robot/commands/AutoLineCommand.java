@@ -18,9 +18,9 @@ public class AutoLineCommand extends ParallelCommandGroup {
   /** Creates a new AutoFire. */
   public AutoLineCommand(FeederSubsystem feederSubsystem, PivotSubsystem pivotSubsystem, ShooterSubsystem shooterSubsystem) {
     addCommands(
-      new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(0)), // Need line values
-      new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0)),
-      new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0))
+      new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(55)), // Need line values
+      new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2500)),
+      new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3000))
     );
   }
 }

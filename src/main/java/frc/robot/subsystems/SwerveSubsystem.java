@@ -68,10 +68,7 @@ public class SwerveSubsystem extends SubsystemBase {
         this::driveRobotRelative,
         SwerveDriveConstants.PathPlannerSwerve.pathFollowerConfig,
         () -> {
-          // Boolean supplier that controls when the path will be mirrored for the red
-          // alliance
-          // This will flip the path being followed to the red side of the field.
-          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+        // Mirrors autos for red side. Default is blue
           var alliance = DriverStation.getAlliance();
           if (alliance.isPresent()) {
             return alliance.get() == DriverStation.Alliance.Red;

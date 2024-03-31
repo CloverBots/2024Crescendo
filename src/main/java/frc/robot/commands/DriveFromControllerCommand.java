@@ -26,6 +26,7 @@ public class DriveFromControllerCommand extends Command {
     private boolean fieldOriented = true;
     private boolean pointedTurning = false;
     public static boolean lockOnMode = false;
+    private static int invertJoystick = 1;
 
     private final double JOYSTICK_DEADZONE = 0.05;
     private final double POINTED_JOYSTICK_DEADZONE = 0.5;
@@ -47,7 +48,7 @@ public class DriveFromControllerCommand extends Command {
             Supplier<Boolean> xButton,
             Supplier<Boolean> startButton,
             Supplier<Double> crawlTrigger,
-            Supplier<Double> slowRotate,
+            Supplier<Double> fastRotate,
             Supplier<Integer> dPad,
             VisionTargetTracker limelight) {
         this.swerveSubsystem = swerveSubsystem;
@@ -65,7 +66,7 @@ public class DriveFromControllerCommand extends Command {
         this.startButton = startButton;
 
         this.crawlTrigger = crawlTrigger;
-        this.fastRotate = slowRotate;
+        this.fastRotate = fastRotate;
         this.dPad = dPad;
 
         this.translationLimiter = new SlewRateLimiter(SwerveDriveConstants.teleOpMaxAccelerationMetersPerSecond);
@@ -106,6 +107,7 @@ public class DriveFromControllerCommand extends Command {
     private void handleToggleButtons() {
         if ((dPad.get() == 0) && fieldOrientedCache == false) {
             fieldOriented = !fieldOriented;
+            invertJoystick = -1; // Inverts joystick
         }
         fieldOrientedCache = dPad.get() == 0;
 
@@ -126,7 +128,6 @@ public class DriveFromControllerCommand extends Command {
     private ChassisSpeeds calculateSpeeds() {
         double rotationSpeed;
 
-
         // Uses the ABYX buttons if any of them are pressed
         if (isTurnButtonPressed()) rotationSpeed = calculateTurningSpeedHotkey();
 
@@ -141,8 +142,8 @@ public class DriveFromControllerCommand extends Command {
         // If none of those above are true, use the normal cont1rols.
         else rotationSpeed = calculateTurningSpeedsNormal(rightStickX.get());
         
-        // Calculate the Translation speeds
-        double[] xySpeeds = calculateTranslationSpeeds(leftStickX.get(), leftStickY.get());
+        // Calculate the Translation speeds, invert joystick for robot relative
+        double[] xySpeeds = calculateTranslationSpeeds(invertJoystick * leftStickX.get(), invertJoystick * leftStickY.get());
 
         // Contains the calculated translation and rotation speeds. Since the X and Y directions are the opposite in WPILib compared to the controller, we swap them here.
         return new ChassisSpeeds(xySpeeds[1], xySpeeds[0], rotationSpeed);
