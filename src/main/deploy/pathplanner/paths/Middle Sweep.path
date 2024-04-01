@@ -4,28 +4,28 @@
     {
       "anchor": {
         "x": 8.25,
-        "y": 6.667299774671107
+        "y": 6.67
       },
       "prevControl": null,
       "nextControl": {
         "x": 8.25,
-        "y": 6.4672997746711065
+        "y": 6.47
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Middle Sweep Start"
     },
     {
       "anchor": {
         "x": 8.25,
-        "y": 1.6301107378601165
+        "y": 1.63
       },
       "prevControl": {
         "x": 8.260448970586685,
-        "y": 2.6300561458768135
+        "y": 2.629945408016697
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Middle Sweep End"
     }
   ],
   "rotationTargets": [],
