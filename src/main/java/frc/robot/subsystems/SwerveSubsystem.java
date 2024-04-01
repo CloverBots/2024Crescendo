@@ -132,9 +132,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 });
     }
 
-    /**
-     * Resets the gyroscope to 0.
-     */
+    // Resets the gyroscope to 0.
     public void zeroHeading() {
         gyro.reset();
     }
@@ -176,19 +174,14 @@ public class SwerveSubsystem extends SubsystemBase {
      * 
      * @param pose The new position in 2D that the robot will be set at.
      */
-    public void resetOdometry(Pose2d pose) {
-        odometer.resetPosition(getRotation2d(), getModulePositions(), pose);
-    }
-
-    /**
-     * Resets the odometer to 0 on X and Y.
-     */
-    public void resetOdometry() {
-        odometer.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
-    }
-
+    
     public void resetOdometryPose(Pose2d pose) {
         odometer.resetPosition(getRotation2d(), getModulePositions(), pose);
+    }
+
+    // Resets the odometer to 0 on X and Y.
+    public void resetOdometry() {
+        odometer.resetPosition(getRotation2d(), getModulePositions(), new Pose2d());
     }
 
     public void setBrakeMode(boolean brake) {

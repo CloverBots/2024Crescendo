@@ -52,7 +52,6 @@ public class VisionTargetTracker {
         if (tv.getNumber(0).intValue() == 0) {
             return false;
         }
-
         return true;
     }
 
@@ -76,10 +75,8 @@ public class VisionTargetTracker {
 
     public double computePivotAngle(double distance) {
         return 118.6986 - 1.747926 * distance + 0.014116 * distance * distance
-                - 0.00004040475 * distance * distance * distance - 1.1; // 95.9703 - 0.834142 * distance + 0.004755 *
-                                                                        // distance * distance
-        // - 0.00001107 * distance * distance * distance
-    } // New values- 68 at 41*, 49 at 78*, 42 at 140*, 33.5 at 168*, 40 at 137
+                - 0.00004040475 * distance * distance * distance - 1.1;
+    } // New values- 68 at 41, 49 at 78, 42 at 140, 33.5 at 168, 40 at 137
 
     public double computeShooterRightSpeed(double distance) {
         return 1362.989 + 38.67915 * distance - 0.3083168 * distance * distance

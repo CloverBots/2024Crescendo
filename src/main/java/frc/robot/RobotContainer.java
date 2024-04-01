@@ -62,10 +62,7 @@ public class RobotContainer {
   public static final double FEEDER_SPEED_INTAKE = 0.5;
   public static final double FEEDER_SPEED_SHOOT = 0.8;
   public final static double FEEDER_TIME = 1;
-  public static final double DEFAULT_SPEAKER_PIVOT_ANGLE = 20;
 
-  public static final double CLIMBER_READY_POSITION = 90;
-  public static final double CLIMBER_RAISED_POSITION = 15;
   public static final double CLIMBER_PIVOT_SPEED = 0.5;
 
   // PARKED SHOOTER
