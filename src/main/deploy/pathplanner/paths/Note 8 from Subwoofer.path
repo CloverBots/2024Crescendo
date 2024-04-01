@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.74,
+        "x": 0.741,
         "y": 4.45
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.085407548131734,
+        "x": 3.0864075481317337,
         "y": 2.3332539146294757
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Podium Start"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Note 8"
     }
   ],
   "rotationTargets": [

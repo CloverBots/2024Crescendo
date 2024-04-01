@@ -12,7 +12,7 @@
         "y": 4.1741040257035795
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Stage Shot"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Note 7"
     }
   ],
   "rotationTargets": [],
