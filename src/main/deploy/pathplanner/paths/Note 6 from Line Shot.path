@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.12,
-        "y": 5.54
+        "x": 6.522660344068453,
+        "y": 3.979819909550374
       },
       "isLocked": false,
       "linkedName": "Line Shot"
@@ -17,20 +17,20 @@
     {
       "anchor": {
         "x": 8.0,
-        "y": 4.2
+        "y": 4.1
       },
       "prevControl": {
-        "x": 5.068777794085105,
-        "y": 3.979819909550374
+        "x": 6.816373990529734,
+        "y": 4.097305368134887
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Note 6 around Stage"
+      "linkedName": "Note 6 under Stage"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.25,
       "rotationDegrees": 162.0,
       "rotateFast": false
     }
@@ -45,7 +45,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 150.0,
+    "rotation": 180.0,
     "rotateFast": false
   },
   "reversed": false,

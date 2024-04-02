@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 8.25,
-        "y": 6.47
+        "x": 8.270256540513081,
+        "y": 2.3350234893671944
       },
       "isLocked": false,
       "linkedName": "Middle Sweep Start"
@@ -20,8 +20,8 @@
         "y": 1.63
       },
       "prevControl": {
-        "x": 8.260448970586685,
-        "y": 2.629945408016697
+        "x": 8.270256540513081,
+        "y": 2.1441096191673603
       },
       "nextControl": null,
       "isLocked": false,

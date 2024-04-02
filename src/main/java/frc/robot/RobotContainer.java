@@ -156,16 +156,14 @@ public class RobotContainer {
 
     // Register Named Commands
     configureAutoCommands();
-    autoChooser = AutoBuilder.buildAutoChooser("Test");
+    autoChooser = AutoBuilder.buildAutoChooser("Test Center");
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
     configureBindings();
   }
 
-  /**
-   * Will run once any time the robot is enabled, in any mode (Doesn't matter if
-   * Teleop / Autonomous)
-   */
+  // Will run once any time the robot is enabled, in any mode (Doesn't matter if
+  // Teleop / Autonomous)
   public void onEnable() {
     swerveSubsystem.onEnable();
     swerveSubsystem.setBrakeMode(true);

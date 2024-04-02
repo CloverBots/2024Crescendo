@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.6439242857690184,
-        "y": 6.864727171055073
+        "x": 6.5667173910376455,
+        "y": 7.475012302439632
       },
       "isLocked": false,
       "linkedName": "Line Shot"
@@ -20,8 +20,8 @@
         "y": 7.45
       },
       "prevControl": {
-        "x": 5.845292831053625,
-        "y": 7.45
+        "x": 6.5667173910376455,
+        "y": 7.460326620116567
       },
       "nextControl": null,
       "isLocked": false,

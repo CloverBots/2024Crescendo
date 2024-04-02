@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0864075481317337,
-        "y": 2.3332539146294757
+        "x": 6.654831484976029,
+        "y": 0.8517695747377186
       },
       "isLocked": false,
       "linkedName": "Podium Start"
@@ -20,8 +20,8 @@
         "y": 0.75
       },
       "prevControl": {
-        "x": 5.235129343498123,
-        "y": 1.358580745330505
+        "x": 7.05134490769876,
+        "y": 0.7636554807993345
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.6,
+      "waypointRelativePos": 0.4,
       "rotationDegrees": 180.0,
       "rotateFast": false
     }

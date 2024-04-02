@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.99178284305241,
-        "y": 7.15679269490148
+        "x": 7.315687189513914,
+        "y": 7.445640937793504
       },
       "isLocked": false,
       "linkedName": "Note 1 Shot"
@@ -20,8 +20,8 @@
         "y": 7.45
       },
       "prevControl": {
-        "x": 7.0,
-        "y": 7.45
+        "x": 7.315687189513914,
+        "y": 7.445640937793504
       },
       "nextControl": null,
       "isLocked": false,

@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.185407548131734,
-        "y": 4.1741040257035795
+        "x": 7.330372871836978,
+        "y": 2.951822146935887
       },
       "isLocked": false,
       "linkedName": "Stage Shot"
@@ -20,8 +20,8 @@
         "y": 2.55
       },
       "prevControl": {
-        "x": 6.772316943560543,
-        "y": 3.3723982100915904
+        "x": 7.447858330421491,
+        "y": 2.995879193905079
       },
       "nextControl": null,
       "isLocked": false,
