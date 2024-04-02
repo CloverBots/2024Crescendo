@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.74,
-      "y": 4.45
+      "x": 1.32,
+      "y": 5.42
     },
-    "rotation": 120.0
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.7
+            "waitTime": 0.5
           }
         },
         {
@@ -36,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note 8 from Subwoofer"
+                  "pathName": "Note 2 from Center"
                 }
               },
               {
@@ -55,13 +55,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note 8 to Podium"
+                  "pathName": "Note 2 to Line Shot"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Podium"
+                  "name": "Line"
                 }
               }
             ]
@@ -99,7 +99,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note 7 from Podium"
+                  "pathName": "Note 3 from Line Shot"
                 }
               },
               {
@@ -112,9 +112,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Stage"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 3 to Line Shot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Line"
+                }
+              }
+            ]
           }
         },
         {
@@ -149,7 +162,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note 6 from Stage"
+                  "pathName": "Note 1 from Line Shot"
                 }
               },
               {
@@ -162,15 +175,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Note 6 to Stage"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Stage"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 1 to Line Shot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Line"
+                }
+              }
+            ]
           }
         },
         {

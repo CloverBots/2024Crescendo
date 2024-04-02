@@ -231,13 +231,13 @@ public class RobotContainer {
     NamedCommands.registerCommand("Subwoofer", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
         SHOOTER_SPEAKER_PIVOT_ANGLE, SHOOTER_SPEAKER_LEFT_RPM, SHOOTER_SPEAKER_RIGHT_RPM));
     NamedCommands.registerCommand("Line", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
-        55, 2500, 3000)); // TO-DO tune
+        46.5, 2500, 3000)); // TO-DO tune
     NamedCommands.registerCommand("Far", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
-        33, 4000, 4500));
+        27, 4000, 4500));
     NamedCommands.registerCommand("Stage", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
-        35, 3000, 4000));
-    NamedCommands.registerCommand("Left", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
-        47, 3000, 3500));
+        30, 3000, 4000));
+    NamedCommands.registerCommand("Podium", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
+        42, 3000, 3500));
     NamedCommands.registerCommand("Fire", new AutoFireCommand(feederSubsystem, pivotSubsystem, shooterSubsystem));
     NamedCommands.registerCommand("YEET",
         new autoYEETCommand(intakeSubsystem, pivotSubsystem, shooterSubsystem, feederSubsystem));
