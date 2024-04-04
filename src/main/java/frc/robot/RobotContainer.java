@@ -68,9 +68,9 @@ public class RobotContainer {
     public static final double SHOOTER_PARKED_PIVOT_ANGLE = 10;
 
     // AMP SHOOTER
-    public static final double SHOOTER_AMP_RIGHT_RPM = 700;
-    public static final double SHOOTER_AMP_LEFT_RPM = 700;
-    public static final double SHOOTER_AMP_PIVOT_ANGLE = 70; // 72
+    public static final double SHOOTER_AMP_RIGHT_RPM = 600;
+    public static final double SHOOTER_AMP_LEFT_RPM = 600;
+    public static final double SHOOTER_AMP_PIVOT_ANGLE = 72; // 72
 
     // TRAP SHOOTER
     public static final double SHOOTER_TRAP_RIGHT_RPM = 20;
