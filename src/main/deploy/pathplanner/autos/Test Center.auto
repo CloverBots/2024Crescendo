@@ -55,13 +55,13 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note 2 to Line Shot"
+                  "pathName": "Note 2 to Center"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "Line"
+                  "name": "Subwoofer"
                 }
               }
             ]

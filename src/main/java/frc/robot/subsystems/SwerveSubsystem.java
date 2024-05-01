@@ -162,7 +162,7 @@ public class SwerveSubsystem extends SubsystemBase {
      * @return A {@code Rotation2d} containing the robot's heading.
      */
     public Rotation2d getRotation2d() {
-        return Rotation2d.fromDegrees(getHeading());
+        return gyro.getRotation2d();
     }
 
     public Pose2d getPose() {

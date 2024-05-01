@@ -33,7 +33,7 @@ public class AutoShooterCommand extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        pivotSubsystem.setSetpoint(pivotAngle);
+        pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
         shooterSubsystem.setShooterLeftRPM(shooterLeftRPM);
         shooterSubsystem.setShooterRightRPM(shooterRightRPM);
     }
@@ -41,14 +41,14 @@ public class AutoShooterCommand extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        pivotSubsystem.setSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE);
+        pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE);
         shooterSubsystem.setShooterLeftRPM(0);
         shooterSubsystem.setShooterRightRPM(0);
     }
 
     @Override
     public boolean isFinished() {
-        if (pivotSubsystem.atSetpoint() && shooterSubsystem.isShooterAtTargetRpm()) {
+        if (pivotSubsystem.pivotReady()) {
             return true;
         } else {
             return false;
