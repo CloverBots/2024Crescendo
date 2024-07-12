@@ -22,7 +22,7 @@ import frc.robot.commands.AutoIntakeCommand;
 import frc.robot.commands.AutoShooterCommand;
 import frc.robot.commands.DriveFromControllerCommand;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.autoSubwooferCommand;
+import frc.robot.commands.AutoSubwooferCommand;
 import frc.robot.commands.autoYEETCommand;
 import frc.robot.constants.IDs;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
@@ -227,7 +227,7 @@ public class RobotContainer {
         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem));
     NamedCommands.registerCommand("Aim",
         new AutoAimCommand(visionTargetTracker, pivotSubsystem, shooterSubsystem, 2.0f));
-    NamedCommands.registerCommand("Subwoofer", new autoSubwooferCommand(intakeSubsystem, pivotSubsystem, shooterSubsystem, feederSubsystem));
+    NamedCommands.registerCommand("Subwoofer", new AutoSubwooferCommand(intakeSubsystem, pivotSubsystem, shooterSubsystem, feederSubsystem));
     NamedCommands.registerCommand("Line", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
         46.5, 2500, 3000)); // TO-DO tune
     NamedCommands.registerCommand("Far", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,

@@ -129,11 +129,11 @@ public class SwerveDriveConstants {
                 public static final Translation2d blModuleOffset = new Translation2d(wheelBase / 2, -trackWidth / 2);
                 public static final Translation2d brModuleOffset = new Translation2d(-wheelBase / 2, -trackWidth / 2);
 
-                public static final double maxModuleSpeed = AUTO_MAX_SPEED; // M/S
+                public static final double maxModuleSpeed = 0.5; // M/S
 
                 public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
                                 new PIDConstants(5.0, 0, 0), // Translation constants
-                                new PIDConstants(0.01, 0, 0), // Rotation constants
+                                new PIDConstants(3.0, 0, 0), // Rotation constants .01
                                 maxModuleSpeed,
                                 flModuleOffset.getNorm(), // Drive base radius (distance from center to furthest module)
                                 new ReplanningConfig());

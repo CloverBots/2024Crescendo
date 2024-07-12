@@ -162,7 +162,13 @@ public class SwerveSubsystem extends SubsystemBase {
      * @return A {@code Rotation2d} containing the robot's heading.
      */
     public Rotation2d getRotation2d() {
-        return gyro.getRotation2d();
+        double normalizedAngle = gyro.getRotation2d().getDegrees() % 360;
+        if (normalizedAngle > 180) {
+            //normalizedAngle -= 360;
+        } 
+        System.out.println(gyro.getYaw() + " "  + normalizedAngle);
+        
+        return Rotation2d.fromDegrees(normalizedAngle);
     }
 
     public Pose2d getPose() {
@@ -226,9 +232,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-
-        field.setRobotPose(getPose());
-
         // Updates the odometer with the current rotation and distance travelled on each
         // module.
         odometer.update(getRotation2d(), getModulePositions());
@@ -276,6 +279,7 @@ public class SwerveSubsystem extends SubsystemBase {
         // modules[i].getDriveVelocity());
         // }
 
+        field.setRobotPose(getPose());
     }
 
     /**
