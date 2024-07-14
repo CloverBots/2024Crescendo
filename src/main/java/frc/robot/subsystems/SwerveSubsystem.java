@@ -39,7 +39,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     /** This will track the robot's X and Y position, as well as its rotation. */
     private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(SwerveDriveConstants.swerveKinematics,
-            getRotation2d(),
+            gyro.getRotation2d(),
             new SwerveModulePosition[] {
                     new SwerveModulePosition(),
                     new SwerveModulePosition(),
@@ -162,12 +162,11 @@ public class SwerveSubsystem extends SubsystemBase {
      * @return A {@code Rotation2d} containing the robot's heading.
      */
     public Rotation2d getRotation2d() {
-        double normalizedAngle = gyro.getRotation2d().getDegrees() % 360;
+        double normalizedAngle = gyro.getAngle() % 360;
         if (normalizedAngle > 180) {
-            //normalizedAngle -= 360;
+            normalizedAngle -= 360;
         } 
-        System.out.println(gyro.getYaw() + " "  + normalizedAngle);
-        
+        System.out.println(normalizedAngle);
         return Rotation2d.fromDegrees(normalizedAngle);
     }
 
@@ -234,7 +233,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public void periodic() {
         // Updates the odometer with the current rotation and distance travelled on each
         // module.
-        odometer.update(getRotation2d(), getModulePositions());
+        odometer.update(gyro.getRotation2d(), getModulePositions());
 
         // Sets the desired states to all 4 swerve modules.
         for (int i = 0; i < 4; i++) {
@@ -248,7 +247,7 @@ public class SwerveSubsystem extends SubsystemBase {
             this.resyncTimer.reset();
             this.resyncTimer.start();
         }
-        SmartDashboard.putNumber("Gyro/Heading", getHeading());
+        SmartDashboard.putNumber("Gyro/Heading", gyro.getAngle());
         // SmartDashboard.putNumber("Gyro Roll", gyro.getRoll());
         // SmartDashboard.putNumber("Gyro Pitch", gyro.getPitch());
         SmartDashboard.putString("Odometer Robot Location", getPose().getTranslation().toString());
