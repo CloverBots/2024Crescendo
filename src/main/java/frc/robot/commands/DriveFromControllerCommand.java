@@ -108,7 +108,7 @@ public class DriveFromControllerCommand extends Command {
     private void handleToggleButtons() {
         if ((dPad.get() == 0) && fieldOrientedCache == false) {
             fieldOriented = !fieldOriented;
-            invertJoystick = -1; // Inverts joystick
+            invertJoystick = 1; // Inverts joystick
         }
         fieldOrientedCache = dPad.get() == 0;
 

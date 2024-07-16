@@ -31,21 +31,14 @@ public class SwerveSubsystem extends SubsystemBase {
     /** Contains all 4 Swerve Modules. Includes their motors and encoders. */
     private SwerveModule[] modules;
 
-    private final AHRS gyro = new AHRS(IDs.AHRS_PORT_ID);
+    private AHRS gyro = new AHRS(IDs.AHRS_PORT_ID);
 
-    private final Timer resyncTimer = new Timer();
+    private Timer resyncTimer = new Timer();
 
     private Field2d field = new Field2d();
 
     /** This will track the robot's X and Y position, as well as its rotation. */
-    private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(SwerveDriveConstants.swerveKinematics,
-            gyro.getRotation2d(),
-            new SwerveModulePosition[] {
-                    new SwerveModulePosition(),
-                    new SwerveModulePosition(),
-                    new SwerveModulePosition(),
-                    new SwerveModulePosition()
-            });
+    private SwerveDriveOdometry odometer;
 
     public SwerveSubsystem() {
         // The gyroscope takes a second to fully calibrate itself after initializing the
@@ -60,6 +53,15 @@ public class SwerveSubsystem extends SubsystemBase {
             }
         }).start();
 
+        odometer = new SwerveDriveOdometry(SwerveDriveConstants.swerveKinematics,
+            gyro.getRotation2d(),
+            new SwerveModulePosition[] {
+                    new SwerveModulePosition(),
+                    new SwerveModulePosition(),
+                    new SwerveModulePosition(),
+                    new SwerveModulePosition()
+            });
+            
         // Configure AutoBuilder
         AutoBuilder.configureHolonomic(
                 this::getPose,
@@ -104,7 +106,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void driveFieldRelative(ChassisSpeeds fieldRelativeSpeeds) {
-        driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, getPose().getRotation()));
+        driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, gyro.getRotation2d()));
     }
 
     public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {

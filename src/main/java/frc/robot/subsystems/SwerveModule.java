@@ -24,9 +24,9 @@ import frc.robot.constants.SwerveDriveConstants.SwerveModuleConfigurations;
  * functionality for the wheel.
  */
 public class SwerveModule {
-    private final TalonFX driveMotor;
-    private final CANSparkMax turningMotor;
-    private final CANCoder turningEncoder;
+    private TalonFX driveMotor;
+    private CANSparkMax turningMotor;
+    private CANCoder turningEncoder;
 
     /**
      * Contains the motor/encoder IDs, offsets, and other settings for the module.
@@ -58,7 +58,7 @@ public class SwerveModule {
         turningMotor.getEncoder().setVelocityConversionFactor(SwerveDriveConstants.TURNING_ENCODER_TO_RADS_PER_SECOND);
 
         driveMotor.setInverted(config.driveInverted);
-        turningMotor.setInverted(true);
+        // turningMotor.setInverted(config.driveInverted);
         turningPidController = new PIDController(
                 SwerveDriveConstants.kPTurning,
                 SwerveDriveConstants.kITurning,
