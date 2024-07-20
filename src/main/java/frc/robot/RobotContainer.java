@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -16,15 +17,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AutoAimCommand;
-import frc.robot.commands.AutoFireCommand;
-import frc.robot.commands.AutoIntakeCommand;
-import frc.robot.commands.AutoShooterCommand;
-import frc.robot.commands.DriveFromControllerCommand;
+import frc.robot.commands.DriveCommand;
+import frc.robot.commands.RunIntake;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.AutoSubwooferCommand;
 import frc.robot.commands.autoYEETCommand;
-import frc.robot.constants.IDs;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.IDS;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -94,9 +92,10 @@ public class RobotContainer {
   public static final double SHOOTER_UNDER_STAGE_LEFT_RPM = 3000;
   public static final double SHOOTER_UNDER_STAGE_PIVOT_ANGLE = 10;
 
+  private final AHRS gyro = new AHRS();
   private final Field2d field;
   private final SendableChooser<Command> autoChooser;
-  private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
+  private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem(gyro);
   private final FeederSubsystem feederSubsystem = new FeederSubsystem();
   private final FeederDistanceSensorSubsystem feederDistanceSensorSubsystem = new FeederDistanceSensorSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
@@ -104,24 +103,8 @@ public class RobotContainer {
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final LEDSubsystem ledSubsystem = LEDSubsystem.getInstance();
 
-  private final XboxController driverController = new XboxController(IDs.CONTROLLER_DRIVE_PORT);
-  private final XboxController operatorController = new XboxController(IDs.CONTROLLER_OPERATOR_PORT);
-
-  private final DriveFromControllerCommand driveFromControllerCommand = new DriveFromControllerCommand(
-      swerveSubsystem,
-      driverController::getLeftX,
-      driverController::getLeftY,
-      driverController::getRightX,
-      driverController::getRightY,
-      driverController::getYButton,
-      driverController::getBButton,
-      driverController::getAButton,
-      driverController::getXButton,
-      driverController::getStartButton,
-      driverController::getLeftTriggerAxis,
-      driverController::getRightTriggerAxis,
-      driverController::getPOV,
-      visionTargetTracker);
+  private final XboxController driverController = new XboxController(IDS.CONTROLLER_DRIVE_PORT);
+  private final XboxController operatorController = new XboxController(IDS.CONTROLLER_OPERATOR_PORT);
 
   private final ShooterCommand shooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
       shooterSubsystem, pivotSubsystem, feederSubsystem, intakeSubsystem, visionTargetTracker,
@@ -142,7 +125,12 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
+    swerveSubsystem.setDefaultCommand(
+        new DriveCommand(
+            swerveSubsystem,
+            () -> getScaledXY(),
+            () -> scaleRotationAxis(driverController.getRightX()), visionTargetTracker));
+
     shooterSubsystem.setDefaultCommand(shooterCommand);
 
     field = new Field2d();
@@ -166,8 +154,6 @@ public class RobotContainer {
   // Will run once any time the robot is enabled, in any mode (Doesn't matter if
   // Teleop / Autonomous)
   public void onEnable() {
-    swerveSubsystem.onEnable();
-    swerveSubsystem.setBrakeMode(true);
   }
 
   public void teleopPeriodic() {
@@ -175,7 +161,6 @@ public class RobotContainer {
   }
 
   public void onAutonomousEnable() {
-    swerveSubsystem.setBrakeMode(true);
     resetGyro();
     var alliance = DriverStation.getAlliance();
     if (alliance.get() == DriverStation.Alliance.Red) {
@@ -195,7 +180,6 @@ public class RobotContainer {
 
   /** Will run once any time the robot is disabled. */
   public void onDisable() {
-    swerveSubsystem.setBrakeMode(false);
     ledSubsystem.conformToState(State.RAINBOW);
   }
 
@@ -224,20 +208,48 @@ public class RobotContainer {
 
   private void configureAutoCommands() {
     NamedCommands.registerCommand("Intake",
-        new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem, intakeSubsystem));
-    NamedCommands.registerCommand("Aim",
-        new AutoAimCommand(visionTargetTracker, pivotSubsystem, shooterSubsystem, 2.0f));
-    NamedCommands.registerCommand("Subwoofer", new AutoSubwooferCommand(intakeSubsystem, pivotSubsystem, shooterSubsystem, feederSubsystem));
-    NamedCommands.registerCommand("Line", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
-        46.5, 2500, 3000)); // TO-DO tune
-    NamedCommands.registerCommand("Far", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
-        27, 4000, 4500));
-    NamedCommands.registerCommand("Stage", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
-        30, 3000, 4000));
-    NamedCommands.registerCommand("Podium", new AutoShooterCommand(pivotSubsystem, shooterSubsystem,
-        42, 3000, 3500));
-    NamedCommands.registerCommand("Fire", new AutoFireCommand(feederSubsystem, pivotSubsystem, shooterSubsystem));
+        new RunIntake(intakeSubsystem, INTAKE_SPEED, feederDistanceSensorSubsystem));
     NamedCommands.registerCommand("YEET",
         new autoYEETCommand(intakeSubsystem, pivotSubsystem, shooterSubsystem, feederSubsystem));
+  }
+
+  private double squared(double input) {
+    return Math.copySign(input * input, input);
+  }
+
+  private double scaleRotationAxis(double input) {
+    return deadband(squared(input), DriveConstants.deadband) * swerveSubsystem.getMaxAngleVelocity() * -0.6;
+  }
+
+  private double deadband(double input, double deadband) {
+    if (Math.abs(input) < deadband) {
+      return 0;
+    } else {
+      return input;
+    }
+  }
+
+  private double[] getXY() {
+    double[] xy = new double[2];
+    xy[0] = deadband(driverController.getLeftX(), DriveConstants.deadband);
+    xy[1] = deadband(driverController.getLeftY(), DriveConstants.deadband);
+    return xy;
+  }
+
+  private double[] getScaledXY() {
+    double[] xy = getXY();
+
+    // Convert to Polar coordinates
+    double r = Math.sqrt(xy[0] * xy[0] + xy[1] * xy[1]);
+    double theta = Math.atan2(xy[1], xy[0]);
+
+    // Square radius and scale by max velocity
+    r = r * r * swerveSubsystem.getMaxVelocity();
+
+    // Convert to Cartesian coordinates
+    xy[0] = r * Math.cos(theta);
+    xy[1] = r * Math.sin(theta);
+
+    return xy;
   }
 }

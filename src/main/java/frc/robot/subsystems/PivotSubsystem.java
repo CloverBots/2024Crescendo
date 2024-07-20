@@ -18,7 +18,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import frc.robot.constants.IDs;
+import frc.robot.Constants.IDS;
 
 public class PivotSubsystem extends PIDSubsystem {
 
@@ -33,7 +33,7 @@ public class PivotSubsystem extends PIDSubsystem {
 
     private final int CURRENT_LIMIT = 100;
 
-    private final DigitalInput limitSwitch = new DigitalInput(IDs.PIVOT_LIMIT_SWITCH);
+    private final DigitalInput limitSwitch = new DigitalInput(IDS.PIVOT_LIMIT_SWITCH);
 
     // private PIDController pivotController = new PIDController(0.025, 0.0, 0); //
     // in degrees
@@ -47,8 +47,8 @@ public class PivotSubsystem extends PIDSubsystem {
         getController().enableContinuousInput(0, 360); // Sets the PID to treat zero and 2 pi as the same value.
         disable(); // start with PID disabled
 
-        pivotLeadMotor = new CANSparkMax(IDs.PIVOT_LEAD_MOTOR, MotorType.kBrushless);
-        pivotFollowMotor = new CANSparkMax(IDs.PIVOT_FOLLOW_MOTOR, MotorType.kBrushless);
+        pivotLeadMotor = new CANSparkMax(IDS.PIVOT_LEAD_MOTOR, MotorType.kBrushless);
+        pivotFollowMotor = new CANSparkMax(IDS.PIVOT_FOLLOW_MOTOR, MotorType.kBrushless);
 
         pivotFollowMotor.follow(pivotLeadMotor, true);
 
@@ -60,7 +60,7 @@ public class PivotSubsystem extends PIDSubsystem {
         pivotLeadMotor.setSmartCurrentLimit(CURRENT_LIMIT);
         pivotFollowMotor.setSmartCurrentLimit(CURRENT_LIMIT);
 
-        this.pivotEncoder = new CANCoder(IDs.PIVOT_ENCODER);
+        this.pivotEncoder = new CANCoder(IDS.PIVOT_ENCODER);
 
         configureCANCoder(pivotEncoder);
     }

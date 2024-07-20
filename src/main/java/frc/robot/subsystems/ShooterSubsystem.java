@@ -4,7 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.constants.IDs;
+import frc.robot.Constants.IDS;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -26,8 +26,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private static final double SHOOTER_MAX_OUTPUT = 1;
     private static final double SHOOTER_MIN_OUTPUT = -1;
 
-    private CANSparkMax motorLeft = new CANSparkMax(IDs.SHOOTER_LEFT_MOTOR_ID, MotorType.kBrushless);
-    private CANSparkMax motorRight = new CANSparkMax(IDs.SHOOTER_RIGHT_MOTOR_ID, MotorType.kBrushless);
+    private CANSparkMax motorLeft = new CANSparkMax(IDS.SHOOTER_LEFT_MOTOR_ID, MotorType.kBrushless);
+    private CANSparkMax motorRight = new CANSparkMax(IDS.SHOOTER_RIGHT_MOTOR_ID, MotorType.kBrushless);
 
     // private final MotorControllerGroup shooterMotors = new
     // MotorControllerGroup(shooterLeadMotor, shooterFollowMotor1);

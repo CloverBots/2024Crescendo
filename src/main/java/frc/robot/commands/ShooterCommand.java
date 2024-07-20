@@ -173,7 +173,7 @@ public class ShooterCommand extends Command {
                     targetDistance = visionTargetTracker.computeTargetDistance();
                     pivotAngle = visionTargetTracker.computePivotAngle(targetDistance);
                     pivotAngle = checkAngleLimits(pivotAngle);
-                    DriveFromControllerCommand.lockOnMode = true;
+                    DriveCommand.lockOnMode = true;
                 }
 
                 // If the desired angle has changed by 1 degree or more, update the setpoint
@@ -291,7 +291,7 @@ public class ShooterCommand extends Command {
                 pivotAngle = RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
-                DriveFromControllerCommand.lockOnMode = false;
+                DriveCommand.lockOnMode = false;
 
                 break;
 
@@ -303,7 +303,7 @@ public class ShooterCommand extends Command {
                 pivotAngle = RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
-                DriveFromControllerCommand.lockOnMode = false;
+                DriveCommand.lockOnMode = false;
                 break;
 
             case AMP:
@@ -426,7 +426,7 @@ public class ShooterCommand extends Command {
     @Override
     public void end(boolean interrupted) {
 
-        DriveFromControllerCommand.lockOnMode = false;
+        DriveCommand.lockOnMode = false;
         feederSubsystem.setSpeed(0);
         intakeSubsystem.setIntakeSpeed(0);
         shooterSubsystem.setShooterLeftRPM(0);
@@ -473,7 +473,7 @@ public class ShooterCommand extends Command {
             case PARK:
                 feederSubsystem.setSpeed(0);
                 shooterSubsystem.setDefaultShooterRPM();
-                DriveFromControllerCommand.lockOnMode = false;
+                DriveCommand.lockOnMode = false;
                 if (pivotSubsystem.atSetpoint()) {
                     mode = ACTION.NONE;
                     modeChanged = true;
@@ -501,7 +501,7 @@ public class ShooterCommand extends Command {
                     readyToFire = false;
                     ledConformToState("Green");
                     mode = ACTION.PARK;
-                    DriveFromControllerCommand.lockOnMode = false;
+                    DriveCommand.lockOnMode = false;
                     modeChanged = true;
                 }
                 break;
