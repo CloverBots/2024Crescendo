@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Subwoofer"
+            "name": null
           }
         },
         {
@@ -26,7 +26,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Fire"
+            "name": null
           }
         },
         {
@@ -61,7 +61,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "YEET"
+                  "name": null
                 }
               },
               {
@@ -101,7 +101,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Far"
+            "name": null
           }
         },
         {
@@ -111,7 +111,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Aim"
+                  "name": null
                 }
               },
               {
@@ -126,7 +126,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Fire"
+            "name": null
           }
         }
       ]

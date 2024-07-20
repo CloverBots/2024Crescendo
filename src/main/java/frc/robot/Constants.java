@@ -40,7 +40,7 @@ public final class Constants {
     
     /** The maximum speed of the robot, in meters per second during TeleOp. Use this to limit the speed when using a controller.*/
     public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = 0.2; //Max is 5.5435
-    public static final double TELEOP_SLOW_SPEED_METERS_PER_SECOND = 0.2;
+    public static final double AUTO_MAX_SPEED_METERS_PER_SECOND = 0.5;
     
     /** Maximum speed for the robot's turning. */
     public static final double teleOpMaxAngularSpeed = 1 * (2 * Math.PI); // todo change all maxes
@@ -49,20 +49,13 @@ public final class Constants {
     /** The maximum angular acceleration for the robot's turning. */
     public static final double teleOpMaxAngularAccelerationUnitsPerSecond = 1;
     /** The maximum acceleration for the robot's X and Y movement. */
-    public static final double teleOpMaxAccelerationMetersPerSecond = 1; //todo change
-
-    public static final double AUTO_MAX_SPEED = 3;
+    public static final double teleOpMaxAccelerationMetersPerSecond = 0.2; //todo change
 
     /** Multiply the output of {@code getSelectedSensorPosition()} by this to get the total distance travelled, in meters, on a swerve module. */
     public static final double DRIVE_ENCODER_TO_METERS = (WHEEL_CIRCUMFERENCE / (DRIVE_GEAR_RATIO * 2048.0));
 
     /** Multiply the output of {@code getSelectedSensorVelocity()} by this to get the current velocity, in meters per second, on a swerve module. */
     public static final double DRIVE_ENCODER_VELOCITY_TO_METERS_PER_SECOND = (600.0 * WHEEL_CIRCUMFERENCE) / (2048.0 * 60 * DRIVE_GEAR_RATIO);
-
-    // Used for position and velocity conversions on the NEO turning motor on the swerve modules.
-    public static final double TURNING_ENCODER_TO_RAD = (2 * Math.PI) / TURNING_GEAR_RATIO;
-    public static final double TURNING_ENCODER_TO_DEG = (360) / TURNING_GEAR_RATIO;
-    public static final double TURNING_ENCODER_TO_RADS_PER_SECOND = TURNING_ENCODER_TO_RAD / 60;
 
     public static final double MAX_VOLTAGE = 12;
     public static final double deadband = 0.08;
@@ -116,13 +109,13 @@ public final class Constants {
 
   public static final class PathPlannerConstants {
     public static final class TranslationPID {
-      public static final double p = 5;
+      public static final double p = 2;
       public static final double i = 0;
       public static final double d = 0;
     }
 
     public static final class RotationPID {
-      public static final double p = 6;
+      public static final double p = 1.0;
       public static final double i = 0;
       public static final double d = 0;
     }

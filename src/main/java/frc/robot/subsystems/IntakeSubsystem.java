@@ -27,7 +27,7 @@ public class IntakeSubsystem extends SubsystemBase {
     public void setIntakeSpeed(double speed) {
         motor.set(speed);
         centerMotor1.set(TalonSRXControlMode.PercentOutput, speed);
-        centerMotor2.set(TalonSRXControlMode.PercentOutput, -speed); // One may be inverted
+        centerMotor2.set(TalonSRXControlMode.PercentOutput, -speed);
     }
 
     public boolean isIntakeRunningForward() {

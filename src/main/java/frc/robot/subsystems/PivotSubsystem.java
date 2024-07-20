@@ -4,11 +4,7 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.CANCoderConfiguration;
-import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-import com.ctre.phoenix.sensors.SensorTimeBase;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -27,7 +23,7 @@ public class PivotSubsystem extends PIDSubsystem {
     private final CANSparkMax pivotLeadMotor;
     private final CANSparkMax pivotFollowMotor;
 
-    private final CANCoder pivotEncoder;
+    private final CANcoder pivotEncoder;
     public final static double PIVOT_LOWER_ENDPOINT = 2;
     public final static double PIVOT_UPPER_ENDPOINT = 100;
 
@@ -60,9 +56,7 @@ public class PivotSubsystem extends PIDSubsystem {
         pivotLeadMotor.setSmartCurrentLimit(CURRENT_LIMIT);
         pivotFollowMotor.setSmartCurrentLimit(CURRENT_LIMIT);
 
-        this.pivotEncoder = new CANCoder(IDS.PIVOT_ENCODER);
-
-        configureCANCoder(pivotEncoder);
+        this.pivotEncoder = new CANcoder(IDS.PIVOT_ENCODER);
     }
 
     @Override
@@ -139,16 +133,7 @@ public class PivotSubsystem extends PIDSubsystem {
     }
 
     public double getPivotAbsolutePosition() {
-        SmartDashboard.putNumber("Absolute encoder", pivotEncoder.getAbsolutePosition());
-        return pivotEncoder.getAbsolutePosition();
-    }
-
-    private void configureCANCoder(CANCoder cancoder) {
-        CANCoderConfiguration encoderConfig = new CANCoderConfiguration();
-        encoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
-        encoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-        encoderConfig.magnetOffsetDegrees = -202.2; // -202.84
-        encoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
-        cancoder.configAllSettings(encoderConfig);
+        SmartDashboard.putNumber("Absolute encoder", pivotEncoder.getAbsolutePosition().getValueAsDouble() * 360);
+        return pivotEncoder.getAbsolutePosition().getValueAsDouble() * 360;
     }
 }
