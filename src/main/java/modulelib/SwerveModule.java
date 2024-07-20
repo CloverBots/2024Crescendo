@@ -29,7 +29,7 @@ public class SwerveModule {
   private double maxVelocity;
   private double maxVoltage = 60;
   private TalonFXConfigurator config;
-  private CurrentLimitsConfigs current;
+  //private CurrentLimitsConfigs current;
 
   public SwerveModule(int turnMotorId, int driveMotorId, int encoderId, boolean driveInverted,
       double maxVelocity) {
@@ -41,14 +41,14 @@ public class SwerveModule {
 
     this.pidController.enableContinuousInput(-180, 180);
 
-    current.StatorCurrentLimit = maxVoltage;
-    current.StatorCurrentLimitEnable = true;
+    //current.StatorCurrentLimit = maxVoltage;
+    //current.StatorCurrentLimitEnable = true;
     driveMotor = new TalonFX(driveMotorId);
     driveMotor.getConfigurator().setPosition(0.0);
 
     this.driveMotor.setInverted(driveInverted);
 
-    config.apply(current);
+   // config.apply(current);
   }
 
   public SwerveModule(SwerveModuleConfig config, double maxVelocity, double maxVoltage) {

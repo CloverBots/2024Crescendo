@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -26,31 +27,20 @@ public class RobotContainer {
 
   private SendableChooser<Command> chooser;
 
-  private final DriveCommand driveFromControllerCommand = new DriveCommand(
-      swerveSubsystem,
-      driverController::getLeftX,
-      driverController::getLeftY,
-      driverController::getRightX,
-      driverController::getRightY,
-      driverController::getYButton,
-      driverController::getBButton,
-      driverController::getAButton,
-      driverController::getXButton,
-      driverController::getStartButton,
-      driverController::getLeftTriggerAxis,
-      driverController::getRightTriggerAxis,
-      driverController::getPOV);
-
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     SignalLogger.enableAutoLogging(false);
 
+    swerveSubsystem.setDefaultCommand(
+        new DriveCommand(
+            swerveSubsystem,
+            () -> getScaledXY(),
+            () -> scaleRotationAxis(driverController.getRightX())));
+
     chooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Mode", chooser);
-
-    swerveSubsystem.setDefaultCommand(driveFromControllerCommand);
 
     configureAutoChooser();
     SmartDashboard.putData(chooser);
@@ -58,7 +48,9 @@ public class RobotContainer {
     configureBindings();
   }
 
-  public void onEnable() {}
+  public void onEnable() {
+    resetGyro();
+  }
 
   public void teleopPeriodic() {}
 
@@ -69,6 +61,50 @@ public class RobotContainer {
   public void onDisable() {}
 
   private void configureBindings() {}
+
+  public void resetGyro() {
+    gyro.reset();
+  }
+
+  private double squared(double input) {
+    return Math.copySign(input * input, input);
+  }
+
+  private double scaleRotationAxis(double input) {
+    return deadband(squared(input), DriveConstants.deadband) * swerveSubsystem.getMaxAngleVelocity() * -0.6; 
+  }
+
+  private double deadband(double input, double deadband) {
+    if (Math.abs(input) < deadband) {
+      return 0;
+    } else {
+      return input;
+    }
+  }
+
+  private double[] getXY() {
+    double[] xy = new double[2];
+    xy[0] = deadband(driverController.getLeftX(), DriveConstants.deadband);
+    xy[1] = deadband(driverController.getLeftY(), DriveConstants.deadband);
+    return xy;
+  }
+
+  private double[] getScaledXY() {
+    double[] xy = getXY();
+
+    // Convert to Polar coordinates
+    double r = Math.sqrt(xy[0] * xy[0] + xy[1] * xy[1]);
+    double theta = Math.atan2(xy[1], xy[0]);
+
+    // Square radius and scale by max velocity
+    r = r * r * swerveSubsystem.getMaxVelocity();
+
+    // Convert to Cartesian coordinates
+    xy[0] = r * Math.cos(theta); 
+    xy[1] = r * Math.sin(theta); 
+
+    return xy;
+  }
 
   public Command getAutonomousCommand() {
     return chooser.getSelected();

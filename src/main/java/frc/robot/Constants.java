@@ -39,17 +39,17 @@ public final class Constants {
     public static final double PHYSICAL_MAX_SPEED_METERS_PER_SECOND = (1/DRIVE_GEAR_RATIO) * (6380.0/60) * WHEEL_CIRCUMFERENCE;
     
     /** The maximum speed of the robot, in meters per second during TeleOp. Use this to limit the speed when using a controller.*/
-    public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = PHYSICAL_MAX_SPEED_METERS_PER_SECOND - 0.1; //Max is 5.5435
-    public static final double TELEOP_SLOW_SPEED_METERS_PER_SECOND = 1;
+    public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = 0.2; //Max is 5.5435
+    public static final double TELEOP_SLOW_SPEED_METERS_PER_SECOND = 0.2;
     
     /** Maximum speed for the robot's turning. */
-    public static final double teleOpMaxAngularSpeed = 6 * (2 * Math.PI);
-    public static final double teleOpNormalAngularSpeed = 3 * (2 * Math.PI);
+    public static final double teleOpMaxAngularSpeed = 1 * (2 * Math.PI); // todo change all maxes
+    public static final double teleOpNormalAngularSpeed = 1 * (2 * Math.PI);
     public static final double teleOpSlowAngularSpeed = 1 * (2 * Math.PI);
     /** The maximum angular acceleration for the robot's turning. */
-    public static final double teleOpMaxAngularAccelerationUnitsPerSecond = 5;
+    public static final double teleOpMaxAngularAccelerationUnitsPerSecond = 1;
     /** The maximum acceleration for the robot's X and Y movement. */
-    public static final double teleOpMaxAccelerationMetersPerSecond = 5;
+    public static final double teleOpMaxAccelerationMetersPerSecond = 1; //todo change
 
     public static final double AUTO_MAX_SPEED = 3;
 
@@ -76,10 +76,10 @@ public final class Constants {
     }
 
     public static final class SwerveModules {
-      public static final SwerveModuleConfig frontRight = new SwerveModuleConfig(10, 14, 18, false); //true offsets -62.92
-      public static final SwerveModuleConfig frontLeft = new SwerveModuleConfig(11, 15, 19, true); //false -241.35
-      public static final SwerveModuleConfig backLeft = new SwerveModuleConfig(12, 16, 20, false); //false -112.58
-      public static final SwerveModuleConfig backRight = new SwerveModuleConfig(13, 17, 21, true); //true -3.69
+      public static final SwerveModuleConfig frontRight = new SwerveModuleConfig(11, 15, 19, false); 
+      public static final SwerveModuleConfig frontLeft = new SwerveModuleConfig(10, 14, 18, true); 
+      public static final SwerveModuleConfig backLeft = new SwerveModuleConfig(13, 17, 21, true); 
+      public static final SwerveModuleConfig backRight = new SwerveModuleConfig(12, 16, 20, false); 
     }
 
     public static final class ModuleLocations {
