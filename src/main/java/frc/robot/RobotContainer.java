@@ -106,7 +106,7 @@ public class RobotContainer {
     private final LEDSubsystem ledSubsystem = LEDSubsystem.getInstance();
 
     private final RunIntake runIntake = new RunIntake(intakeSubsystem, INTAKE_SPEED, feederDistanceSensorSubsystem,
-            feederSubsystem);
+            feederSubsystem, pivotSubsystem);
 
     private final XboxController driverController = new XboxController(IDS.CONTROLLER_DRIVE_PORT);
     private final XboxController operatorController = new XboxController(IDS.CONTROLLER_OPERATOR_PORT);
@@ -152,7 +152,7 @@ public class RobotContainer {
                         () -> getScaledXY(),
                         () -> scaleRotationAxis(driverController.getRightX()), visionTargetTracker));
 
-        // shooterSubsystem.setDefaultCommand(shooterCommand);
+        shooterSubsystem.setDefaultCommand(shooterCommand);
 
         configureBindings();
     }
@@ -219,7 +219,7 @@ public class RobotContainer {
 
     private void configureAutoCommands() {
         NamedCommands.registerCommand("Intake",
-                new RunIntake(intakeSubsystem, INTAKE_SPEED, feederDistanceSensorSubsystem, feederSubsystem));
+                new RunIntake(intakeSubsystem, INTAKE_SPEED, feederDistanceSensorSubsystem, feederSubsystem, pivotSubsystem));
         NamedCommands.registerCommand("Aim",
                 new AutoAimCommand(visionTargetTracker, pivotSubsystem, shooterSubsystem, 1.0f));
         NamedCommands.registerCommand("Set Shooter",

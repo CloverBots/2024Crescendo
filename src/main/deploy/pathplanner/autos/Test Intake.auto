@@ -16,12 +16,6 @@
           "data": {
             "commands": [
               {
-                "type": "path",
-                "data": {
-                  "pathName": "Test X"
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "Intake"

@@ -9,6 +9,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.PivotSubsystem;
 
 public class RunIntake extends Command {
     /** Creates a new RunIntake. */
@@ -16,14 +17,16 @@ public class RunIntake extends Command {
     public final double intakeMotorSpeed;
     public final FeederDistanceSensorSubsystem feederDistanceSensorSubsystem;
     public final FeederSubsystem feederSubsystem;
+    public final PivotSubsystem pivotSubsystem;
 
     public RunIntake(IntakeSubsystem intake, double intakeMotorSpeed,
-            FeederDistanceSensorSubsystem feederDistanceSensorSubsystem, FeederSubsystem feederSubsystem) {
+            FeederDistanceSensorSubsystem feederDistanceSensorSubsystem, FeederSubsystem feederSubsystem, PivotSubsystem pivotSubsystem) {
         // Use addRequirements() here to declare subsystem dependencies.
         this.intake = intake;
         this.intakeMotorSpeed = intakeMotorSpeed;
         this.feederDistanceSensorSubsystem = feederDistanceSensorSubsystem;
         this.feederSubsystem = feederSubsystem;
+        this.pivotSubsystem = pivotSubsystem;
 
         addRequirements(this.intake);
     }
@@ -36,6 +39,7 @@ public class RunIntake extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE);
         intake.setIntakeSpeed(intakeMotorSpeed);
         feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_INTAKE);
     }
