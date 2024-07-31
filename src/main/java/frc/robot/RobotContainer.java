@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.Supplier;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -150,9 +152,7 @@ public class RobotContainer {
                 new DriveCommand(
                         swerveSubsystem,
                         () -> getScaledXY(),
-                        () -> scaleRotationAxis(driverController.getRightX()), visionTargetTracker));
-
-        shooterSubsystem.setDefaultCommand(shooterCommand);
+                        () -> scaleRotationAxis(driverController.getRightX()), driverController.getLeftTriggerAxis(), visionTargetTracker));
 
         configureBindings();
     }
@@ -161,6 +161,10 @@ public class RobotContainer {
     // Teleop / Autonomous)
     public void onEnable() {
         resetGyro();
+    }
+
+    public void teleopInit() {
+        shooterSubsystem.setDefaultCommand(shooterCommand);
     }
 
     public void teleopPeriodic() {

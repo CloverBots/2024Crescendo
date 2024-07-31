@@ -9,7 +9,6 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.VisionTargetTracker;
 import frc.robot.subsystems.SwerveSubsystem;
 
@@ -19,15 +18,18 @@ public class DriveCommand extends Command {
   private VisionTargetTracker limelight;
   private final Supplier<double[]> speedXY;
   private final DoubleSupplier rot;
+  private final double leftTrigger;
   public static boolean lockOnMode = false;
+  public static boolean slowMode = false;
 
   private PIDController lockToTagXController;
 
   /** Creates a new Drive. */
-  public DriveCommand(SwerveSubsystem drivebase, Supplier<double[]> speedXY, DoubleSupplier rot, VisionTargetTracker limelight) {
+  public DriveCommand(SwerveSubsystem drivebase, Supplier<double[]> speedXY, DoubleSupplier rot, double leftTrigger, VisionTargetTracker limelight) {
     this.drivebase = drivebase;
     this.speedXY = speedXY;
     this.rot = rot;
+    this.leftTrigger = leftTrigger;
     this.limelight = limelight;
 
     this.lockToTagXController = new PIDController(0.075, 0.03, 0.005);
@@ -49,8 +51,11 @@ public class DriveCommand extends Command {
 
     if (lockOnMode && Math.abs(r) < 0.05) {
       r = calculateLockOnRotationSpeed();
-  }
+    }
 
+    if (leftTrigger >= 0.5 && slowMode == false) {
+      slowMode = !slowMode;
+    }
     drivebase.defaultDrive(-xy[1], -xy[0], r);
   }
 
@@ -67,5 +72,5 @@ public class DriveCommand extends Command {
 
   private double calculateLockOnRotationSpeed() {
     return -lockToTagXController.calculate(limelight.getTx());
-}
+  }
 }

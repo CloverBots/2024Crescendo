@@ -7,6 +7,7 @@ package frc.robot;
 import modulelib.SwerveModuleConfig;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.commands.DriveCommand;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -53,12 +54,12 @@ public final class Constants {
          * The maximum speed of the robot, in meters per second during TeleOp. Use this
          * to limit the speed when using a controller.
          */
-        public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = 5; // Max is 5.5435
+        public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = DriveCommand.slowMode ? 5 : 3; // Max is 5.5435
         public static final double AUTO_MAX_SPEED_METERS_PER_SECOND = 3;
 
         /** Maximum speed for the robot's turning. */
-        public static final double teleOpMaxAngularSpeed = 3 * (2 * Math.PI); // todo change all maxes
-        public static final double teleOpNormalAngularSpeed = 2 * (2 * Math.PI);
+        public static final double teleOpMaxAngularSpeed = 3 * (2 * Math.PI);
+        public static final double teleOpNormalAngularSpeed = DriveCommand.slowMode ? 2 * (2 * Math.PI) : 0.5 * (2 * Math.PI);
         public static final double teleOpSlowAngularSpeed = 1 * (2 * Math.PI);
         /** The maximum angular acceleration for the robot's turning. */
         public static final double teleOpMaxAngularAccelerationUnitsPerSecond = 1;
