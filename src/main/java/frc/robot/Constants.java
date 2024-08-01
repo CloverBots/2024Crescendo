@@ -54,7 +54,7 @@ public final class Constants {
          * The maximum speed of the robot, in meters per second during TeleOp. Use this
          * to limit the speed when using a controller.
          */
-        public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = DriveCommand.slowMode ? 5 : 3; // Max is 5.5435
+        public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = DriveCommand.slowMode ? 3 : 5; // Max is 5.5435
         public static final double AUTO_MAX_SPEED_METERS_PER_SECOND = 3;
 
         /** Maximum speed for the robot's turning. */
