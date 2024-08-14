@@ -12,11 +12,12 @@ import com.ctre.phoenix.CANifier.LEDChannel;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.LEDs.HSVtoRGB;
 import frc.robot.subsystems.LEDs.MovingAverage;
 
 public class LEDSubsystem extends SubsystemBase {
-    public static CANifier canifier = new CANifier(2);
+    public static CANifier canifier = new CANifier(Constants.LED_ID);
 
     private static LEDSubsystem instance = null;
     private State currentState = State.OFF;

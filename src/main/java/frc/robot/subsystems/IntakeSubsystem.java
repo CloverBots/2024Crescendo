@@ -7,14 +7,14 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.IDS;
+import frc.robot.Constants.*;
 
 public class IntakeSubsystem extends SubsystemBase {
     private final int CURRENT_LIMIT = 100;
 
-    private final CANSparkMax motor = new CANSparkMax(IDS.INTAKE_MOTOR_ID, MotorType.kBrushless);
-    private final TalonSRX centerMotor1 = new TalonSRX(IDS.CENTER_MOTOR_1);
-    private final TalonSRX centerMotor2 = new TalonSRX(IDS.CENTER_MOTOR_2);
+    private final CANSparkMax motor = new CANSparkMax(IntakeConstants.INTAKE_MOTOR_ID, MotorType.kBrushless);
+    private final TalonSRX centerMotor1 = new TalonSRX(IntakeConstants.CENTER_MOTOR_1);
+    private final TalonSRX centerMotor2 = new TalonSRX(IntakeConstants.CENTER_MOTOR_2);
 
     public IntakeSubsystem() {
         motor.setSmartCurrentLimit(CURRENT_LIMIT);

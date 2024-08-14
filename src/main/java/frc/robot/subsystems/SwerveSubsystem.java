@@ -144,8 +144,6 @@ public class SwerveSubsystem extends SubsystemBase {
     this.frontRight.drive(moduleStates[1]);
     this.backLeft.drive(moduleStates[2]);
     this.backRight.drive(moduleStates[3]);
-
-    SmartDashboard.putNumber("FL Target Angle", moduleStates[0].angle.getDegrees());
   }
 
   public double getMaxVelocity() {

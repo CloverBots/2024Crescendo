@@ -4,7 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.IDS;
+import frc.robot.Constants.*;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -26,11 +26,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private static final double SHOOTER_MAX_OUTPUT = 1;
     private static final double SHOOTER_MIN_OUTPUT = -1;
 
-    private CANSparkMax motorLeft = new CANSparkMax(IDS.SHOOTER_LEFT_MOTOR_ID, MotorType.kBrushless);
-    private CANSparkMax motorRight = new CANSparkMax(IDS.SHOOTER_RIGHT_MOTOR_ID, MotorType.kBrushless);
-
-    // private final MotorControllerGroup shooterMotors = new
-    // MotorControllerGroup(shooterLeadMotor, shooterFollowMotor1);
+    private CANSparkMax motorLeft = new CANSparkMax(ShooterConstants.SHOOTER_LEFT_MOTOR_ID, MotorType.kBrushless);
+    private CANSparkMax motorRight = new CANSparkMax(ShooterConstants.SHOOTER_RIGHT_MOTOR_ID, MotorType.kBrushless);
 
     private final RelativeEncoder encoderLeft = motorLeft.getEncoder();
     private final RelativeEncoder encoderRight = motorRight.getEncoder();
@@ -91,22 +88,6 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void setShooterLeftRPM(double rpm) {
-
-        /**
-         * PIDController objects are commanded to a set point using the
-         * SetReference() method.
-         * 
-         * The first parameter is the value of the set point, whose units vary
-         * depending on the control type set in the second parameter.
-         * 
-         * The second parameter is the control type can be set to one of four
-         * parameters:
-         * com.revrobotics.CANSparkMax.ControlType.kDutyCycle
-         * com.revrobotics.CANSparkMax.ControlType.kPosition
-         * com.revrobotics.CANSparkMax.ControlType.kVelocity
-         * com.revrobotics.CANSparkMax.ControlType.kVoltage
-         */
-
         if (rpm > MAX_RPM) {
             rpm = MAX_RPM;
         }

@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.VisionTargetTracker;
-import frc.robot.RobotContainer;
+import frc.robot.Constants.*;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -18,7 +18,6 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.LEDSubsystem.State;
 
 public class ShooterCommand extends Command {
-
     private final ShooterSubsystem shooterSubsystem;
     private final FeederDistanceSensorSubsystem feederDistanceSensorSubsystem;
     private final LEDSubsystem ledSubsystem;
@@ -29,7 +28,7 @@ public class ShooterCommand extends Command {
     private final Supplier<Boolean> fireButton;
     private final Supplier<Double> intakeLoadTrigger, intakeEjectTrigger;
     private final DoubleSupplier leftJoystickY;
-    private final Supplier<Boolean> yButton, bButton, aButton, xButton, startButton, backButton, trapButton;
+    private final Supplier<Boolean> yButton, bButton, aButton, xButton, startButton, backButton;
     private final Supplier<Integer> dPad;
     private double shooterLeftRPM;
     private double shooterRightRPM;
@@ -48,7 +47,7 @@ public class ShooterCommand extends Command {
     private boolean readyToFire = false;
 
     public enum ACTION {
-        NONE, INTAKE, EJECT, AMP, SPEAKER, DEFAULT_SPEAKER, TRAP, FIRE, PARK, TUNING, LOB_HIGH, LOB_LOW,
+        NONE, INTAKE, EJECT, AMP, SPEAKER, DEFAULT_SPEAKER, FIRE, PARK, TUNING, LOB_HIGH, LOB_LOW,
         CLIMB_MANUAL
     }
 
@@ -71,8 +70,7 @@ public class ShooterCommand extends Command {
             DoubleSupplier leftJoystickY,
             Supplier<Integer> dPad,
             Supplier<Boolean> backButton,
-            Supplier<Boolean> fireButton,
-            Supplier<Boolean> trapButton) {
+            Supplier<Boolean> fireButton) {
 
         this.shooterSubsystem = shooterSubsystem;
         this.feederDistanceSensorSubsystem = feederDistanceSensorSubsystem;
@@ -91,7 +89,6 @@ public class ShooterCommand extends Command {
         this.backButton = backButton;
         this.dPad = dPad;
         this.fireButton = fireButton;
-        this.trapButton = trapButton;
         ledSubsystem = LEDSubsystem.getInstance();
 
         timer = new Timer();
@@ -109,7 +106,7 @@ public class ShooterCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE);
+        pivotSubsystem.setPivotControllerSetpoint(PivotConstants.SHOOTER_PARKED_PIVOT_ANGLE);
         pivotSubsystem.enable();
         // SmartDashboard.putBoolean("Camera", true);
         matchTime.restart();
@@ -139,19 +136,18 @@ public class ShooterCommand extends Command {
         switch (mode) {
             case INTAKE:
                 if (!noteLoaded) {
-                    intakeSubsystem.setIntakeSpeed(RobotContainer.INTAKE_SPEED);
-                    feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_INTAKE);
+                    intakeSubsystem.setIntakeSpeed(IntakeConstants.INTAKE_SPEED);
+                    feederSubsystem.setSpeed(IntakeConstants.FEEDER_SPEED_INTAKE);
                 }
 
                 break;
             case EJECT:
-                intakeSubsystem.setIntakeSpeed(-RobotContainer.INTAKE_SPEED);
-                feederSubsystem.setSpeed(-RobotContainer.FEEDER_SPEED_INTAKE);
+                intakeSubsystem.setIntakeSpeed(-IntakeConstants.INTAKE_SPEED);
+                feederSubsystem.setSpeed(-IntakeConstants.FEEDER_SPEED_INTAKE);
                 break;
 
             case TUNING:
             case AMP:
-            case TRAP:
             case LOB_LOW:
             case LOB_HIGH:
             case DEFAULT_SPEAKER:
@@ -212,12 +208,12 @@ public class ShooterCommand extends Command {
                                                                      // up
 
                     if (pivotSpeed > 0.05 &&
-                            pivotSubsystem.getPivotAbsolutePosition() > RobotContainer.PIVOT_UPPER_ENDPOINT) {
+                            pivotSubsystem.getPivotAbsolutePosition() > PivotConstants.PIVOT_UPPER_ENDPOINT) {
                         pivotSpeed = 0;
                     }
 
                     if (pivotSpeed < -.05 &&
-                            pivotSubsystem.getPivotAbsolutePosition() < RobotContainer.PIVOT_LOWER_ENDPOINT) {
+                            pivotSubsystem.getPivotAbsolutePosition() < PivotConstants.PIVOT_LOWER_ENDPOINT) {
                         pivotSpeed = 0;
                     }
 
@@ -274,9 +270,6 @@ public class ShooterCommand extends Command {
             mode = ACTION.LOB_LOW;
             modeChanged = true;
             ledSubsystem.conformToState(State.SOLID_ORANGE);
-        } else if (trapButton.get()) {
-            mode = ACTION.TRAP;
-            modeChanged = true;
         }
     }
 
@@ -288,7 +281,7 @@ public class ShooterCommand extends Command {
             case EJECT:
                 shooterSubsystem.setDefaultShooterRPM();
                 feederSubsystem.setSpeed(0);
-                pivotAngle = RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE;
+                pivotAngle = PivotConstants.SHOOTER_PARKED_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
                 DriveCommand.lockOnMode = false;
@@ -300,17 +293,17 @@ public class ShooterCommand extends Command {
                 shooterRightRPM = 0;
                 shooterSubsystem.setDefaultShooterRPM();
                 feederSpeed = 0;
-                pivotAngle = RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE;
+                pivotAngle = PivotConstants.SHOOTER_PARKED_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
                 DriveCommand.lockOnMode = false;
                 break;
 
             case AMP:
-                shooterLeftRPM = RobotContainer.SHOOTER_AMP_LEFT_RPM;
-                shooterRightRPM = RobotContainer.SHOOTER_AMP_RIGHT_RPM;
-                feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
-                pivotAngle = RobotContainer.SHOOTER_AMP_PIVOT_ANGLE;
+                shooterLeftRPM = ShooterConstants.SHOOTER_AMP_LEFT_RPM;
+                shooterRightRPM = ShooterConstants.SHOOTER_AMP_RIGHT_RPM;
+                feederSpeed = IntakeConstants.FEEDER_SPEED_SHOOT;
+                pivotAngle = PivotConstants.SHOOTER_AMP_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
                 break;
@@ -326,10 +319,10 @@ public class ShooterCommand extends Command {
 
                 }
 
-                shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
-                shooterRightRPM = RobotContainer.SHOOTER_SPEAKER_RIGHT_RPM;
-                feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
-                pivotAngle = RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE;
+                shooterLeftRPM = ShooterConstants.SHOOTER_SPEAKER_LEFT_RPM;
+                shooterRightRPM = ShooterConstants.SHOOTER_SPEAKER_RIGHT_RPM;
+                feederSpeed = IntakeConstants.FEEDER_SPEED_SHOOT;
+                pivotAngle = PivotConstants.SHOOTER_PARKED_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 previousPivotAngle = pivotAngle;
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
@@ -340,32 +333,20 @@ public class ShooterCommand extends Command {
             case DEFAULT_SPEAKER:
                 if (visionTargetTracker.isValid() && (previousVisionTy != visionTargetTracker.getTy()
                         || previousVisionTx != visionTargetTracker.getTx())) {
-                    // Looks like camera is working again!
-                    // SmartDashboard.putBoolean("Camera", true);
-
                 }
 
-                shooterLeftRPM = RobotContainer.SHOOTER_SPEAKER_LEFT_RPM;
-                shooterRightRPM = RobotContainer.SHOOTER_SPEAKER_RIGHT_RPM;
-                feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
-                pivotAngle = RobotContainer.SHOOTER_SPEAKER_PIVOT_ANGLE;
+                shooterLeftRPM = ShooterConstants.SHOOTER_SPEAKER_LEFT_RPM;
+                shooterRightRPM = ShooterConstants.SHOOTER_SPEAKER_RIGHT_RPM;
+                feederSpeed = IntakeConstants.FEEDER_SPEED_SHOOT;
+                pivotAngle = PivotConstants.SHOOTER_SPEAKER_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 previousPivotAngle = pivotAngle;
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
 
                 break;
 
-            case TRAP:
-                shooterLeftRPM = RobotContainer.SHOOTER_TRAP_LEFT_RPM;
-                shooterRightRPM = RobotContainer.SHOOTER_TRAP_RIGHT_RPM;
-                feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
-                pivotAngle = RobotContainer.SHOOTER_TRAP_PIVOT_ANGLE;
-                pivotAngle = checkAngleLimits(pivotAngle);
-                pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
-                break;
-
             case FIRE:
-                feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
+                feederSpeed = IntakeConstants.FEEDER_SPEED_SHOOT;
 
                 // Update previous values for comparison during next shot
                 if (visionTargetTracker.isValid()) {
@@ -378,19 +359,19 @@ public class ShooterCommand extends Command {
                 break;
 
             case LOB_LOW:
-                shooterLeftRPM = RobotContainer.SHOOTER_UNDER_STAGE_LEFT_RPM;
-                shooterRightRPM = RobotContainer.SHOOTER_UNDER_STAGE_RIGHT_RPM;
-                feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
-                pivotAngle = RobotContainer.SHOOTER_UNDER_STAGE_PIVOT_ANGLE;
+                shooterLeftRPM = ShooterConstants.SHOOTER_UNDER_STAGE_LEFT_RPM;
+                shooterRightRPM = ShooterConstants.SHOOTER_UNDER_STAGE_RIGHT_RPM;
+                feederSpeed = IntakeConstants.FEEDER_SPEED_SHOOT;
+                pivotAngle = PivotConstants.SHOOTER_UNDER_STAGE_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
                 break;
 
             case LOB_HIGH:
-                shooterLeftRPM = RobotContainer.SHOOTER_OVER_STAGE_LEFT_RPM;
-                shooterRightRPM = RobotContainer.SHOOTER_OVER_STAGE_RIGHT_RPM;
-                feederSpeed = RobotContainer.FEEDER_SPEED_SHOOT;
-                pivotAngle = RobotContainer.SHOOTER_OVER_STAGE_PIVOT_ANGLE;
+                shooterLeftRPM = ShooterConstants.SHOOTER_OVER_STAGE_LEFT_RPM;
+                shooterRightRPM = ShooterConstants.SHOOTER_OVER_STAGE_RIGHT_RPM;
+                feederSpeed = IntakeConstants.FEEDER_SPEED_SHOOT;
+                pivotAngle = PivotConstants.SHOOTER_OVER_STAGE_PIVOT_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
                 break;
@@ -484,7 +465,6 @@ public class ShooterCommand extends Command {
             case AMP:
             case SPEAKER:
             case DEFAULT_SPEAKER:
-            case TRAP:
             case LOB_LOW:
             case LOB_HIGH:
             case TUNING:
@@ -496,7 +476,7 @@ public class ShooterCommand extends Command {
                 }
                 break;
             case FIRE:
-                if (firing && timer.get() > RobotContainer.FEEDER_TIME) {
+                if (firing && timer.get() > IntakeConstants.FEEDER_TIME) {
                     firing = false;
                     readyToFire = false;
                     ledConformToState("Green");

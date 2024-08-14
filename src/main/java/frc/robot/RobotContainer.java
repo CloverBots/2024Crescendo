@@ -23,8 +23,7 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunShooter;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.IDS;
+import frc.robot.Constants.*;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -44,56 +43,8 @@ import frc.robot.subsystems.LEDSubsystem.State;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-
-    private static final double VISION_TARGET_HEIGHT = 57.13; // AprilTag 4, 7
-    private static final double CAMERA_HEIGHT = 8.75; // inches
-    private static final double CAMERA_PITCH = 35; // degrees
-
-    public final static double PIVOT_LOWER_ENDPOINT = 6; // 7 , 5
-    public final static double PIVOT_UPPER_ENDPOINT = 100;
-
-    private final VisionConfiguration visionConfiguration = new VisionConfiguration(
-            VISION_TARGET_HEIGHT,
-            CAMERA_HEIGHT,
-            CAMERA_PITCH);
-
-    public final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(visionConfiguration);
-
-    public static final double INTAKE_SPEED = 1;
-    public static final double FEEDER_SPEED_INTAKE = 0.5;
-    public static final double FEEDER_SPEED_SHOOT = 0.8;
-    public final static double FEEDER_TIME = 1;
-
-    public static final double CLIMBER_PIVOT_SPEED = 0.5;
-
-    // PARKED SHOOTER
-    public static final double SHOOTER_PARKED_PIVOT_ANGLE = 10;
-
-    // AMP SHOOTER
-    public static final double SHOOTER_AMP_RIGHT_RPM = 700;
-    public static final double SHOOTER_AMP_LEFT_RPM = 700;
-    public static final double SHOOTER_AMP_PIVOT_ANGLE = 70; // 72
-
-    // TRAP SHOOTER
-    public static final double SHOOTER_TRAP_RIGHT_RPM = 2000;
-    public static final double SHOOTER_TRAP_LEFT_RPM = 2000;
-    public static final double SHOOTER_TRAP_PIVOT_ANGLE = 60;
-
-    // SPEAKER SHOOTER
-    public static final double SHOOTER_SPEAKER_RIGHT_RPM = 2500; // 2500
-    public static final double SHOOTER_SPEAKER_LEFT_RPM = 2000; // 2000
-    public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 66; // 66
-
-    // OVER STAGE
-    public static final double SHOOTER_OVER_STAGE_RIGHT_RPM = 3000;
-    public static final double SHOOTER_OVER_STAGE_LEFT_RPM = 2500;
-    public static final double SHOOTER_OVER_STAGE_PIVOT_ANGLE = 60;
-
-    // UNDER STAGE
-    public static final double SHOOTER_UNDER_STAGE_RIGHT_RPM = 3000;
-    public static final double SHOOTER_UNDER_STAGE_LEFT_RPM = 3000;
-    public static final double SHOOTER_UNDER_STAGE_PIVOT_ANGLE = 10;
-
+    public final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(
+            VisonConstants.visionConfiguration);
     private final AHRS gyro = new AHRS();
     private final Field2d field;
     private final SendableChooser<Command> autoChooser;
@@ -105,11 +56,11 @@ public class RobotContainer {
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     private final LEDSubsystem ledSubsystem = LEDSubsystem.getInstance();
 
-    private final RunIntake runIntake = new RunIntake(intakeSubsystem, INTAKE_SPEED, feederDistanceSensorSubsystem,
+    private final RunIntake runIntake = new RunIntake(intakeSubsystem, IntakeConstants.INTAKE_SPEED, feederDistanceSensorSubsystem,
             feederSubsystem, pivotSubsystem);
 
-    private final XboxController driverController = new XboxController(IDS.CONTROLLER_DRIVE_PORT);
-    private final XboxController operatorController = new XboxController(IDS.CONTROLLER_OPERATOR_PORT);
+    private final XboxController driverController = new XboxController(Constants.CONTROLLER_DRIVE_PORT);
+    private final XboxController operatorController = new XboxController(Constants.CONTROLLER_OPERATOR_PORT);
 
     private final ShooterCommand shooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
             shooterSubsystem, pivotSubsystem, feederSubsystem, intakeSubsystem, visionTargetTracker,
@@ -123,8 +74,7 @@ public class RobotContainer {
             operatorController::getLeftY,
             operatorController::getPOV,
             operatorController::getBackButton,
-            driverController::getRightBumper,
-            operatorController::getLeftBumper);
+            driverController::getRightBumper);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -150,7 +100,8 @@ public class RobotContainer {
                 new DriveCommand(
                         swerveSubsystem,
                         () -> getScaledXY(),
-                        () -> scaleRotationAxis(driverController.getRightX()), driverController.getLeftTriggerAxis(), visionTargetTracker));
+                        () -> scaleRotationAxis(driverController.getRightX()), driverController.getLeftTriggerAxis(),
+                        visionTargetTracker));
 
         configureBindings();
     }
@@ -221,11 +172,13 @@ public class RobotContainer {
 
     private void configureAutoCommands() {
         NamedCommands.registerCommand("Intake",
-                new RunIntake(intakeSubsystem, INTAKE_SPEED, feederDistanceSensorSubsystem, feederSubsystem, pivotSubsystem));
+                new RunIntake(intakeSubsystem, IntakeConstants.INTAKE_SPEED, feederDistanceSensorSubsystem, feederSubsystem,
+                        pivotSubsystem));
         NamedCommands.registerCommand("Aim",
                 new AutoAimCommand(visionTargetTracker, pivotSubsystem, shooterSubsystem, 1.0f));
         NamedCommands.registerCommand("Set Shooter",
-                new RunShooter(shooterSubsystem, pivotSubsystem, feederSubsystem, 500, 500, SHOOTER_SPEAKER_PIVOT_ANGLE));
+                new RunShooter(shooterSubsystem, pivotSubsystem, feederSubsystem, 500, 500,
+                        PivotConstants.SHOOTER_SPEAKER_PIVOT_ANGLE));
 
     }
 

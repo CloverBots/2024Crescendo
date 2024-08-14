@@ -6,13 +6,12 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotContainer;
+import frc.robot.Constants.*;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class RunShooter extends Command {
-    /** Creates a new RunIntake. */
     public final ShooterSubsystem shooterSubsystem;
     public final PivotSubsystem pivotSubsystem;
     public final FeederSubsystem feederSubsystem;
@@ -22,8 +21,8 @@ public class RunShooter extends Command {
     public Timer timer = new Timer();
     public boolean isFiring = false;
 
-    public RunShooter(ShooterSubsystem shooterSubsystem, PivotSubsystem pivotSubsystem, FeederSubsystem feederSubsystem, int leftShooterRPM, int rightShooterRPM, double pivotSetPoint) {
-        // Use addRequirements() here to declare subsystem dependencies.
+    public RunShooter(ShooterSubsystem shooterSubsystem, PivotSubsystem pivotSubsystem, FeederSubsystem feederSubsystem,
+            int leftShooterRPM, int rightShooterRPM, double pivotSetPoint) {
         this.shooterSubsystem = shooterSubsystem;
         this.pivotSubsystem = pivotSubsystem;
         this.feederSubsystem = feederSubsystem;
@@ -35,12 +34,10 @@ public class RunShooter extends Command {
         addRequirements(pivotSubsystem);
     }
 
-    // Called when the command is initially scheduled.
     @Override
     public void initialize() {
     }
 
-    // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
         shooterSubsystem.setShooterLeftRPM(leftShooterRPM);
@@ -48,28 +45,26 @@ public class RunShooter extends Command {
         pivotSubsystem.setPivotControllerSetpoint(pivotSetPoint);
     }
 
-    // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-       shooterSubsystem.setShooterLeftRPM(0);
-       shooterSubsystem.setShooterRightRPM(0);
-       pivotSubsystem.setSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE);
-       feederSubsystem.setSpeed(0);
+        shooterSubsystem.setShooterLeftRPM(0);
+        shooterSubsystem.setShooterRightRPM(0);
+        pivotSubsystem.setSetpoint(PivotConstants.SHOOTER_PARKED_PIVOT_ANGLE);
+        feederSubsystem.setSpeed(0);
     }
 
-    // Returns true when the command should end.
     @Override
     public boolean isFinished() {
         if (!isFiring && shooterSubsystem.isShooterAtTargetRpm() && pivotSubsystem.pivotReady()) {
-            feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT);
+            feederSubsystem.setSpeed(IntakeConstants.FEEDER_SPEED_SHOOT);
             isFiring = true;
             timer.start();
-        } 
+        }
         if (isFiring && timer.get() > 0.5) {
             return true;
         } else {
             return false;
         }
-        
+
     }
 }

@@ -14,7 +14,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import frc.robot.Constants.IDS;
+import frc.robot.Constants.*;
 
 public class PivotSubsystem extends PIDSubsystem {
 
@@ -29,22 +29,18 @@ public class PivotSubsystem extends PIDSubsystem {
 
     private final int CURRENT_LIMIT = 100;
 
-    private final DigitalInput limitSwitch = new DigitalInput(IDS.PIVOT_LIMIT_SWITCH);
-
-    // private PIDController pivotController = new PIDController(0.025, 0.0, 0); //
-    // in degrees
+    private final DigitalInput limitSwitch = new DigitalInput(PivotConstants.PIVOT_LIMIT_SWITCH);
 
     double speed = 0;
 
     public PivotSubsystem() {
-
         super(new PIDController(0.02, 0.0045, 0)); // P=0.01, I=0.0025, D = 0
         getController().setTolerance(0.5);
         getController().enableContinuousInput(0, 360); // Sets the PID to treat zero and 2 pi as the same value.
         disable(); // start with PID disabled
 
-        pivotLeadMotor = new CANSparkMax(IDS.PIVOT_LEAD_MOTOR, MotorType.kBrushless);
-        pivotFollowMotor = new CANSparkMax(IDS.PIVOT_FOLLOW_MOTOR, MotorType.kBrushless);
+        pivotLeadMotor = new CANSparkMax(PivotConstants.PIVOT_LEAD_MOTOR, MotorType.kBrushless);
+        pivotFollowMotor = new CANSparkMax(PivotConstants.PIVOT_FOLLOW_MOTOR, MotorType.kBrushless);
 
         pivotFollowMotor.follow(pivotLeadMotor, true);
 
@@ -56,7 +52,7 @@ public class PivotSubsystem extends PIDSubsystem {
         pivotLeadMotor.setSmartCurrentLimit(CURRENT_LIMIT);
         pivotFollowMotor.setSmartCurrentLimit(CURRENT_LIMIT);
 
-        this.pivotEncoder = new CANcoder(IDS.PIVOT_ENCODER);
+        this.pivotEncoder = new CANcoder(PivotConstants.PIVOT_ENCODER);
     }
 
     @Override
@@ -69,8 +65,6 @@ public class PivotSubsystem extends PIDSubsystem {
 
         output = MathUtil.clamp(output, -MAX_PIVOT_POWER_PID, MAX_PIVOT_POWER_PID);
         speed = output;
-        // checkLimits();
-        // pivotLeadMotor is null as robot first starts up and this method gets called
         if (pivotLeadMotor != null) {
             pivotLeadMotor.set(speed);
         }

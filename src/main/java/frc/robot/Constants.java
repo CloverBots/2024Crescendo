@@ -22,6 +22,10 @@ import frc.robot.commands.DriveCommand;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final int CONTROLLER_DRIVE_PORT = 0;
+    public static final int CONTROLLER_OPERATOR_PORT = 1;
+    public static final int LED_ID = 2;
+
     public static final class DriveConstants {
         public static final double WHEEL_CIRCUMFERENCE = Units.inchesToMeters(4) * Math.PI;
 
@@ -59,7 +63,8 @@ public final class Constants {
 
         /** Maximum speed for the robot's turning. */
         public static final double teleOpMaxAngularSpeed = 3 * (2 * Math.PI);
-        public static final double teleOpNormalAngularSpeed = DriveCommand.slowMode ? 2 * (2 * Math.PI) : 0.5 * (2 * Math.PI);
+        public static final double teleOpNormalAngularSpeed = DriveCommand.slowMode ? 2 * (2 * Math.PI)
+                : 0.5 * (2 * Math.PI);
         public static final double teleOpSlowAngularSpeed = 1 * (2 * Math.PI);
         /** The maximum angular acceleration for the robot's turning. */
         public static final double teleOpMaxAngularAccelerationUnitsPerSecond = 1;
@@ -121,20 +126,57 @@ public final class Constants {
         }
     }
 
-    public static final class IDS {
-        public static final int CONTROLLER_DRIVE_PORT = 0;
-        public static final int CONTROLLER_OPERATOR_PORT = 1;
-        public static final int FEEDER_MOTOR = 30;
-        public static final int PIVOT_LEAD_MOTOR = 31; // 32
-        public static final int PIVOT_FOLLOW_MOTOR = 32; // 31
-        public static final int PIVOT_ENCODER = 37;
+    public static final class VisonConstants {
+        private static final double VISION_TARGET_HEIGHT = 57.13; // AprilTag 4, 7
+        private static final double CAMERA_HEIGHT = 8.75; // inches
+        private static final double CAMERA_PITCH = 35; // degrees
+        public final static VisionConfiguration visionConfiguration = new VisionConfiguration(
+                VISION_TARGET_HEIGHT,
+                CAMERA_HEIGHT,
+                CAMERA_PITCH);
+    }
 
+    public static final class PivotConstants {
+        public static final int PIVOT_LEAD_MOTOR = 31;
+        public static final int PIVOT_FOLLOW_MOTOR = 32;
+        public static final int PIVOT_ENCODER = 37;
+        public static final int PIVOT_LIMIT_SWITCH = 0; // digital input port
+
+        public final static double PIVOT_LOWER_ENDPOINT = 6; // 7 , 5
+        public final static double PIVOT_UPPER_ENDPOINT = 100;
+        public static final double CLIMBER_PIVOT_SPEED = 0.5;
+
+        public static final double SHOOTER_PARKED_PIVOT_ANGLE = 10; // PARKED
+        public static final double SHOOTER_AMP_PIVOT_ANGLE = 70; // AMP
+        public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 66; // SPEAKER
+        public static final double SHOOTER_OVER_STAGE_PIVOT_ANGLE = 60; // OVER STAGE
+        public static final double SHOOTER_UNDER_STAGE_PIVOT_ANGLE = 10; // UNDER STAGE
+    }
+
+    public static final class IntakeConstants {
+        public static final int FEEDER_MOTOR = 30;
         public static final int INTAKE_MOTOR_ID = 33;
-        public static final int SHOOTER_LEFT_MOTOR_ID = 35;
-        public static final int SHOOTER_RIGHT_MOTOR_ID = 34;
         public static final int CENTER_MOTOR_1 = 36;
         public static final int CENTER_MOTOR_2 = 46;
 
-        public static final int PIVOT_LIMIT_SWITCH = 0; // digital input port
+        public static final double INTAKE_SPEED = 1;
+        public static final double FEEDER_SPEED_INTAKE = 0.5;
+        public static final double FEEDER_SPEED_SHOOT = 0.8;
+        public final static double FEEDER_TIME = 1;
+    }
+
+    public static final class ShooterConstants {
+        public static final int SHOOTER_LEFT_MOTOR_ID = 35;
+        public static final int SHOOTER_RIGHT_MOTOR_ID = 34;
+
+        public static final double SHOOTER_AMP_RIGHT_RPM = 700;
+        public static final double SHOOTER_AMP_LEFT_RPM = 700;
+        public static final double SHOOTER_SPEAKER_RIGHT_RPM = 2500;
+        public static final double SHOOTER_SPEAKER_LEFT_RPM = 2000;
+        public static final double SHOOTER_OVER_STAGE_RIGHT_RPM = 3000;
+        public static final double SHOOTER_OVER_STAGE_LEFT_RPM = 2500;
+        public static final double SHOOTER_UNDER_STAGE_RIGHT_RPM = 3000;
+        public static final double SHOOTER_UNDER_STAGE_LEFT_RPM = 3000;
+
     }
 }
