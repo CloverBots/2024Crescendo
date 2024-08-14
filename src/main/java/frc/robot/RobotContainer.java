@@ -16,12 +16,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AutoAimCommand;
+import frc.robot.commands.AutoAimAndFireCommand;
+import frc.robot.commands.AutoSetShooterCommand;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.RunIntake;
-import frc.robot.commands.RunShooter;
+import frc.robot.commands.AutoIntakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
@@ -55,9 +54,6 @@ public class RobotContainer {
     private final PivotSubsystem pivotSubsystem = new PivotSubsystem();
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     private final LEDSubsystem ledSubsystem = LEDSubsystem.getInstance();
-
-    private final RunIntake runIntake = new RunIntake(intakeSubsystem, IntakeConstants.INTAKE_SPEED, feederDistanceSensorSubsystem,
-            feederSubsystem, pivotSubsystem);
 
     private final XboxController driverController = new XboxController(Constants.CONTROLLER_DRIVE_PORT);
     private final XboxController operatorController = new XboxController(Constants.CONTROLLER_OPERATOR_PORT);
@@ -161,9 +157,6 @@ public class RobotContainer {
      * joysticks}.
      */
     private void configureBindings() {
-        JoystickButton intake = new JoystickButton(driverController, XboxController.Button.kA.value);
-        intake.whileTrue(runIntake);
-
         // used during tuning
         SmartDashboard.putNumber("Shooter right RPM", 2500);
         SmartDashboard.putNumber("Shooter left RPM", 2000);
@@ -172,13 +165,23 @@ public class RobotContainer {
 
     private void configureAutoCommands() {
         NamedCommands.registerCommand("Intake",
-                new RunIntake(intakeSubsystem, IntakeConstants.INTAKE_SPEED, feederDistanceSensorSubsystem, feederSubsystem,
+                new AutoIntakeCommand(intakeSubsystem, IntakeConstants.INTAKE_SPEED, feederDistanceSensorSubsystem,
+                        feederSubsystem,
                         pivotSubsystem));
-        NamedCommands.registerCommand("Aim",
-                new AutoAimCommand(visionTargetTracker, pivotSubsystem, shooterSubsystem, 1.0f));
-        NamedCommands.registerCommand("Set Shooter",
-                new RunShooter(shooterSubsystem, pivotSubsystem, feederSubsystem, 500, 500,
-                        PivotConstants.SHOOTER_SPEAKER_PIVOT_ANGLE));
+        NamedCommands.registerCommand("Fire",
+                new AutoAimAndFireCommand(visionTargetTracker, pivotSubsystem, shooterSubsystem, feederSubsystem, 1.0));
+        NamedCommands.registerCommand("Set Shooter Subwoofer",
+                new AutoSetShooterCommand(shooterSubsystem, pivotSubsystem, feederSubsystem,
+                        ShooterConstants.SHOOTER_SPEAKER_LEFT_RPM, ShooterConstants.SHOOTER_SPEAKER_RIGHT_RPM,
+                        PivotConstants.PIVOT_SPEAKER_ANGLE));
+        NamedCommands.registerCommand("Set Shooter Line",
+                new AutoSetShooterCommand(shooterSubsystem, pivotSubsystem, feederSubsystem,
+                        ShooterConstants.SHOOTER_LINE_LEFT_RPM, ShooterConstants.SHOOTER_LINE_RIGHT_RPM,
+                        PivotConstants.PIVOT_LINE_ANGLE));
+        NamedCommands.registerCommand("Set Shooter Far",
+                new AutoSetShooterCommand(shooterSubsystem, pivotSubsystem, feederSubsystem,
+                        ShooterConstants.SHOOTER_FAR_LEFT_RPM, ShooterConstants.SHOOTER_FAR_RIGHT_RPM,
+                        PivotConstants.PIVOT_FAR_ANGLE));
 
     }
 

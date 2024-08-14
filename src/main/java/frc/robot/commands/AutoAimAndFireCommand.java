@@ -6,27 +6,34 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.*;
 import frc.robot.VisionTargetTracker;
+import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class AutoAimCommand extends Command {
+public class AutoAimAndFireCommand extends Command {
 
   private PivotSubsystem pivotSubsystem;
   private VisionTargetTracker visionTargetTracker;
   private ShooterSubsystem shooterSubsystem;
+  private FeederSubsystem feederSubsystem;
   private double pivotAngle;
   private double previousPivotAngle;
-  private float time;
+  private double time;
   private Timer timer;
+  private Timer shotTimer;
+  public boolean isFiring = false;
 
-  public AutoAimCommand(VisionTargetTracker visionTargetTracker, PivotSubsystem pivotSubsystem,
-      ShooterSubsystem shooterSubsystem, float time) {
+  public AutoAimAndFireCommand(VisionTargetTracker visionTargetTracker, PivotSubsystem pivotSubsystem,
+      ShooterSubsystem shooterSubsystem, FeederSubsystem feederSubsystem, double time) {
     this.pivotSubsystem = pivotSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.visionTargetTracker = visionTargetTracker;
+    this.feederSubsystem = feederSubsystem;
     this.time = time;
     timer = new Timer();
+    shotTimer = new Timer();
   }
 
   // Called when the command is initially scheduled.
@@ -72,16 +79,26 @@ public class AutoAimCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
+    pivotSubsystem.setPivotControllerSetpoint(PivotConstants.PIVOT_PARKED_ANGLE);
+    shooterSubsystem.setDefaultShooterRPM();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (timer.get() > time) {
-      return true;
+    if (!isFiring && shooterSubsystem.isShooterAtTargetRpm() && pivotSubsystem.pivotReady()) {
+      feederSubsystem.setSpeed(IntakeConstants.FEEDER_SPEED_SHOOT);
+      isFiring = true;
+      shotTimer.start();
     }
 
-    return pivotSubsystem.atSetpoint() && shooterSubsystem.isShooterAtTargetRpm();
+    if (isFiring && shotTimer.get() > 0.5) {
+      return true;
+    } else if (timer.get() > time) {
+      return true;
+    } else {
+      return false;
+    }
+
   }
 }

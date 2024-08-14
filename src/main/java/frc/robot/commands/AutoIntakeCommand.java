@@ -11,14 +11,14 @@ import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 
-public class RunIntake extends Command {
+public class AutoIntakeCommand extends Command {
     public final IntakeSubsystem intake;
     public final double intakeMotorSpeed;
     public final FeederDistanceSensorSubsystem feederDistanceSensorSubsystem;
     public final FeederSubsystem feederSubsystem;
     public final PivotSubsystem pivotSubsystem;
 
-    public RunIntake(IntakeSubsystem intake, double intakeMotorSpeed,
+    public AutoIntakeCommand(IntakeSubsystem intake, double intakeMotorSpeed,
             FeederDistanceSensorSubsystem feederDistanceSensorSubsystem, FeederSubsystem feederSubsystem, PivotSubsystem pivotSubsystem) {
         this.intake = intake;
         this.intakeMotorSpeed = intakeMotorSpeed;
@@ -35,7 +35,7 @@ public class RunIntake extends Command {
 
     @Override
     public void execute() {
-        pivotSubsystem.setPivotControllerSetpoint(PivotConstants.SHOOTER_PARKED_PIVOT_ANGLE);
+        pivotSubsystem.setPivotControllerSetpoint(PivotConstants.PIVOT_PARKED_ANGLE);
         intake.setIntakeSpeed(intakeMotorSpeed);
         feederSubsystem.setSpeed(IntakeConstants.FEEDER_SPEED_INTAKE);
     }

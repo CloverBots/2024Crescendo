@@ -14,19 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": null
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "name": "Set Shooter Subwoofer"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Fire"
           }
         },
         {
@@ -61,26 +55,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": null
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": null
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
+                  "name": "Set Shooter Far"
                 }
               }
             ]
@@ -89,7 +64,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Fire"
           }
         },
         {
@@ -124,26 +99,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": null
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": null
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
+                  "name": "Set Shooter Far"
                 }
               }
             ]
@@ -152,7 +108,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Fire"
           }
         },
         {
@@ -187,26 +143,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": null
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": null
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
+                  "name": "Set Shooter Far"
                 }
               }
             ]
@@ -215,7 +152,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Fire"
           }
         },
         {
@@ -250,26 +187,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": null
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": null
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
+                  "name": "Set Shooter Far"
                 }
               }
             ]
@@ -278,7 +196,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Fire"
           }
         }
       ]

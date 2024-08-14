@@ -14,19 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": null
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
+            "name": "Set Shooter Subwoofer"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Fire"
           }
         },
         {
@@ -74,26 +68,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": null
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": null
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
+                  "name": "Set Shooter Far"
                 }
               }
             ]
@@ -102,7 +77,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Fire"
           }
         },
         {
@@ -137,26 +112,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": null
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": null
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
+                  "name": "Set Shooter Far"
                 }
               }
             ]
@@ -165,7 +121,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Fire"
           }
         },
         {
@@ -188,31 +144,19 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Note 6 to Far"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": null
-          }
-        },
-        {
-          "type": "race",
+          "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": null
+                  "pathName": "Note 6 to Far"
                 }
               },
               {
-                "type": "wait",
+                "type": "named",
                 "data": {
-                  "waitTime": 0.5
+                  "name": "Set Shooter Far"
                 }
               }
             ]
@@ -221,7 +165,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "Fire"
           }
         }
       ]

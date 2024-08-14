@@ -106,7 +106,7 @@ public class ShooterCommand extends Command {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        pivotSubsystem.setPivotControllerSetpoint(PivotConstants.SHOOTER_PARKED_PIVOT_ANGLE);
+        pivotSubsystem.setPivotControllerSetpoint(PivotConstants.PIVOT_PARKED_ANGLE);
         pivotSubsystem.enable();
         // SmartDashboard.putBoolean("Camera", true);
         matchTime.restart();
@@ -281,7 +281,7 @@ public class ShooterCommand extends Command {
             case EJECT:
                 shooterSubsystem.setDefaultShooterRPM();
                 feederSubsystem.setSpeed(0);
-                pivotAngle = PivotConstants.SHOOTER_PARKED_PIVOT_ANGLE;
+                pivotAngle = PivotConstants.PIVOT_PARKED_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
                 DriveCommand.lockOnMode = false;
@@ -293,7 +293,7 @@ public class ShooterCommand extends Command {
                 shooterRightRPM = 0;
                 shooterSubsystem.setDefaultShooterRPM();
                 feederSpeed = 0;
-                pivotAngle = PivotConstants.SHOOTER_PARKED_PIVOT_ANGLE;
+                pivotAngle = PivotConstants.PIVOT_PARKED_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
                 DriveCommand.lockOnMode = false;
@@ -303,7 +303,7 @@ public class ShooterCommand extends Command {
                 shooterLeftRPM = ShooterConstants.SHOOTER_AMP_LEFT_RPM;
                 shooterRightRPM = ShooterConstants.SHOOTER_AMP_RIGHT_RPM;
                 feederSpeed = IntakeConstants.FEEDER_SPEED_SHOOT;
-                pivotAngle = PivotConstants.SHOOTER_AMP_PIVOT_ANGLE;
+                pivotAngle = PivotConstants.PIVOT_AMP_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
                 break;
@@ -322,7 +322,7 @@ public class ShooterCommand extends Command {
                 shooterLeftRPM = ShooterConstants.SHOOTER_SPEAKER_LEFT_RPM;
                 shooterRightRPM = ShooterConstants.SHOOTER_SPEAKER_RIGHT_RPM;
                 feederSpeed = IntakeConstants.FEEDER_SPEED_SHOOT;
-                pivotAngle = PivotConstants.SHOOTER_PARKED_PIVOT_ANGLE;
+                pivotAngle = PivotConstants.PIVOT_PARKED_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 previousPivotAngle = pivotAngle;
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
@@ -338,7 +338,7 @@ public class ShooterCommand extends Command {
                 shooterLeftRPM = ShooterConstants.SHOOTER_SPEAKER_LEFT_RPM;
                 shooterRightRPM = ShooterConstants.SHOOTER_SPEAKER_RIGHT_RPM;
                 feederSpeed = IntakeConstants.FEEDER_SPEED_SHOOT;
-                pivotAngle = PivotConstants.SHOOTER_SPEAKER_PIVOT_ANGLE;
+                pivotAngle = PivotConstants.PIVOT_SPEAKER_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 previousPivotAngle = pivotAngle;
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
@@ -362,7 +362,7 @@ public class ShooterCommand extends Command {
                 shooterLeftRPM = ShooterConstants.SHOOTER_UNDER_STAGE_LEFT_RPM;
                 shooterRightRPM = ShooterConstants.SHOOTER_UNDER_STAGE_RIGHT_RPM;
                 feederSpeed = IntakeConstants.FEEDER_SPEED_SHOOT;
-                pivotAngle = PivotConstants.SHOOTER_UNDER_STAGE_PIVOT_ANGLE;
+                pivotAngle = PivotConstants.PIVOT_UNDER_STAGE_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
                 break;
@@ -371,7 +371,7 @@ public class ShooterCommand extends Command {
                 shooterLeftRPM = ShooterConstants.SHOOTER_OVER_STAGE_LEFT_RPM;
                 shooterRightRPM = ShooterConstants.SHOOTER_OVER_STAGE_RIGHT_RPM;
                 feederSpeed = IntakeConstants.FEEDER_SPEED_SHOOT;
-                pivotAngle = PivotConstants.SHOOTER_OVER_STAGE_PIVOT_ANGLE;
+                pivotAngle = PivotConstants.PIVOT_OVER_STAGE_ANGLE;
                 pivotAngle = checkAngleLimits(pivotAngle);
                 pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
                 break;

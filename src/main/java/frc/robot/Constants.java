@@ -142,15 +142,17 @@ public final class Constants {
         public static final int PIVOT_ENCODER = 37;
         public static final int PIVOT_LIMIT_SWITCH = 0; // digital input port
 
-        public final static double PIVOT_LOWER_ENDPOINT = 6; // 7 , 5
+        public final static double PIVOT_LOWER_ENDPOINT = 6;
         public final static double PIVOT_UPPER_ENDPOINT = 100;
         public static final double CLIMBER_PIVOT_SPEED = 0.5;
 
-        public static final double SHOOTER_PARKED_PIVOT_ANGLE = 10; // PARKED
-        public static final double SHOOTER_AMP_PIVOT_ANGLE = 70; // AMP
-        public static final double SHOOTER_SPEAKER_PIVOT_ANGLE = 66; // SPEAKER
-        public static final double SHOOTER_OVER_STAGE_PIVOT_ANGLE = 60; // OVER STAGE
-        public static final double SHOOTER_UNDER_STAGE_PIVOT_ANGLE = 10; // UNDER STAGE
+        public static final double PIVOT_PARKED_ANGLE = 10; // PARKED
+        public static final double PIVOT_AMP_ANGLE = 70; // AMP
+        public static final double PIVOT_SPEAKER_ANGLE = 66; // SPEAKER
+        public static final double PIVOT_OVER_STAGE_ANGLE = 60; // OVER STAGE
+        public static final double PIVOT_UNDER_STAGE_ANGLE = 10; // UNDER STAGE
+        public static final double PIVOT_LINE_ANGLE = 54; // LINE (Auto)
+        public static final double PIVOT_FAR_ANGLE = 24; // FAR (Auto)
     }
 
     public static final class IntakeConstants {
@@ -177,6 +179,9 @@ public final class Constants {
         public static final double SHOOTER_OVER_STAGE_LEFT_RPM = 2500;
         public static final double SHOOTER_UNDER_STAGE_RIGHT_RPM = 3000;
         public static final double SHOOTER_UNDER_STAGE_LEFT_RPM = 3000;
-
+        public static final double SHOOTER_LINE_RIGHT_RPM = 3000;
+        public static final double SHOOTER_LINE_LEFT_RPM = 2500;
+        public static final double SHOOTER_FAR_LEFT_RPM = 4000;
+        public static final double SHOOTER_FAR_RIGHT_RPM = 3300;
     }
 }

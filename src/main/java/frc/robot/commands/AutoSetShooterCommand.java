@@ -11,18 +11,18 @@ import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class RunShooter extends Command {
+public class AutoSetShooterCommand extends Command {
     public final ShooterSubsystem shooterSubsystem;
     public final PivotSubsystem pivotSubsystem;
     public final FeederSubsystem feederSubsystem;
-    public final int leftShooterRPM;
-    public final int rightShooterRPM;
+    public final double leftShooterRPM;
+    public final double rightShooterRPM;
     public final double pivotSetPoint;
     public Timer timer = new Timer();
     public boolean isFiring = false;
 
-    public RunShooter(ShooterSubsystem shooterSubsystem, PivotSubsystem pivotSubsystem, FeederSubsystem feederSubsystem,
-            int leftShooterRPM, int rightShooterRPM, double pivotSetPoint) {
+    public AutoSetShooterCommand(ShooterSubsystem shooterSubsystem, PivotSubsystem pivotSubsystem, FeederSubsystem feederSubsystem,
+            double leftShooterRPM, double rightShooterRPM, double pivotSetPoint) {
         this.shooterSubsystem = shooterSubsystem;
         this.pivotSubsystem = pivotSubsystem;
         this.feederSubsystem = feederSubsystem;
@@ -49,22 +49,12 @@ public class RunShooter extends Command {
     public void end(boolean interrupted) {
         shooterSubsystem.setShooterLeftRPM(0);
         shooterSubsystem.setShooterRightRPM(0);
-        pivotSubsystem.setSetpoint(PivotConstants.SHOOTER_PARKED_PIVOT_ANGLE);
+        pivotSubsystem.setSetpoint(PivotConstants.PIVOT_PARKED_ANGLE);
         feederSubsystem.setSpeed(0);
     }
 
     @Override
     public boolean isFinished() {
-        if (!isFiring && shooterSubsystem.isShooterAtTargetRpm() && pivotSubsystem.pivotReady()) {
-            feederSubsystem.setSpeed(IntakeConstants.FEEDER_SPEED_SHOOT);
-            isFiring = true;
-            timer.start();
-        }
-        if (isFiring && timer.get() > 0.5) {
-            return true;
-        } else {
-            return false;
-        }
-
+        return false;
     }
 }
