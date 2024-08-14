@@ -10,6 +10,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -108,6 +109,10 @@ public class RobotContainer {
         resetGyro();
     }
 
+    public static Alliance getAlliance() {
+        return DriverStation.getAlliance().isEmpty() ? Alliance.Blue : DriverStation.getAlliance().get();
+    }
+
     public void teleopInit() {
         shooterSubsystem.setDefaultCommand(shooterCommand);
     }
@@ -121,12 +126,6 @@ public class RobotContainer {
 
     public void onAutonomousEnable() {
         resetGyro();
-        var alliance = DriverStation.getAlliance();
-        if (alliance.get() == DriverStation.Alliance.Red) {
-            ledSubsystem.conformToState(State.BREATHING_RED);
-        } else {
-            ledSubsystem.conformToState(State.BREATHING_BLUE);
-        }
     }
 
     public void resetGyro() {
@@ -139,7 +138,14 @@ public class RobotContainer {
 
     /** Will run once any time the robot is disabled. */
     public void onDisable() {
-        ledSubsystem.conformToState(State.RAINBOW);
+        var alliance = DriverStation.getAlliance();
+        if (alliance.get() == DriverStation.Alliance.Red) {
+            ledSubsystem.conformToState(State.BREATHING_RED);
+        } else if (alliance.get() == DriverStation.Alliance.Blue) {
+            ledSubsystem.conformToState(State.BREATHING_BLUE);
+        } else {
+            ledSubsystem.conformToState(State.RAINBOW);
+        }
     }
 
     /**

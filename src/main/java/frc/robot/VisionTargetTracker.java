@@ -22,7 +22,7 @@ public class VisionTargetTracker {
     private final NetworkTable table;
     private final NetworkTableEntry tx;
     private final NetworkTableEntry ty;
-    private final NetworkTableEntry tv;
+    public final NetworkTableEntry tv;
 
     public VisionTargetTracker(VisionConfiguration configuration) {
         this.configuration = configuration;

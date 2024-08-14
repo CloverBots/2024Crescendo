@@ -4,8 +4,11 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -28,6 +31,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.VisionTargetTracker;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DriveConstants.ModuleLocations;
 import frc.robot.Constants.DriveConstants.SwerveModules;
@@ -36,6 +40,8 @@ import frc.robot.Constants.PathPlannerConstants.TranslationPID;
 
 public class SwerveSubsystem extends SubsystemBase {
   private AHRS gyro;
+  private static Rotation2d ppRotationOverride;
+  private static VisionTargetTracker vision;
 
   private SwerveModule frontLeft = new SwerveModule(SwerveModules.frontLeft,
       Constants.DriveConstants.PHYSICAL_MAX_SPEED_METERS_PER_SECOND, Constants.DriveConstants.MAX_VOLTAGE);
@@ -99,6 +105,25 @@ public class SwerveSubsystem extends SubsystemBase {
 
     PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
     SmartDashboard.putData("Field", field);
+
+    // This resets the target rotation to align with the april tag.
+    PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride);
+  }
+
+  public Optional<Rotation2d> getRotationTargetOverride() {
+    if (getRotationTarget() != null) {
+      return Optional.of(getRotationTarget());
+    } else {
+      return Optional.empty();
+    }
+  }
+
+  public Rotation2d getRotationTarget() {
+    return ppRotationOverride;
+  }
+
+  public static void setRotationTarget(Rotation2d target) {
+    ppRotationOverride = target;
   }
 
   public double getFieldAngle() {
@@ -221,5 +246,9 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void stopModules() {
     setSpeed(0, 0, 0, true);
+  }
+
+  public static double getAngleToSpeaker() {
+    return vision.getTx();
   }
 }

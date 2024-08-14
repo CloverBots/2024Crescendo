@@ -70,7 +70,7 @@ public class DriveCommand extends Command {
     return false;
   }
 
-  private double calculateLockOnRotationSpeed() {
+  public double calculateLockOnRotationSpeed() {
     return -lockToTagXController.calculate(limelight.getTx());
   }
 }

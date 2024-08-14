@@ -4,13 +4,17 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.*;
+import frc.robot.RobotContainer;
 import frc.robot.VisionTargetTracker;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 
 public class AutoAimAndFireCommand extends Command {
 
@@ -47,6 +51,11 @@ public class AutoAimAndFireCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+     if (RobotContainer.getAlliance() == Alliance.Blue) {
+      SwerveSubsystem.setRotationTarget(Rotation2d.fromRadians(SwerveSubsystem.getAngleToSpeaker()));
+    } else {
+      SwerveSubsystem.setRotationTarget(Rotation2d.fromRadians(SwerveSubsystem.getAngleToSpeaker()).rotateBy(Rotation2d.fromDegrees(180)));
+    }
     double targetDistance = 0;
     Boolean isTargetValid = visionTargetTracker.isValid();
     if (isTargetValid) {

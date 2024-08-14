@@ -184,4 +184,9 @@ public final class Constants {
         public static final double SHOOTER_FAR_LEFT_RPM = 4000;
         public static final double SHOOTER_FAR_RIGHT_RPM = 3300;
     }
+
+    public static final Translation2d blueSpeakerPose = new Translation2d(Units.inchesToMeters(-1.5),
+                Units.inchesToMeters(218.42)); // Center of back of the opening
+    public static final Translation2d redSpeakerPose = new Translation2d(Units.inchesToMeters(652.73),
+                Units.inchesToMeters(218.42)); // Center of back of the opening //652.73
 }
