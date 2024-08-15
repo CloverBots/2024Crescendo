@@ -52,9 +52,9 @@ public class AutoAimAndFireCommand extends Command {
   @Override
   public void execute() {
      if (RobotContainer.getAlliance() == Alliance.Blue) {
-      SwerveSubsystem.setRotationTarget(Rotation2d.fromRadians(SwerveSubsystem.getAngleToSpeaker()));
+      SwerveSubsystem.setRotationTarget(Rotation2d.fromDegrees(SwerveSubsystem.getAngleToSpeaker()));
     } else {
-      SwerveSubsystem.setRotationTarget(Rotation2d.fromRadians(SwerveSubsystem.getAngleToSpeaker()).rotateBy(Rotation2d.fromDegrees(180)));
+      SwerveSubsystem.setRotationTarget(Rotation2d.fromDegrees(SwerveSubsystem.getAngleToSpeaker()).rotateBy(Rotation2d.fromDegrees(180)));
     }
     double targetDistance = 0;
     Boolean isTargetValid = visionTargetTracker.isValid();
