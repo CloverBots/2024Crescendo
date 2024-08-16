@@ -32,12 +32,6 @@
                 "data": {
                   "pathName": "Note 1 from Right"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
               }
             ]
           }
@@ -51,20 +45,8 @@
                 "data": {
                   "pathName": "Note 1 Shot"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Set Shooter Far"
-                }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Fire"
           }
         },
         {

@@ -31,7 +31,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.VisionTargetTracker;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DriveConstants.ModuleLocations;
 import frc.robot.Constants.DriveConstants.SwerveModules;
@@ -41,7 +40,7 @@ import frc.robot.Constants.PathPlannerConstants.TranslationPID;
 public class SwerveSubsystem extends SubsystemBase {
   private AHRS gyro;
   private static Rotation2d ppRotationOverride;
-  private static VisionTargetTracker vision;
+  public boolean rotationOverride = false;
 
   private SwerveModule frontLeft = new SwerveModule(SwerveModules.frontLeft,
       Constants.DriveConstants.PHYSICAL_MAX_SPEED_METERS_PER_SECOND, Constants.DriveConstants.MAX_VOLTAGE);
@@ -107,11 +106,13 @@ public class SwerveSubsystem extends SubsystemBase {
     SmartDashboard.putData("Field", field);
 
     // This resets the target rotation to align with the april tag.
-    PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride);
+    if (rotationOverride) {
+        PPHolonomicDriveController.setRotationTargetOverride(this::getRotationTargetOverride);
+    }
   }
 
   public Optional<Rotation2d> getRotationTargetOverride() {
-    if (getRotationTarget() != null) {
+    if (getRotationTarget() != null ) {
       return Optional.of(getRotationTarget());
     } else {
       return Optional.empty();
@@ -122,7 +123,7 @@ public class SwerveSubsystem extends SubsystemBase {
     return ppRotationOverride;
   }
 
-  public static void setRotationTarget(Rotation2d target) {
+  public void setRotationTarget(Rotation2d target) {
     ppRotationOverride = target;
   }
 
@@ -237,6 +238,8 @@ public class SwerveSubsystem extends SubsystemBase {
     odometry.update(gyro.getRotation2d(), positions);
 
     field.setRobotPose(getPose());
+
+    SmartDashboard.putNumber("Gyro", gyro.getYaw());
   }
 
   public void setModuleStates(SwerveModuleState[] desiredStates) {
@@ -248,7 +251,11 @@ public class SwerveSubsystem extends SubsystemBase {
     setSpeed(0, 0, 0, true);
   }
 
-  public static double getAngleToSpeaker() {
-    return vision.getTx();
+  public boolean getRotationOverride() {
+    return rotationOverride;
+  }
+
+  public void setRotationOverride(boolean rotationOverride) {
+    this.rotationOverride = rotationOverride;
   }
 }

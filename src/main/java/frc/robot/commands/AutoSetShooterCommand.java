@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.*;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -46,15 +45,14 @@ public class AutoSetShooterCommand extends Command {
     }
 
     @Override
-    public void end(boolean interrupted) {
-        shooterSubsystem.setShooterLeftRPM(0);
-        shooterSubsystem.setShooterRightRPM(0);
-        pivotSubsystem.setSetpoint(PivotConstants.PIVOT_PARKED_ANGLE);
-        feederSubsystem.setSpeed(0);
-    }
+    public void end(boolean interrupted) {}
 
     @Override
     public boolean isFinished() {
-        return false;
+        if (pivotSubsystem.pivotReady()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

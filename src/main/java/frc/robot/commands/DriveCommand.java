@@ -32,7 +32,7 @@ public class DriveCommand extends Command {
     this.leftTrigger = leftTrigger;
     this.limelight = limelight;
 
-    this.lockToTagXController = new PIDController(0.075, 0.03, 0.005);
+    this.lockToTagXController = new PIDController(0.01, 0, 0); // 0.075, 0.03, 0.005
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(this.drivebase);
@@ -71,6 +71,6 @@ public class DriveCommand extends Command {
   }
 
   public double calculateLockOnRotationSpeed() {
-    return -lockToTagXController.calculate(limelight.getTx());
+    return lockToTagXController.calculate(limelight.getTx());
   }
 }

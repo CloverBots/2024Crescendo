@@ -87,4 +87,8 @@ public class VisionTargetTracker {
         return -33.90943 + 76.20024 * distance - 0.7453442 * distance * distance
                 + 0.002359556 * distance * distance * distance;
     } // 2000 at 41, 2500 at 80, 2500 at 140, 3000 at 171, 3000 at 137
+
+    public double getAngleToSpeaker() {
+        return getTx();
+      }
 }

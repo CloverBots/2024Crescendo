@@ -17,7 +17,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class AutoAimAndFireCommand extends Command {
-
+  private SwerveSubsystem swerveSubsystem;
   private PivotSubsystem pivotSubsystem;
   private VisionTargetTracker visionTargetTracker;
   private ShooterSubsystem shooterSubsystem;
@@ -29,8 +29,9 @@ public class AutoAimAndFireCommand extends Command {
   private Timer shotTimer;
   public boolean isFiring = false;
 
-  public AutoAimAndFireCommand(VisionTargetTracker visionTargetTracker, PivotSubsystem pivotSubsystem,
+  public AutoAimAndFireCommand(SwerveSubsystem swerveSubsystem, VisionTargetTracker visionTargetTracker, PivotSubsystem pivotSubsystem,
       ShooterSubsystem shooterSubsystem, FeederSubsystem feederSubsystem, double time) {
+    this.swerveSubsystem = swerveSubsystem;
     this.pivotSubsystem = pivotSubsystem;
     this.shooterSubsystem = shooterSubsystem;
     this.visionTargetTracker = visionTargetTracker;
@@ -43,18 +44,21 @@ public class AutoAimAndFireCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    timer.reset();
+    shotTimer.reset();
     pivotAngle = pivotSubsystem.getSetpoint();
     previousPivotAngle = pivotAngle;
     timer.start();
+    swerveSubsystem.setRotationOverride(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
      if (RobotContainer.getAlliance() == Alliance.Blue) {
-      SwerveSubsystem.setRotationTarget(Rotation2d.fromDegrees(SwerveSubsystem.getAngleToSpeaker()));
+      swerveSubsystem.setRotationTarget(Rotation2d.fromDegrees(visionTargetTracker.getAngleToSpeaker()));
     } else {
-      SwerveSubsystem.setRotationTarget(Rotation2d.fromDegrees(SwerveSubsystem.getAngleToSpeaker()).rotateBy(Rotation2d.fromDegrees(180)));
+      swerveSubsystem.setRotationTarget(Rotation2d.fromDegrees(visionTargetTracker.getAngleToSpeaker()).rotateBy(Rotation2d.fromDegrees(180)));
     }
     double targetDistance = 0;
     Boolean isTargetValid = visionTargetTracker.isValid();
@@ -90,20 +94,22 @@ public class AutoAimAndFireCommand extends Command {
   public void end(boolean interrupted) {
     pivotSubsystem.setPivotControllerSetpoint(PivotConstants.PIVOT_PARKED_ANGLE);
     shooterSubsystem.setDefaultShooterRPM();
+    feederSubsystem.setSpeed(0);
+    timer.stop();
+    shotTimer.stop();
+    swerveSubsystem.setRotationOverride(false);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (!isFiring && shooterSubsystem.isShooterAtTargetRpm() && pivotSubsystem.pivotReady()) {
+    if (!isFiring && shooterSubsystem.isShooterAtTargetRpm() && pivotSubsystem.pivotReady() && visionTargetTracker.getAngleToSpeaker() < 3 || timer.get() > time) {
       feederSubsystem.setSpeed(IntakeConstants.FEEDER_SPEED_SHOOT);
       isFiring = true;
       shotTimer.start();
     }
 
     if (isFiring && shotTimer.get() > 0.5) {
-      return true;
-    } else if (timer.get() > time) {
       return true;
     } else {
       return false;

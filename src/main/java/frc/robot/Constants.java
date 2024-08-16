@@ -87,7 +87,7 @@ public final class Constants {
         public static final double MAX_VOLTAGE = 12;
         public static final double deadband = 0.08;
         public static final int currentLimit = 40;
-        public static final double slewRate = 20; // lower number for higher center of mass
+        public static final double slewRate = 50; // lower number for higher center of mass
 
         public static final class SwervePID {
             public static final double p = 0.12;
@@ -114,13 +114,13 @@ public final class Constants {
 
     public static final class PathPlannerConstants {
         public static final class TranslationPID {
-            public static final double p = 4;
+            public static final double p = 3; // 4
             public static final double i = 0;
             public static final double d = 0;
         }
 
         public static final class RotationPID {
-            public static final double p = 2.;
+            public static final double p = 4; // 2
             public static final double i = 0;
             public static final double d = 0;
         }
