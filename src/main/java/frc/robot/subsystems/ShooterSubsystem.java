@@ -89,7 +89,6 @@ public class ShooterSubsystem extends SubsystemBase {
         targetRpmLeft = rpm;
 
         pidControllerLeft.setReference(rpm, CANSparkMax.ControlType.kVelocity);
-
     }
 
     public void setShooterRightRPM(double rpm) {

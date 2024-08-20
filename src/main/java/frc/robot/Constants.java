@@ -28,58 +28,23 @@ public final class Constants {
     public static final int CURRENT_LIMIT = 100;
 
     public static final class DriveConstants {
+        // All for MK4i modules
         public static final double WHEEL_CIRCUMFERENCE = Units.inchesToMeters(4) * Math.PI;
-
-        /**
-         * The driving gear ratio for the swerve module (MK4i L3). This is how many
-         * times the drive motor has to turn in order for the wheel to make 1 rotation.
-         */
         public static final double DRIVE_GEAR_RATIO = (50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0);
-
-        /**
-         * The driving gear ratio for the Swerve Module (MK4i). This is how many times
-         * the turning motor has to turn in order for the module to make 1 full
-         * rotation.
-         */
         public static final double TURNING_GEAR_RATIO = 150.0 / 7.0;
-
-        // Length of the robot chassis, front to back
-        public static final double wheelBase = Units.inchesToMeters(18.5); // 24
-        // Width of the robot chassis, left to right
+        public static final double wheelBase = Units.inchesToMeters(18.5);
         public static final double trackWidth = Units.inchesToMeters(18.5);
-
-        /**
-         * The PHYSICAL maximum speed of the robot, if all motors were running at max
-         * power. About 5.5435 m/s
-         */
+        // This equates to about 5.5435 m/s
         public static final double PHYSICAL_MAX_SPEED_METERS_PER_SECOND = (1 / DRIVE_GEAR_RATIO) * (6380.0 / 60)
                 * WHEEL_CIRCUMFERENCE;
 
-        /**
-         * The maximum speed of the robot, in meters per second during TeleOp. Use this
-         * to limit the speed when using a controller.
-         */
+        // Speeds for the robot when moving, all are in Meters/Second
         public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = 5; // Max is 5.5435
         public static final double AUTO_MAX_SPEED_METERS_PER_SECOND = 3;
-
-        /** Maximum speed for the robot's turning. */
         public static final double teleOpNormalAngularSpeed = 3 * (2 * Math.PI);
         public static final double teleOpSlowAngularSpeed = 1 * (2 * Math.PI);
-        /** The maximum angular acceleration for the robot's turning. */
-        public static final double teleOpMaxAngularAccelerationUnitsPerSecond = 1;
-        /** The maximum acceleration for the robot's X and Y movement. */
-        public static final double teleOpMaxAccelerationMetersPerSecond = 3;
 
-        /**
-         * Multiply the output of {@code getSelectedSensorPosition()} by this to get the
-         * total distance travelled, in meters, on a swerve module.
-         */
         public static final double DRIVE_ENCODER_TO_METERS = (WHEEL_CIRCUMFERENCE / (DRIVE_GEAR_RATIO * 2048.0));
-
-        /**
-         * Multiply the output of {@code getSelectedSensorVelocity()} by this to get the
-         * current velocity, in meters per second, on a swerve module.
-         */
         public static final double DRIVE_ENCODER_VELOCITY_TO_METERS_PER_SECOND = (600.0 * WHEEL_CIRCUMFERENCE)
                 / (2048.0 * 60 * DRIVE_GEAR_RATIO);
 
@@ -88,7 +53,7 @@ public final class Constants {
         public static final int currentLimit = 40;
         public static final double slewRate = 50; // lower number for higher center of mass
 
-        public static final class SwervePID {
+        public static final class SwervePID { // TO-DO: Play around with these, they may affect auto performance
             public static final double p = 0.12;
             public static final double i = 0;
             public static final double d = 0.0015;
@@ -113,13 +78,13 @@ public final class Constants {
 
     public static final class PathPlannerConstants {
         public static final class TranslationPID {
-            public static final double p = 3; // 4
+            public static final double p = 3; // 4 (Non carpet); 3 (Carpet)
             public static final double i = 0;
             public static final double d = 0;
         }
 
         public static final class RotationPID {
-            public static final double p = 4; // 2
+            public static final double p = 4; // 2 (Non carpet); 4 (Carpet)
             public static final double i = 0;
             public static final double d = 0;
         }
