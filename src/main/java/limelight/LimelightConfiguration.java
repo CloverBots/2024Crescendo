@@ -1,23 +1,23 @@
-package frc.robot;
+package limelight;
 
 /* Camera is configured with 1280x800 120fps, 840 Exposure, 10 Black Level Offset, 6 Sensor Gain, 1200 Red Balance
  * 1975 Blue Balance, Normal Stream Rate, and 320x240
  */
 
-public class VisionConfiguration {
+public class LimelightConfiguration {
     private final double targetHeight;
     private final double cameraHeight;
     private final double cameraPitch;
 
     /**
-     * Constructs a new {@link VisionConfiguration} instance.
+     * Constructs a new {@link LimelightConfiguration} instance.
      * 
      * @param targetHeight The height of the target, usually in inches.
      * @param cameraHeight The height of the camera off the ground, usually in
      *                     inches.
      * @param cameraPitch  The pitch of the camera in degrees.
      */
-    public VisionConfiguration(double targetHeight, double cameraHeight, double cameraPitch) {
+    public LimelightConfiguration(double targetHeight, double cameraHeight, double cameraPitch) {
         this.targetHeight = targetHeight;
         this.cameraHeight = cameraHeight;
         this.cameraPitch = cameraPitch;

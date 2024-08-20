@@ -7,15 +7,15 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.VisionTargetTracker;
 import frc.robot.Constants.*;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.LEDSubsystem.State;
+import frc.robot.subsystems.LEDs.LEDSubsystem;
+import frc.robot.subsystems.LEDs.LEDSubsystem.State;
+import limelight.LimelightTargetTracking;
 
 public class ShooterCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
@@ -24,7 +24,7 @@ public class ShooterCommand extends Command {
     private final PivotSubsystem pivotSubsystem;
     private final FeederSubsystem feederSubsystem;
     private final IntakeSubsystem intakeSubsystem;
-    private final VisionTargetTracker visionTargetTracker;
+    private final LimelightTargetTracking visionTargetTracker;
     private final Supplier<Boolean> fireButton;
     private final Supplier<Double> intakeLoadTrigger, intakeEjectTrigger;
     private final DoubleSupplier leftJoystickY;
@@ -59,7 +59,7 @@ public class ShooterCommand extends Command {
             PivotSubsystem pivotSubsystem,
             FeederSubsystem feederSubsystem,
             IntakeSubsystem intakeSubsystem,
-            VisionTargetTracker visionTargetTracker,
+            LimelightTargetTracking visionTargetTracker,
             Supplier<Double> intakeLoadTrigger,
             Supplier<Double> intakeEjectTrigger,
             Supplier<Boolean> yButton,
@@ -393,11 +393,11 @@ public class ShooterCommand extends Command {
     }
 
     private double checkAngleLimits(double angle) {
-        if (angle > PivotSubsystem.PIVOT_UPPER_ENDPOINT) {
-            angle = PivotSubsystem.PIVOT_UPPER_ENDPOINT;
+        if (angle > PivotConstants.PIVOT_UPPER_ENDPOINT) {
+            angle = PivotConstants.PIVOT_UPPER_ENDPOINT;
         }
-        if (angle < PivotSubsystem.PIVOT_LOWER_ENDPOINT) {
-            angle = PivotSubsystem.PIVOT_LOWER_ENDPOINT;
+        if (angle < PivotConstants.PIVOT_LOWER_ENDPOINT) {
+            angle = PivotConstants.PIVOT_LOWER_ENDPOINT;
         }
 
         return angle;

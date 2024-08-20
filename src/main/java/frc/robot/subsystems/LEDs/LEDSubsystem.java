@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.subsystems.LEDs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +13,6 @@ import com.ctre.phoenix.CANifier.LEDChannel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.LEDs.HSVtoRGB;
-import frc.robot.subsystems.LEDs.MovingAverage;
 
 public class LEDSubsystem extends SubsystemBase {
     public static CANifier canifier = new CANifier(Constants.LED_ID);

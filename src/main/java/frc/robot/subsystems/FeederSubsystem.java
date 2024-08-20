@@ -9,13 +9,12 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.*;
 
 public class FeederSubsystem extends SubsystemBase {
 
   private final CANSparkMax feederMotor;
-
-  private final int CURRENT_LIMIT = 100;
 
   public FeederSubsystem() {
     this.feederMotor = new CANSparkMax(IntakeConstants.FEEDER_MOTOR, MotorType.kBrushless);
@@ -23,7 +22,7 @@ public class FeederSubsystem extends SubsystemBase {
     feederMotor.setInverted(true);
     feederMotor.setIdleMode(IdleMode.kCoast);
     feederMotor.setInverted(false);
-    feederMotor.setSmartCurrentLimit(CURRENT_LIMIT);
+    feederMotor.setSmartCurrentLimit(Constants.CURRENT_LIMIT);
   }
 
   public void setSpeed(double speed) {

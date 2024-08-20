@@ -10,16 +10,16 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.*;
 import frc.robot.RobotContainer;
-import frc.robot.VisionTargetTracker;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import limelight.LimelightTargetTracking;
 
 public class AutoAimAndFireCommand extends Command {
   private SwerveSubsystem swerveSubsystem;
   private PivotSubsystem pivotSubsystem;
-  private VisionTargetTracker visionTargetTracker;
+  private LimelightTargetTracking visionTargetTracker;
   private ShooterSubsystem shooterSubsystem;
   private FeederSubsystem feederSubsystem;
   private double pivotAngle;
@@ -29,7 +29,7 @@ public class AutoAimAndFireCommand extends Command {
   private Timer shotTimer;
   public boolean isFiring = false;
 
-  public AutoAimAndFireCommand(SwerveSubsystem swerveSubsystem, VisionTargetTracker visionTargetTracker, PivotSubsystem pivotSubsystem,
+  public AutoAimAndFireCommand(SwerveSubsystem swerveSubsystem, LimelightTargetTracking visionTargetTracker, PivotSubsystem pivotSubsystem,
       ShooterSubsystem shooterSubsystem, FeederSubsystem feederSubsystem, double time) {
     this.swerveSubsystem = swerveSubsystem;
     this.pivotSubsystem = pivotSubsystem;
@@ -79,13 +79,12 @@ public class AutoAimAndFireCommand extends Command {
   }
 
   private double checkAngleLimits(double angle) {
-    if (angle > PivotSubsystem.PIVOT_UPPER_ENDPOINT) {
-      angle = PivotSubsystem.PIVOT_UPPER_ENDPOINT;
-    }
-    if (angle < PivotSubsystem.PIVOT_LOWER_ENDPOINT) {
-      angle = PivotSubsystem.PIVOT_LOWER_ENDPOINT;
-    }
-
+    if (angle > PivotConstants.PIVOT_UPPER_ENDPOINT) {
+      angle = PivotConstants.PIVOT_UPPER_ENDPOINT;
+  }
+  if (angle < PivotConstants.PIVOT_LOWER_ENDPOINT) {
+      angle = PivotConstants.PIVOT_LOWER_ENDPOINT;
+  }
     return angle;
   }
 

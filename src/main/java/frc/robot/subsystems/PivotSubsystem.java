@@ -14,27 +14,19 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import frc.robot.Constants;
 import frc.robot.Constants.*;
 
 public class PivotSubsystem extends PIDSubsystem {
-
-    private final static double MAX_PIVOT_POWER_PID = 0.6;
-
     private final CANSparkMax pivotLeadMotor;
     private final CANSparkMax pivotFollowMotor;
-
     private final CANcoder pivotEncoder;
-    public final static double PIVOT_LOWER_ENDPOINT = 2;
-    public final static double PIVOT_UPPER_ENDPOINT = 100;
-
-    private final int CURRENT_LIMIT = 100;
-
     private final DigitalInput limitSwitch = new DigitalInput(PivotConstants.PIVOT_LIMIT_SWITCH);
 
     double speed = 0;
 
     public PivotSubsystem() {
-        super(new PIDController(0.02, 0.0045, 0)); // P=0.01, I=0.0025, D = 0
+        super(new PIDController(0.02, 0.0045, 0));
         getController().setTolerance(0.5);
         getController().enableContinuousInput(0, 360); // Sets the PID to treat zero and 2 pi as the same value.
         disable(); // start with PID disabled
@@ -49,8 +41,8 @@ public class PivotSubsystem extends PIDSubsystem {
         pivotLeadMotor.setIdleMode(IdleMode.kBrake);
         pivotFollowMotor.setIdleMode(IdleMode.kBrake);
 
-        pivotLeadMotor.setSmartCurrentLimit(CURRENT_LIMIT);
-        pivotFollowMotor.setSmartCurrentLimit(CURRENT_LIMIT);
+        pivotLeadMotor.setSmartCurrentLimit(Constants.CURRENT_LIMIT);
+        pivotFollowMotor.setSmartCurrentLimit(Constants.CURRENT_LIMIT);
 
         this.pivotEncoder = new CANcoder(PivotConstants.PIVOT_ENCODER);
     }
@@ -63,7 +55,7 @@ public class PivotSubsystem extends PIDSubsystem {
     @Override
     public void useOutput(double output, double setpoint) {
 
-        output = MathUtil.clamp(output, -MAX_PIVOT_POWER_PID, MAX_PIVOT_POWER_PID);
+        output = MathUtil.clamp(output, -PivotConstants.MAX_PIVOT_POWER_PID, PivotConstants.MAX_PIVOT_POWER_PID);
         speed = output;
         if (pivotLeadMotor != null) {
             pivotLeadMotor.set(speed);
@@ -108,8 +100,8 @@ public class PivotSubsystem extends PIDSubsystem {
 
         super.periodic(); // super controlls calling PID stuff
 
-        if ((getPivotAbsolutePosition() < PIVOT_LOWER_ENDPOINT &&
-                speed < 0) || (getPivotAbsolutePosition() > PIVOT_UPPER_ENDPOINT && speed > 0)) {
+        if ((getPivotAbsolutePosition() < PivotConstants.PIVOT_PHYSICAL_LOWER_ENDPOINT &&
+                speed < 0) || (getPivotAbsolutePosition() > PivotConstants.PIVOT_UPPER_ENDPOINT && speed > 0)) {
             System.out.println("PIVOT ENDPOINT reached!!!");
             speed = 0;
             disable();

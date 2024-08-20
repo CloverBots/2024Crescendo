@@ -2,22 +2,18 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.*;
-
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 public class ShooterSubsystem extends SubsystemBase {
-    private final int CURRENT_LIMIT = 100;
-
     private static final double ENCODER_POSITION_CONVERSION_FACTOR = 1;// 0.1 * WHEEL_DIAMETER_METERS * Math.PI;
     private static final double ENCODER_VELOCITY_CONVERSION_FACTOR = 1.3;// ENCODER_POSITION_CONVERSION_FACTOR * 60.0;
     private static final double MAX_RPM = 5000;
     private static final double DEFAULT_SHOOTER_SPEED = 0;
-
     private static final double SHOOTER_P = 0.0004;// 0.01; // 8e-5;
     private static final double SHOOTER_I = 0.0;
     private static final double SHOOTER_D = 0.0;
@@ -40,9 +36,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     /** Creates a new Shooter. */
     public ShooterSubsystem() {
-
-        motorLeft.setSmartCurrentLimit(CURRENT_LIMIT);
-        motorRight.setSmartCurrentLimit(CURRENT_LIMIT);
+        motorLeft.setSmartCurrentLimit(Constants.CURRENT_LIMIT);
+        motorRight.setSmartCurrentLimit(Constants.CURRENT_LIMIT);
 
         motorRight.setInverted(true);
         configureEncoder(encoderLeft);

@@ -7,7 +7,7 @@ package frc.robot;
 import modulelib.SwerveModuleConfig;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-import frc.robot.commands.DriveCommand;
+import limelight.LimelightConfiguration;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -25,6 +25,7 @@ public final class Constants {
     public static final int CONTROLLER_DRIVE_PORT = 0;
     public static final int CONTROLLER_OPERATOR_PORT = 1;
     public static final int LED_ID = 2;
+    public static final int CURRENT_LIMIT = 100;
 
     public static final class DriveConstants {
         public static final double WHEEL_CIRCUMFERENCE = Units.inchesToMeters(4) * Math.PI;
@@ -58,13 +59,11 @@ public final class Constants {
          * The maximum speed of the robot, in meters per second during TeleOp. Use this
          * to limit the speed when using a controller.
          */
-        public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = DriveCommand.slowMode ? 3 : 5; // Max is 5.5435
+        public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = 5; // Max is 5.5435
         public static final double AUTO_MAX_SPEED_METERS_PER_SECOND = 3;
 
         /** Maximum speed for the robot's turning. */
-        public static final double teleOpMaxAngularSpeed = 3 * (2 * Math.PI);
-        public static final double teleOpNormalAngularSpeed = DriveCommand.slowMode ? 2 * (2 * Math.PI)
-                : 0.5 * (2 * Math.PI);
+        public static final double teleOpNormalAngularSpeed = 3 * (2 * Math.PI);
         public static final double teleOpSlowAngularSpeed = 1 * (2 * Math.PI);
         /** The maximum angular acceleration for the robot's turning. */
         public static final double teleOpMaxAngularAccelerationUnitsPerSecond = 1;
@@ -130,7 +129,7 @@ public final class Constants {
         private static final double VISION_TARGET_HEIGHT = 57.13; // AprilTag 4, 7
         private static final double CAMERA_HEIGHT = 8.75; // inches
         private static final double CAMERA_PITCH = 35; // degrees
-        public final static VisionConfiguration visionConfiguration = new VisionConfiguration(
+        public final static LimelightConfiguration visionConfiguration = new LimelightConfiguration(
                 VISION_TARGET_HEIGHT,
                 CAMERA_HEIGHT,
                 CAMERA_PITCH);
@@ -142,9 +141,11 @@ public final class Constants {
         public static final int PIVOT_ENCODER = 37;
         public static final int PIVOT_LIMIT_SWITCH = 0; // digital input port
 
+        public final static double PIVOT_PHYSICAL_LOWER_ENDPOINT = 2;
         public final static double PIVOT_LOWER_ENDPOINT = 6;
         public final static double PIVOT_UPPER_ENDPOINT = 100;
         public static final double CLIMBER_PIVOT_SPEED = 0.5;
+        public final static double MAX_PIVOT_POWER_PID = 0.6;
 
         public static final double PIVOT_PARKED_ANGLE = 10; // PARKED
         public static final double PIVOT_AMP_ANGLE = 70; // AMP
@@ -184,9 +185,4 @@ public final class Constants {
         public static final double SHOOTER_FAR_LEFT_RPM = 4000;
         public static final double SHOOTER_FAR_RIGHT_RPM = 3300;
     }
-
-    public static final Translation2d blueSpeakerPose = new Translation2d(Units.inchesToMeters(-1.5),
-                Units.inchesToMeters(218.42)); // Center of back of the opening
-    public static final Translation2d redSpeakerPose = new Translation2d(Units.inchesToMeters(652.73),
-                Units.inchesToMeters(218.42)); // Center of back of the opening //652.73
 }

@@ -2,14 +2,14 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot;
+package limelight;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 /** Add your docs here. */
-public class VisionTargetTracker {
+public class LimelightTargetTracking {
 
     private static final String LIMELIGHT_TABLE_NAME = "limelight";
     private static final String LIMELIGHT_TABLE_ENTRY_X = "tx";
@@ -18,13 +18,13 @@ public class VisionTargetTracker {
     // tv = 0 if no valid targets identified, tv = 1 for valid target
     private static final String LIMELIGHT_TABLE_ENTRY_VALID = "tv";
 
-    private final VisionConfiguration configuration;
+    private final LimelightConfiguration configuration;
     private final NetworkTable table;
     private final NetworkTableEntry tx;
     private final NetworkTableEntry ty;
     public final NetworkTableEntry tv;
 
-    public VisionTargetTracker(VisionConfiguration configuration) {
+    public LimelightTargetTracking(LimelightConfiguration configuration) {
         this.configuration = configuration;
 
         table = NetworkTableInstance.getDefault().getTable(LIMELIGHT_TABLE_NAME);

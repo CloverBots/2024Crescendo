@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AutoAimAndFireCommand;
 import frc.robot.commands.AutoSetShooterCommand;
 import frc.robot.commands.DriveCommand;
@@ -27,11 +25,12 @@ import frc.robot.Constants.*;
 import frc.robot.subsystems.FeederDistanceSensorSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.LEDSubsystem.State;
+import frc.robot.subsystems.LEDs.LEDSubsystem;
+import frc.robot.subsystems.LEDs.LEDSubsystem.State;
+import limelight.LimelightTargetTracking;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -43,7 +42,7 @@ import frc.robot.subsystems.LEDSubsystem.State;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-    public final VisionTargetTracker visionTargetTracker = new VisionTargetTracker(
+    public final LimelightTargetTracking visionTargetTracker = new LimelightTargetTracking(
             VisonConstants.visionConfiguration);
     private final AHRS gyro = new AHRS();
     private final Field2d field;
@@ -61,15 +60,15 @@ public class RobotContainer {
 
     private final ShooterCommand shooterCommand = new ShooterCommand(feederDistanceSensorSubsystem,
             shooterSubsystem, pivotSubsystem, feederSubsystem, intakeSubsystem, visionTargetTracker,
-            driverController::getRightTriggerAxis,
-            driverController::getLeftTriggerAxis, // To-do change back
-            driverController::getYButton,
-            driverController::getBButton,
-            driverController::getAButton,
+            operatorController::getRightTriggerAxis,
+            operatorController::getLeftTriggerAxis,
+            operatorController::getYButton,
+            operatorController::getBButton,
+            operatorController::getAButton,
             operatorController::getXButton,
             operatorController::getStartButton,
             operatorController::getLeftY,
-            driverController::getPOV,
+            operatorController::getPOV,
             operatorController::getBackButton,
             driverController::getRightBumper);
 
@@ -90,7 +89,7 @@ public class RobotContainer {
         // Register Named Commands
         configureAutoCommands();
 
-        autoChooser = AutoBuilder.buildAutoChooser("Test Center");
+        autoChooser = AutoBuilder.buildAutoChooser("None");
         SmartDashboard.putData("Auto Chooser", autoChooser);
 
         swerveSubsystem.setDefaultCommand(
@@ -126,6 +125,7 @@ public class RobotContainer {
 
     public void onAutonomousEnable() {
         resetGyro();
+        ledSubsystem.conformToState(State.RAINBOW);
     }
 
     public void resetGyro() {
@@ -137,31 +137,15 @@ public class RobotContainer {
     }
 
     /** Will run once any time the robot is disabled. */
-    public void onDisable() {
+    public void disabledInit() {
         var alliance = DriverStation.getAlliance();
         if (alliance.get() == DriverStation.Alliance.Red) {
             ledSubsystem.conformToState(State.BREATHING_RED);
         } else if (alliance.get() == DriverStation.Alliance.Blue) {
             ledSubsystem.conformToState(State.BREATHING_BLUE);
-        } else {
-            ledSubsystem.conformToState(State.RAINBOW);
         }
     }
 
-    /**
-     * Use this method to define your trigger->command mappings. Triggers can be
-     * created via the
-     * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with
-     * an arbitrary
-     * predicate, or via the named factories in {@link
-     * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
-     * {@link
-     * CommandXboxController
-     * Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-     * PS4} controllers or
-     * {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-     * joysticks}.
-     */
     private void configureBindings() {
         // used during tuning
         SmartDashboard.putNumber("Shooter right RPM", 2500);
