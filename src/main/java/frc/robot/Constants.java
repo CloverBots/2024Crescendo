@@ -32,19 +32,24 @@ public final class Constants {
         public static final double WHEEL_CIRCUMFERENCE = Units.inchesToMeters(4) * Math.PI;
         public static final double DRIVE_GEAR_RATIO = (50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0);
         public static final double TURNING_GEAR_RATIO = 150.0 / 7.0;
+        public static final double FALCON_FREE_SPEED = 6380.0;
+        public static final double NEO_FREE_SPEED = 5820.0;;
         public static final double wheelBase = Units.inchesToMeters(18.5);
         public static final double trackWidth = Units.inchesToMeters(18.5);
-        // This equates to about 5.5435 m/s
-        public static final double PHYSICAL_MAX_SPEED_METERS_PER_SECOND = (1 / DRIVE_GEAR_RATIO) * (6380.0 / 60)
-                * WHEEL_CIRCUMFERENCE;
+        
+        public static final double PHYSICAL_MAX_SPEED_METERS_PER_SECOND = (1 / DRIVE_GEAR_RATIO) * (FALCON_FREE_SPEED / 60)
+                * WHEEL_CIRCUMFERENCE; // Max is 5.5435
+
+        public static final double PHYSICAL_MAX_ROTATION_SPEED = (1 / TURNING_GEAR_RATIO) * (NEO_FREE_SPEED / 60)
+                * WHEEL_CIRCUMFERENCE; // Max is TO-DO
 
         // Speeds for the robot when moving, in Meters/Second
-        public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = 5; // Max is 5.5435
+        public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = 5;
         public static final double AUTO_MAX_SPEED_METERS_PER_SECOND = 3;
 
-        // Rotational multiplier of the joystick
-        public static final double teleOpNormalAngularSpeed = 0.6;
-        public static final double teleOpSlowAngularSpeed = 0.3;
+        // Rotation speed multiplier to the (-1, 1) input given by the joystick
+        public static final double TELEOP_NORMAL_ANGULAR_SCALE_FACTOR = 0.6;
+        public static final double TELEOP_SLOW_ANGULAR_SCALE_FACTOR = 0.3;
 
         public static final double DRIVE_ENCODER_TO_METERS = (WHEEL_CIRCUMFERENCE / (DRIVE_GEAR_RATIO * 2048.0));
         public static final double DRIVE_ENCODER_VELOCITY_TO_METERS_PER_SECOND = (600.0 * WHEEL_CIRCUMFERENCE)

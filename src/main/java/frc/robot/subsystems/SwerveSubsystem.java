@@ -173,11 +173,11 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public double getMaxVelocity() {
-    return Constants.DriveConstants.TELEOP_MAX_SPEED_METERS_PER_SECOND;
+    return Constants.DriveConstants.PHYSICAL_MAX_SPEED_METERS_PER_SECOND;
   }
 
   public double getMaxAngleVelocity() {
-    return Constants.DriveConstants.teleOpNormalAngularSpeed;
+    return Constants.DriveConstants.PHYSICAL_MAX_ROTATION_SPEED;
   }
 
   public Pose2d getPose() {
