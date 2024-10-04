@@ -41,7 +41,7 @@ public final class Constants {
                 * WHEEL_CIRCUMFERENCE; // Max is 5.5435
 
         public static final double PHYSICAL_MAX_ROTATION_SPEED = (1 / TURNING_GEAR_RATIO) * (NEO_FREE_SPEED / 60)
-                * WHEEL_CIRCUMFERENCE; // Max is TO-DO
+                * WHEEL_CIRCUMFERENCE; // Max is 1.4448
 
         // Speeds for the robot when moving, in Meters/Second
         public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = 5;

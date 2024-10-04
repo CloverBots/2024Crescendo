@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.0,
+        "x": 8.5,
         "y": 0.75
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.87374311779035,
+        "x": 8.373743117790351,
         "y": 6.1826722580099895
       },
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Note 8",
   "previewStartingState": {
     "rotation": 0.0,
     "velocity": 0

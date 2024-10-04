@@ -70,6 +70,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "Tests",
   "choreoAuto": false
 }
