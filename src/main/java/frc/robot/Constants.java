@@ -120,7 +120,7 @@ public final class Constants {
         public final static double MAX_PIVOT_POWER_PID = 0.6;
 
         public static final double PIVOT_PARKED_ANGLE = 10; // PARKED
-        public static final double PIVOT_AMP_ANGLE = 70; // AMP
+        public static final double PIVOT_AMP_ANGLE = 70; // AMP TO-DO fix
         public static final double PIVOT_SPEAKER_ANGLE = 66; // SPEAKER
         public static final double PIVOT_OVER_STAGE_ANGLE = 60; // OVER STAGE
         public static final double PIVOT_UNDER_STAGE_ANGLE = 10; // UNDER STAGE

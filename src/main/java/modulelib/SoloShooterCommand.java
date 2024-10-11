@@ -1,8 +1,7 @@
-package frc.robot.commands;
+/*package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -17,7 +16,7 @@ import frc.robot.subsystems.LEDs.LEDSubsystem;
 import frc.robot.subsystems.LEDs.LEDSubsystem.State;
 import limelight.LimelightTargetTracking;
 
-public class ShooterCommand extends Command {
+public class SoloShooterCommand extends Command {
     private final ShooterSubsystem shooterSubsystem;
     private final FeederDistanceSensorSubsystem feederDistanceSensorSubsystem;
     private final LEDSubsystem ledSubsystem;
@@ -25,10 +24,9 @@ public class ShooterCommand extends Command {
     private final FeederSubsystem feederSubsystem;
     private final IntakeSubsystem intakeSubsystem;
     private final LimelightTargetTracking visionTargetTracker;
-    private final Supplier<Boolean> fireButton;
-    private final Supplier<Double> intakeLoadTrigger, intakeEjectTrigger;
-    private final DoubleSupplier leftJoystickY;
-    private final Supplier<Boolean> yButton, bButton, aButton, xButton, startButton, backButton;
+    private final Supplier<Boolean> climbUpButton, climbDownButton;
+    private final Supplier<Double> intakeLoadTrigger;
+    private final Supplier<Boolean> yButton, bButton, aButton, xButton, backButton;
     private final Supplier<Integer> dPad;
     private double shooterLeftRPM;
     private double shooterRightRPM;
@@ -39,38 +37,34 @@ public class ShooterCommand extends Command {
     private Timer timer;
     private Timer matchTime;
     private boolean blinkOn = false;
-
-    private double previousVisionTx, previousVisionTy;
-
     private boolean firing = false;
     private boolean noteLoaded = false;
     private boolean readyToFire = false;
+    private boolean ejectNote = false;
 
     public enum ACTION {
-        NONE, INTAKE, EJECT, AMP, SPEAKER, DEFAULT_SPEAKER, FIRE, PARK, TUNING, LOB_HIGH, LOB_LOW,
+        INTAKE, EJECT, AMP, SPEAKER, DEFAULT_SPEAKER, FIRE, NONE, LOB_HIGH, LOB_LOW,
         CLIMB_MANUAL
     }
 
     private ACTION mode;
     private boolean modeChanged = false;
 
-    public ShooterCommand(FeederDistanceSensorSubsystem feederDistanceSensorSubsystem,
+    public SoloShooterCommand(FeederDistanceSensorSubsystem feederDistanceSensorSubsystem,
             ShooterSubsystem shooterSubsystem,
             PivotSubsystem pivotSubsystem,
             FeederSubsystem feederSubsystem,
             IntakeSubsystem intakeSubsystem,
             LimelightTargetTracking visionTargetTracker,
             Supplier<Double> intakeLoadTrigger,
-            Supplier<Double> intakeEjectTrigger,
             Supplier<Boolean> yButton,
             Supplier<Boolean> bButton,
             Supplier<Boolean> aButton,
             Supplier<Boolean> xButton,
-            Supplier<Boolean> startButton,
-            DoubleSupplier leftJoystickY,
             Supplier<Integer> dPad,
             Supplier<Boolean> backButton,
-            Supplier<Boolean> fireButton) {
+            Supplier<Boolean> climbUpButton,
+            Supplier<Boolean> climbDownButton) {
 
         this.shooterSubsystem = shooterSubsystem;
         this.feederDistanceSensorSubsystem = feederDistanceSensorSubsystem;
@@ -79,16 +73,14 @@ public class ShooterCommand extends Command {
         this.intakeSubsystem = intakeSubsystem;
         this.visionTargetTracker = visionTargetTracker;
         this.intakeLoadTrigger = intakeLoadTrigger;
-        this.intakeEjectTrigger = intakeEjectTrigger;
         this.yButton = yButton;
         this.bButton = bButton;
         this.aButton = aButton;
         this.xButton = xButton;
-        this.startButton = startButton;
-        this.leftJoystickY = leftJoystickY;
         this.backButton = backButton;
         this.dPad = dPad;
-        this.fireButton = fireButton;
+        this.climbUpButton = climbUpButton;
+        this.climbDownButton = climbDownButton;
         ledSubsystem = LEDSubsystem.getInstance();
 
         timer = new Timer();
@@ -108,7 +100,6 @@ public class ShooterCommand extends Command {
     public void initialize() {
         pivotSubsystem.setPivotControllerSetpoint(PivotConstants.PIVOT_PARKED_ANGLE);
         pivotSubsystem.enable();
-        // SmartDashboard.putBoolean("Camera", true);
         matchTime.restart();
     }
 
@@ -132,32 +123,28 @@ public class ShooterCommand extends Command {
         if (modeChanged) {
             updateValues();
         }
+
         switch (mode) {
             case INTAKE:
                 if (!noteLoaded) {
                     intakeSubsystem.setIntakeSpeed(IntakeConstants.INTAKE_SPEED);
                     feederSubsystem.setSpeed(IntakeConstants.FEEDER_SPEED_INTAKE);
                 }
-
                 break;
             case EJECT:
                 intakeSubsystem.setIntakeSpeed(-IntakeConstants.INTAKE_SPEED);
                 feederSubsystem.setSpeed(-IntakeConstants.FEEDER_SPEED_INTAKE);
                 break;
-
-            case TUNING:
             case AMP:
             case LOB_LOW:
             case LOB_HIGH:
             case DEFAULT_SPEAKER:
-
                 shooterSubsystem.setShooterLeftRPM(shooterLeftRPM);
                 shooterSubsystem.setShooterRightRPM(shooterRightRPM);
-
                 break;
 
-            case PARK:
-
+            case NONE:
+                ledConformToState("Green");
                 break;
 
             case SPEAKER:
@@ -168,7 +155,7 @@ public class ShooterCommand extends Command {
                     pivotAngle = checkAngleLimits(pivotAngle);
                     DriveCommand.lockOnMode = true;
                 }
-                // If the desired angle has changed by 0.5 degree or more, update the setpoint
+                // If the desired angle has changed by 0.5 degrees or more, update the setpoint
                 if (Math.abs(previousPivotAngle - pivotAngle) > 0.5) {
                     previousPivotAngle = pivotAngle;
                     pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
@@ -179,6 +166,7 @@ public class ShooterCommand extends Command {
                 shooterSubsystem.setShooterLeftRPM(shooterLeftRPM);
                 shooterSubsystem.setShooterRightRPM(shooterRightRPM);
                 ledSubsystem.conformToState(State.SOLID_PINK);
+
                 SmartDashboard.putNumber("target distance", visionTargetTracker.computeTargetDistance());
                 break;
 
@@ -192,64 +180,48 @@ public class ShooterCommand extends Command {
                 }
                 break;
 
-            case NONE:
-                ledConformToState("Green");
-                break;
-
             case CLIMB_MANUAL:
-                if (Math.abs(leftJoystickY.getAsDouble()) > .05) {
-                    pivotSpeed = -leftJoystickY.getAsDouble() / 2.2; // - is because joystick returns 1 for down, -1 for
-                                                                     // up
-
-                    if (pivotSpeed > 0.05 &&
-                            pivotSubsystem.getPivotAbsolutePosition() > PivotConstants.PIVOT_UPPER_ENDPOINT) {
-                        pivotSpeed = 0;
-                    }
-
-                    if (pivotSpeed < -.05 &&
-                            pivotSubsystem.getPivotAbsolutePosition() < PivotConstants.PIVOT_LOWER_ENDPOINT) {
-                        pivotSpeed = 0;
-                    }
-
-                    if (Math.abs(pivotSpeed) < 0.2) {
-                        pivotSpeed = pivotSpeed / 2;
-                    }
-
-                    pivotSubsystem.setSpeed(pivotSpeed);
-
+                if (climbUpButton.get()) {
+                    pivotSpeed = 0.2;
+                } else if (climbDownButton.get()) {
+                    pivotSpeed = -pivotSpeed;
                 } else {
-                    pivotSubsystem.setSpeed(0);
+                    pivotSpeed = 0;
                 }
-
+                if (pivotSpeed > 0.05 &&
+                        pivotSubsystem.getPivotAbsolutePosition() > PivotConstants.PIVOT_UPPER_ENDPOINT) {
+                    pivotSpeed = 0;
+                }
+                if (pivotSpeed < -.05 &&
+                        pivotSubsystem.getPivotAbsolutePosition() < PivotConstants.PIVOT_LOWER_ENDPOINT) {
+                    pivotSpeed = 0;
+                }
                 break;
         }
 
     }
 
     private void checkControllerValues() {
-        if (intakeLoadTrigger.get() > 0.5 && mode != ACTION.INTAKE) {
+        if (intakeLoadTrigger.get() > 0.5 && mode != ACTION.INTAKE && !noteLoaded) {
             mode = ACTION.INTAKE;
             modeChanged = true;
-        } else if (intakeEjectTrigger.get() > 0.5 && mode != ACTION.EJECT) {
+        } else if (dPad.get() == 270 && mode != ACTION.EJECT) {
             mode = ACTION.EJECT;
+            ejectNote = true;
             modeChanged = true;
-        } else if (xButton.get() && mode != ACTION.PARK) {
-            mode = ACTION.PARK;
+        } else if (xButton.get() && mode != ACTION.NONE) {
+            mode = ACTION.NONE;
             modeChanged = true;
         } else if (aButton.get() && mode != ACTION.AMP) {
             mode = ACTION.AMP;
             modeChanged = true;
-            ledSubsystem.conformToState(State.SOLID_YELLOW);
         } else if (bButton.get() && mode != ACTION.SPEAKER) {
             mode = ACTION.SPEAKER;
             modeChanged = true;
-        } else if (yButton.get() && mode != ACTION.DEFAULT_SPEAKER) {
-            mode = ACTION.DEFAULT_SPEAKER;
+        } else if (yButton.get() && mode != ACTION.LOB_HIGH) {
+            mode = ACTION.LOB_HIGH;
             modeChanged = true;
-        } else if (startButton.get() && mode != ACTION.TUNING) {
-            mode = ACTION.TUNING;
-            modeChanged = true;
-        } else if (fireButton.get()) {
+        } else if (climbUpButton.get() && mode != ACTION.CLIMB_MANUAL && readyToFire) {
             mode = ACTION.FIRE;
             modeChanged = true;
         } else if (backButton.get()) {
@@ -257,13 +229,11 @@ public class ShooterCommand extends Command {
             modeChanged = true;
             ledSubsystem.conformToState(State.SOLID_PURPLE);
         } else if (dPad.get() == 0) { // 0 is up on dpad
-            mode = ACTION.LOB_HIGH;
+            mode = ACTION.DEFAULT_SPEAKER;
             modeChanged = true;
-            ledSubsystem.conformToState(State.SOLID_ORANGE);
         } else if (dPad.get() == 180) {
             mode = ACTION.LOB_LOW;
             modeChanged = true;
-            ledSubsystem.conformToState(State.SOLID_ORANGE);
         }
     }
 
@@ -282,7 +252,7 @@ public class ShooterCommand extends Command {
 
                 break;
 
-            case PARK:
+            case NONE:
                 shooterLeftRPM = 0;
                 shooterRightRPM = 0;
                 shooterSubsystem.setDefaultShooterRPM();
@@ -303,16 +273,6 @@ public class ShooterCommand extends Command {
                 break;
 
             case SPEAKER:
-                if (visionTargetTracker.isValid() && (previousVisionTy != visionTargetTracker.getTy()
-                        || previousVisionTx != visionTargetTracker.getTx())) {
-
-                    // SmartDashboard.putBoolean("Camera", true);
-
-                } else if (visionTargetTracker.isValid()) {
-                    // SmartDashboard.putBoolean("Camera", false);
-
-                }
-
                 shooterLeftRPM = ShooterConstants.SHOOTER_SPEAKER_LEFT_RPM;
                 shooterRightRPM = ShooterConstants.SHOOTER_SPEAKER_RIGHT_RPM;
                 feederSpeed = IntakeConstants.FEEDER_SPEED_SHOOT;
@@ -325,10 +285,6 @@ public class ShooterCommand extends Command {
                 break;
 
             case DEFAULT_SPEAKER:
-                if (visionTargetTracker.isValid() && (previousVisionTy != visionTargetTracker.getTy()
-                        || previousVisionTx != visionTargetTracker.getTx())) {
-                }
-
                 shooterLeftRPM = ShooterConstants.SHOOTER_SPEAKER_LEFT_RPM;
                 shooterRightRPM = ShooterConstants.SHOOTER_SPEAKER_RIGHT_RPM;
                 feederSpeed = IntakeConstants.FEEDER_SPEED_SHOOT;
@@ -341,16 +297,6 @@ public class ShooterCommand extends Command {
 
             case FIRE:
                 feederSpeed = IntakeConstants.FEEDER_SPEED_SHOOT;
-
-                // Update previous values for comparison during next shot
-                if (visionTargetTracker.isValid()) {
-                    previousVisionTy = visionTargetTracker.getTy();
-                    previousVisionTx = visionTargetTracker.getTx();
-                }
-
-            case NONE:
-
-                break;
 
             case LOB_LOW:
                 shooterLeftRPM = ShooterConstants.SHOOTER_UNDER_STAGE_LEFT_RPM;
@@ -373,16 +319,6 @@ public class ShooterCommand extends Command {
             case CLIMB_MANUAL:
                 pivotSubsystem.disable();
                 break;
-
-            case TUNING:
-                // used during tuning
-                shooterRightRPM = SmartDashboard.getNumber("Shooter right RPM", 0);
-                shooterLeftRPM = SmartDashboard.getNumber("Shooter left RPM", 0);
-                pivotAngle = SmartDashboard.getNumber("Shooter angle", 0);
-                pivotAngle = checkAngleLimits(pivotAngle);
-                pivotSubsystem.setPivotControllerSetpoint(pivotAngle);
-                break;
-
         }
     }
 
@@ -416,7 +352,6 @@ public class ShooterCommand extends Command {
 
         switch (mode) {
             case INTAKE:
-
                 if (feederDistanceSensorSubsystem.isNoteLoaded()) {
                     intakeSubsystem.setIntakeSpeed(0);
                     feederSubsystem.setSpeed(0);
@@ -434,7 +369,7 @@ public class ShooterCommand extends Command {
                 break;
 
             case EJECT:
-                if (intakeEjectTrigger.get() < 0.5 && intakeSubsystem.isIntakeRunningBackward()) {
+                if (intakeSubsystem.isIntakeRunningBackward() && ejectNote) {
                     feederSubsystem.setSpeed(0);
                     intakeSubsystem.setIntakeSpeed(0);
                     mode = ACTION.NONE;
@@ -445,7 +380,7 @@ public class ShooterCommand extends Command {
 
                 break;
 
-            case PARK:
+            case NONE:
                 feederSubsystem.setSpeed(0);
                 shooterSubsystem.setDefaultShooterRPM();
                 DriveCommand.lockOnMode = false;
@@ -461,26 +396,15 @@ public class ShooterCommand extends Command {
             case DEFAULT_SPEAKER:
             case LOB_LOW:
             case LOB_HIGH:
-            case TUNING:
-                if (shooterSubsystem.isShooterAtTargetRpm() && pivotSubsystem.pivotReady() && noteLoaded) {
-                    readyToFire = true;
-                    ledConformToState("Blue");
-                } else {
-                    readyToFire = false;
-                }
-                break;
             case FIRE:
                 if (firing && timer.get() > IntakeConstants.FEEDER_TIME) {
                     firing = false;
                     readyToFire = false;
                     ledConformToState("Green");
-                    mode = ACTION.PARK;
+                    mode = ACTION.NONE;
                     DriveCommand.lockOnMode = false;
                     modeChanged = true;
                 }
-                break;
-
-            case NONE:
                 break;
 
             case CLIMB_MANUAL:
@@ -510,4 +434,4 @@ public class ShooterCommand extends Command {
             }
         }
     }
-}
+} */

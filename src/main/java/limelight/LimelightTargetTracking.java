@@ -73,6 +73,7 @@ public class LimelightTargetTracking {
         }
     }
 
+    // TO-DO fix these
     public double computePivotAngle(double distance) {
         return 118.6986 - 1.747926 * distance + 0.014116 * distance * distance
                 - 0.00004040475 * distance * distance * distance - 1.1;
