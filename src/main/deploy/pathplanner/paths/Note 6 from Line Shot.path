@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.12,
+        "x": 1.9,
         "y": 5.54
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.522660344068453,
-        "y": 3.979819909550374
+        "x": 6.302660344068453,
+        "y": 3.9798199095503746
       },
       "isLocked": false,
       "linkedName": "Line Shot"
@@ -41,7 +41,7 @@
     "maxVelocity": 3.0,
     "maxAcceleration": 2.0,
     "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 360.0
+    "maxAngularAcceleration": 180.0
   },
   "goalEndState": {
     "velocity": 0,

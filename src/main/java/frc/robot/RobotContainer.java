@@ -154,7 +154,7 @@ public class RobotContainer {
                         pivotSubsystem));
         NamedCommands.registerCommand("Fire",
                 new AutoAimAndFireCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem, shooterSubsystem,
-                        feederSubsystem, 1.0));
+                        feederSubsystem, 0.5));
         NamedCommands.registerCommand("Set Shooter Subwoofer",
                 new AutoSetShooterCommand(shooterSubsystem, pivotSubsystem, feederSubsystem,
                         ShooterConstants.SHOOTER_SPEAKER_LEFT_RPM, ShooterConstants.SHOOTER_SPEAKER_RIGHT_RPM,

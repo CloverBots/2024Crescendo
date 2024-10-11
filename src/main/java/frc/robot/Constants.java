@@ -60,10 +60,10 @@ public final class Constants {
         public static final int currentLimit = 40;
         public static final double slewRate = 50; // lower number for higher center of mass
 
-        public static final class SwervePID { // TO-DO: Play around with these, they may affect auto performance
-            public static final double p = 0.12;
+        public static final class SwervePID {
+            public static final double p = 0.15;
             public static final double i = 0;
-            public static final double d = 0.0015;
+            public static final double d = 0;
         }
 
         public static final class SwerveModules {
@@ -85,13 +85,13 @@ public final class Constants {
 
     public static final class PathPlannerConstants {
         public static final class TranslationPID {
-            public static final double p = 3; // 4 (Non carpet); 3 (Carpet)
+            public static final double p = 2.8; // 4 (Non carpet); 3 (Carpet)
             public static final double i = 0;
             public static final double d = 0;
         }
 
         public static final class RotationPID {
-            public static final double p = 4; // 2 (Non carpet); 4 (Carpet)
+            public static final double p = 3.4; // 2 (Non carpet); 4 (Carpet)
             public static final double i = 0;
             public static final double d = 0;
         }
@@ -120,7 +120,7 @@ public final class Constants {
         public final static double MAX_PIVOT_POWER_PID = 0.6;
 
         public static final double PIVOT_PARKED_ANGLE = 10; // PARKED
-        public static final double PIVOT_AMP_ANGLE = 70; // AMP TO-DO fix
+        public static final double PIVOT_AMP_ANGLE = 70; // AMP
         public static final double PIVOT_SPEAKER_ANGLE = 66; // SPEAKER
         public static final double PIVOT_OVER_STAGE_ANGLE = 60; // OVER STAGE
         public static final double PIVOT_UNDER_STAGE_ANGLE = 10; // UNDER STAGE
@@ -144,8 +144,8 @@ public final class Constants {
         public static final int SHOOTER_LEFT_MOTOR_ID = 35;
         public static final int SHOOTER_RIGHT_MOTOR_ID = 34;
 
-        public static final double SHOOTER_AMP_RIGHT_RPM = 700;
-        public static final double SHOOTER_AMP_LEFT_RPM = 700;
+        public static final double SHOOTER_AMP_RIGHT_RPM = 500;
+        public static final double SHOOTER_AMP_LEFT_RPM = 500;
         public static final double SHOOTER_SPEAKER_RIGHT_RPM = 2500;
         public static final double SHOOTER_SPEAKER_LEFT_RPM = 2000;
         public static final double SHOOTER_OVER_STAGE_RIGHT_RPM = 3000;

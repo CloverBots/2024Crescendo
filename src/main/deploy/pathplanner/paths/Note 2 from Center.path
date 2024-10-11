@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.82,
-        "y": 5.42
+        "x": 1.773153893518325,
+        "y": 5.63130913087035
       },
       "isLocked": false,
       "linkedName": "Center Start"
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 2.584,
-        "y": 5.54
+        "y": 5.57
       },
       "prevControl": {
         "x": 2.249126788056797,
-        "y": 5.507130871149041
+        "y": 5.537130871149041
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,7 +35,7 @@
     "maxVelocity": 3.0,
     "maxAcceleration": 2.0,
     "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 360.0
+    "maxAngularAcceleration": 180.0
   },
   "goalEndState": {
     "velocity": 0,

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.12,
+        "x": 1.9,
         "y": 5.54
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0582129178569635,
-        "y": 6.300157716594503
+        "x": 1.9,
+        "y": 6.04
       },
       "isLocked": false,
       "linkedName": "Line Shot"
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 2.58,
-        "y": 7.0
+        "y": 7.1
       },
       "prevControl": {
-        "x": 2.014155870887771,
-        "y": 6.887585009517068
+        "x": 2.0166698250657547,
+        "y": 7.103080254377342
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,12 +35,12 @@
     "maxVelocity": 3.0,
     "maxAcceleration": 2.0,
     "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 360.0
+    "maxAngularAcceleration": 180.0
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 0.0,
-    "rotateFast": true
+    "rotateFast": false
   },
   "reversed": false,
   "folder": "Note 1",

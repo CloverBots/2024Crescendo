@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 2.58,
-        "y": 7.0
+        "y": 7.1
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.131704637356797,
-        "y": 6.686100207732774
+        "x": 2.2274648828898216,
+        "y": 6.85715268691593
       },
       "isLocked": false,
       "linkedName": "Note 1"
     },
     {
       "anchor": {
-        "x": 2.12,
+        "x": 1.9,
         "y": 5.54
       },
       "prevControl": {
-        "x": 2.1557128485378154,
-        "y": 5.9481997266678235
+        "x": 1.8903565174320063,
+        "y": 5.9022616190738795
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,12 +35,12 @@
     "maxVelocity": 3.0,
     "maxAcceleration": 2.0,
     "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 360.0
+    "maxAngularAcceleration": 180.0
   },
   "goalEndState": {
     "velocity": 0,
     "rotation": 0.0,
-    "rotateFast": true
+    "rotateFast": false
   },
   "reversed": false,
   "folder": "Note 1",
