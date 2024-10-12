@@ -75,9 +75,10 @@ public class LimelightTargetTracking {
 
     // TO-DO fix these
     public double computePivotAngle(double distance) {
-        return 118.6986 - 1.747926 * distance + 0.014116 * distance * distance
-                - 0.00004040475 * distance * distance * distance - 1.1;
-    } // New values- 68 at 41, 49 at 78, 42 at 140, 33.5 at 168, 40 at 137
+        return 147.1408 - 3.172868 * distance + 0.03825801 * distance * distance
+                - 0.0002114852 * distance * distance * distance + 0.0000004285076 * distance * distance * distance * distance;
+    } // Current values- 68 at 41, 49 at 78, 42 at 140, 33.5 at 168, 40 at 137
+    // New values- 68 at 41, 49 at 74, 42.6 at 108, 37 at 140.5, 32 at 179,
 
     public double computeShooterRightSpeed(double distance) {
         return 1362.989 + 38.67915 * distance - 0.3083168 * distance * distance

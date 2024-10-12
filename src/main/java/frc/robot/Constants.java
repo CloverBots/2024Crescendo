@@ -48,14 +48,14 @@ public final class Constants {
         public static final double AUTO_MAX_SPEED_METERS_PER_SECOND = 3;
 
         // Rotation speed multiplier to the (-1, 1) input given by the joystick
-        public static final double TELEOP_NORMAL_ANGULAR_SCALE_FACTOR = 0.6;
-        public static final double TELEOP_SLOW_ANGULAR_SCALE_FACTOR = 0.3;
+        public static final double TELEOP_NORMAL_ANGULAR_SCALE_FACTOR = 0.8;
+        public static final double TELEOP_SLOW_ANGULAR_SCALE_FACTOR = 0.4;
 
         public static final double DRIVE_ENCODER_TO_METERS = (WHEEL_CIRCUMFERENCE / (DRIVE_GEAR_RATIO * 2048.0));
         public static final double DRIVE_ENCODER_VELOCITY_TO_METERS_PER_SECOND = (600.0 * WHEEL_CIRCUMFERENCE)
                 / (2048.0 * 60 * DRIVE_GEAR_RATIO);
 
-        public static final double MAX_VOLTAGE = 12;
+        public static final double MAX_VOLTAGE = 6;
         public static final double deadband = 0.08;
         public static final int currentLimit = 40;
         public static final double slewRate = 50; // lower number for higher center of mass
@@ -85,13 +85,13 @@ public final class Constants {
 
     public static final class PathPlannerConstants {
         public static final class TranslationPID {
-            public static final double p = 2.8; // 4 (Non carpet); 3 (Carpet)
+            public static final double p = 2.5; // 4 (Non carpet); 3 (Carpet)
             public static final double i = 0;
             public static final double d = 0;
         }
 
         public static final class RotationPID {
-            public static final double p = 3.4; // 2 (Non carpet); 4 (Carpet)
+            public static final double p = 2.9; // 2 (Non carpet); 4 (Carpet)
             public static final double i = 0;
             public static final double d = 0;
         }
@@ -113,8 +113,8 @@ public final class Constants {
         public static final int PIVOT_ENCODER = 37;
         public static final int PIVOT_LIMIT_SWITCH = 0; // digital input port
 
-        public final static double PIVOT_PHYSICAL_LOWER_ENDPOINT = 2;
-        public final static double PIVOT_LOWER_ENDPOINT = 6;
+        public final static double PIVOT_PHYSICAL_LOWER_ENDPOINT = 1;
+        public final static double PIVOT_LOWER_ENDPOINT = 2;
         public final static double PIVOT_UPPER_ENDPOINT = 100;
         public static final double CLIMBER_PIVOT_SPEED = 0.5;
         public final static double MAX_PIVOT_POWER_PID = 0.6;
@@ -125,7 +125,7 @@ public final class Constants {
         public static final double PIVOT_OVER_STAGE_ANGLE = 60; // OVER STAGE
         public static final double PIVOT_UNDER_STAGE_ANGLE = 10; // UNDER STAGE
         public static final double PIVOT_LINE_ANGLE = 54; // LINE (Auto)
-        public static final double PIVOT_FAR_ANGLE = 24; // FAR (Auto)
+        public static final double PIVOT_FAR_ANGLE = 30.5; // FAR (Auto)
     }
 
     public static final class IntakeConstants {

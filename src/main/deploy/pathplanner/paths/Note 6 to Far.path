@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 8.5,
-        "y": 4.2
+        "y": 3.9
       },
       "prevControl": null,
       "nextControl": {
         "x": 7.272316943560543,
-        "y": 6.035815434779349
+        "y": 5.735815434779349
       },
       "isLocked": false,
       "linkedName": "Note 6 around Stage"

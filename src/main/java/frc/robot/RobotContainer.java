@@ -214,8 +214,8 @@ public class RobotContainer {
         xy[1] = r * Math.sin(theta);
 
         if (driverController.getLeftTriggerAxis() > 0.5) {
-            xy[0] = xy[0] / 10;
-            xy[1] = xy[1] / 10;
+            xy[0] = xy[0] / 25;
+            xy[1] = xy[1] / 25;
         }
 
         return xy;

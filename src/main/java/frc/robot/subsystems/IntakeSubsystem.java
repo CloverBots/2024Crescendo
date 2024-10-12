@@ -7,7 +7,7 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+
 import frc.robot.Constants.*;
 
 public class IntakeSubsystem extends SubsystemBase {
@@ -16,7 +16,7 @@ public class IntakeSubsystem extends SubsystemBase {
     private final TalonSRX centerMotor2 = new TalonSRX(IntakeConstants.CENTER_MOTOR_2);
 
     public IntakeSubsystem() {
-        motor.setSmartCurrentLimit(Constants.CURRENT_LIMIT);
+        motor.setSmartCurrentLimit(20);
 
         motor.setIdleMode(IdleMode.kCoast);
 

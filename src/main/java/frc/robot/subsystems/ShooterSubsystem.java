@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.*;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -36,8 +35,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     /** Creates a new Shooter. */
     public ShooterSubsystem() {
-        motorLeft.setSmartCurrentLimit(Constants.CURRENT_LIMIT);
-        motorRight.setSmartCurrentLimit(Constants.CURRENT_LIMIT);
+        motorLeft.setSmartCurrentLimit(50);
+        motorRight.setSmartCurrentLimit(50);
 
         motorRight.setInverted(true);
         configureEncoder(encoderLeft);
