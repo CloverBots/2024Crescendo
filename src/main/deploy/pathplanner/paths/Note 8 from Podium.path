@@ -3,32 +3,38 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.5,
-        "y": 0.75
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 6.361117838514747,
-        "y": 0.9692550333222316
-      },
-      "isLocked": false,
-      "linkedName": "Note 8"
-    },
-    {
-      "anchor": {
         "x": 2.18,
         "y": 3.6
       },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.629580926424823,
+        "y": 2.4084519009825143
+      },
+      "isLocked": false,
+      "linkedName": "Podium Shot"
+    },
+    {
+      "anchor": {
+        "x": 8.5,
+        "y": 0.75
+      },
       "prevControl": {
-        "x": 2.748439987040977,
-        "y": 3.039936240874271
+        "x": 6.772316943560543,
+        "y": 0.7342841161532057
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Podium Shot"
+      "linkedName": "Note 8"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -39,13 +45,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -40.0,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "Note 8",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": -40.0,
     "velocity": 0
   },
   "useDefaultConstraints": true

@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.18,
-        "y": 3.6
+        "x": 0.741,
+        "y": 4.45
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.629580926424823,
-        "y": 2.4084519009825143
+        "x": 1.7057565421034249,
+        "y": 3.377706934304746
       },
       "isLocked": false,
-      "linkedName": "Podium Shot"
+      "linkedName": "Podium Start"
     },
     {
       "anchor": {
-        "x": 5.773690545592183,
-        "y": 1.6447964201831808
+        "x": 5.685576451653799,
+        "y": 1.8063389257368858
       },
       "prevControl": {
-        "x": 4.965978017823657,
-        "y": 1.5860536908909244
+        "x": 4.9219209708544644,
+        "y": 1.688853467152373
       },
       "nextControl": {
-        "x": 6.571246125279139,
-        "y": 1.7028004623422321
+        "x": 6.591218612016607,
+        "y": 1.9456684888696254
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 2.5
       },
       "prevControl": {
-        "x": 7.55065810668294,
-        "y": 2.3584519009825144
+        "x": 7.535972424359875,
+        "y": 2.525937359567027
       },
       "nextControl": null,
       "isLocked": false,
@@ -67,7 +67,7 @@
   "reversed": false,
   "folder": "Note 7",
   "previewStartingState": {
-    "rotation": -40.0,
+    "rotation": -60.0,
     "velocity": 0
   },
   "useDefaultConstraints": true
