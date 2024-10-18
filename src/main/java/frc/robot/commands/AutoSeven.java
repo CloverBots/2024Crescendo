@@ -68,7 +68,7 @@ public class AutoSeven extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new DriveToDistanceCommand(swerveSubsystem,
                                 Units.inchesToMeters(-12 * 24 - 6),
-                                Units.inchesToMeters(157),
+                                Units.inchesToMeters(132),
                                 0, 2.5, false), // -12 * 24 - 6, 157, 0, 4.0, false
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
                                 intakeSubsystem, 2.5)),
@@ -84,7 +84,7 @@ public class AutoSeven extends SequentialCommandGroup {
                         pivotSubsystem),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-70),
-                        Units.inchesToMeters(50), -40, 1.3, false), // -90, 72, -50, 2.0, false
+                        Units.inchesToMeters(48), -40, 1.3, false), // -90, 72, -50, 2.0, false
                 
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
                         shooterSubsystem, 1.0f),
@@ -103,15 +103,15 @@ public class AutoSeven extends SequentialCommandGroup {
                         () -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE)),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-115),
-                        Units.inchesToMeters(38),
+                        Units.inchesToMeters(26),
                         0, 1.0, false),
 
                 new WaitCommand(0.1),
 
                 new ParallelCommandGroup(
                         new DriveToDistanceCommand(swerveSubsystem,
-                                Units.inchesToMeters(-12 * 23),
-                                Units.inchesToMeters(17),
+                                Units.inchesToMeters(-12 * 24),
+                                Units.inchesToMeters(15),
                                 0, 2.0, false), // -12 * 24 - 6, 142, 0, 4.0, false
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
                                 intakeSubsystem, 2.0)),

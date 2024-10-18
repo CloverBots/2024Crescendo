@@ -176,10 +176,10 @@ public class RobotContainer {
     }
 
     private void configureAutoChooser() { // TO-DO reset default
-        chooser.addOption("Auto 3 Note LEFT", new AutoOne(swerveSubsystem, feederSubsystem, pivotSubsystem,
+        chooser.addOption("Auto 3 Note LEFT(1,2)", new AutoOne(swerveSubsystem, feederSubsystem, pivotSubsystem,
                 shooterSubsystem, feederDistanceSensorSubsystem,
                 intakeSubsystem, visionTargetTracker));
-        chooser.setDefaultOption("Auto 2 Note", new AutoTwo(swerveSubsystem, feederSubsystem, pivotSubsystem,
+        chooser.setDefaultOption("Auto 2 Note(8)", new AutoTwo(swerveSubsystem, feederSubsystem, pivotSubsystem,
                 shooterSubsystem, feederDistanceSensorSubsystem,
                 intakeSubsystem, visionTargetTracker));
         chooser.addOption("Auto 1 Note Amp", new AutoFour(swerveSubsystem, feederSubsystem, pivotSubsystem,
@@ -188,11 +188,11 @@ public class RobotContainer {
         chooser.addOption("Auto 1 Note Side", new AutoThree(swerveSubsystem, feederSubsystem, pivotSubsystem,
                 shooterSubsystem, feederDistanceSensorSubsystem,
                 intakeSubsystem, visionTargetTracker));
-        chooser.addOption("Auto 4 Note CENTER", new AutoFive(swerveSubsystem, feederSubsystem, pivotSubsystem,
+        chooser.addOption("Auto 4 Note CENTER(1,2,3)", new AutoFive(swerveSubsystem, feederSubsystem, pivotSubsystem,
                 shooterSubsystem, feederDistanceSensorSubsystem, intakeSubsystem, visionTargetTracker));
-        chooser.addOption("Auto 3 Note Middle Line", new AutoSeven(swerveSubsystem, feederSubsystem, pivotSubsystem,
+        chooser.addOption("Auto 3 Note Middle Line(8,6)", new AutoSeven(swerveSubsystem, feederSubsystem, pivotSubsystem,
                 shooterSubsystem, feederDistanceSensorSubsystem, intakeSubsystem, visionTargetTracker));
-        chooser.addOption("Auto 3 Note RIGHT", new AutoSix(swerveSubsystem, feederSubsystem, pivotSubsystem,
+        chooser.addOption("Auto 3 Note RIGHT(4,5)", new AutoSix(swerveSubsystem, feederSubsystem, pivotSubsystem,
                 shooterSubsystem, feederDistanceSensorSubsystem, intakeSubsystem, visionTargetTracker));
 
     }

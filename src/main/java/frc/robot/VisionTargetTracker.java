@@ -79,17 +79,17 @@ public class VisionTargetTracker {
     }
 
     public double computePivotAngle(double distance) {
-        return 118.6986 - 1.747926 * distance + 0.014116 * distance * distance - 0.00004040475 * distance * distance * distance - 1.1; // 95.9703 - 0.834142 * distance + 0.004755 * distance * distance
+        return 108.2513 - 1.482468 * distance + 0.01313622 * distance * distance - 0.00005496728 * distance * distance * distance + 0.00000008362174 * distance * distance * distance * distance; // 95.9703 - 0.834142 * distance + 0.004755 * distance * distance
                                                                //- 0.00001107 * distance * distance * distance
-    } // New values- 68 at 41*, 49 at 78*, 42 at 140*, 33.5 at 168*, 40 at 137
+    } // New values- 68 at 41*, 49 at 78*, 42 at 140*, 33.5 at 168*, 40 at 137, 52 at 70, 42 at 119, 37 at 160
 
     public double computeShooterRightSpeed(double distance) {
         return 1362.989 + 38.67915 * distance - 0.3083168 * distance * distance
-                + 0.0010076 * distance * distance * distance;
+                + 0.0010076 * distance * distance * distance + 500;
     } // 2500 at 41, 3000 at 80, 3500 at 140, 4000 at 171, 4000 at 137
 
     public double computeShooterLeftSpeed(double distance) {
         return -33.90943 + 76.20024 * distance - 0.7453442 * distance * distance
-                + 0.002359556 * distance * distance * distance;
+                + 0.002359556 * distance * distance * distance + 500;
     } // 2000 at 41, 2500 at 80, 2500 at 140, 3000 at 171, 3000 at 137
 }

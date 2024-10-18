@@ -46,18 +46,50 @@ public class AutoTwo extends SequentialCommandGroup {
                         new Pose2d(new Translation2d(),
                                 new Rotation2d(Units.degreesToRadians(-60 * inverted)))),
                 // Shoot ring
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000),
-                        shooterSubsystem), 
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3000),
-                        shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(30),
-                        pivotSubsystem),  
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(2000), shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(2500), shooterSubsystem),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(66), pivotSubsystem),
+
+                new WaitCommand(0.7),
+
+                new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT), feederSubsystem),
+                new WaitCommand(0.2),
+                new InstantCommand(() -> feederSubsystem.setSpeed(0), feederSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(500), shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(500), shooterSubsystem),
+                new InstantCommand(
+                        () -> pivotSubsystem.setPivotControllerSetpoint(
+                                RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE),
+                        pivotSubsystem),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-64),
-                        Units.inchesToMeters(72), -60, 1.5, false), // -64, 72, -60, 1.5, false
+                        Units.inchesToMeters(72), -55, 1.0, false), // -64, 72, -60, 1.5, false
 
+                new ParallelCommandGroup(
+                        new DriveToDistanceCommand(swerveSubsystem,
+                                Units.inchesToMeters(-12 * 24 - 6),
+                                Units.inchesToMeters(142),
+                                0, 2.5, false), // -12 * 24 - 6, 157, 0, 4.0, false
+                        new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
+                                intakeSubsystem, 2.5)),
+
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-12 * 12 - 6),
+                        Units.inchesToMeters(130), -50, 1.5, false), // -72, 140, -60, 3.5, false
+
+                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000),
+                        shooterSubsystem),
+                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3500),
+                        shooterSubsystem),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(37),
+                        pivotSubsystem),
+
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-70),
+                        Units.inchesToMeters(48), -40, 1.3, false), // -90, 72, -50, 2.0, false
+                
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
                         shooterSubsystem, 1.0f),
+
+                new WaitCommand(0.2),
 
                 new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT),
                         feederSubsystem),
@@ -67,45 +99,8 @@ public class AutoTwo extends SequentialCommandGroup {
                         shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0),
                         shooterSubsystem),
-
-                // Get 3
                 new InstantCommand(
-                        () -> pivotSubsystem.setPivotControllerSetpoint(
-                                RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE),
-                        pivotSubsystem), 
-
-                new ParallelCommandGroup(
-                        new DriveToDistanceCommand(swerveSubsystem,
-                                Units.inchesToMeters(-12 * 24 - 6),
-                                Units.inchesToMeters(157),
-                                0, 3.0, false),// -12 * 24 - 6, 142, 0, 4.0, false
-                        new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
-                                intakeSubsystem, 5)), 
-
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90),
-                        Units.inchesToMeters(140), -60, 1.5, false), // -90, 140, -60, 3.5, false
-                
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(3000),
-                        shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3000),
-                        shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(30),
-                        pivotSubsystem), 
-
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90),
-                        Units.inchesToMeters(72), -50, 1.0, false), // -90, 72, -50, 2.0, false
-                
-                new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
-                        shooterSubsystem, 1.0f),
-
-                new InstantCommand(() -> feederSubsystem.setSpeed(RobotContainer.FEEDER_SPEED_SHOOT),
-                        feederSubsystem),
-                new WaitCommand(0.5),
-                new InstantCommand(() -> feederSubsystem.setSpeed(0), feederSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterLeftRPM(0),
-                        shooterSubsystem),
-                new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(0),
-                        shooterSubsystem)
+                        () -> pivotSubsystem.setPivotControllerSetpoint(RobotContainer.SHOOTER_PARKED_PIVOT_ANGLE))
 
         );
     }

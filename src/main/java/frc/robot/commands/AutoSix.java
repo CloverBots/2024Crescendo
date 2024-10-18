@@ -44,7 +44,7 @@ public class AutoSix extends SequentialCommandGroup {
                 new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(35),
                         pivotSubsystem),
 
-                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-100), Units.inchesToMeters(40), 15,
+                new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-110), Units.inchesToMeters(40), 15,
                         1.0, false),
 
                 new AutoAimCommand(swerveSubsystem, visionTargetTracker, pivotSubsystem,
@@ -62,7 +62,7 @@ public class AutoSix extends SequentialCommandGroup {
 
                 new ParallelCommandGroup(
                         new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-12 * 24 - 6),
-                                Units.inchesToMeters(0),
+                                Units.inchesToMeters(-3),
                                 0, 2.5, false), // -50, 38, -30, 1.5
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
                                 intakeSubsystem, 2.5)),
@@ -71,7 +71,7 @@ public class AutoSix extends SequentialCommandGroup {
                         shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3000),
                         shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(35),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(33),
                         pivotSubsystem),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90), Units.inchesToMeters(50), 11,
@@ -97,7 +97,7 @@ public class AutoSix extends SequentialCommandGroup {
 
                 new ParallelCommandGroup(
                         new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-12 * 23),
-                                Units.inchesToMeters(94),
+                                Units.inchesToMeters(82),
                                 0, 1.2, false), // -50, 38, -30, 1.5
                         new AutoIntakeCommand(feederDistanceSensorSubsystem, feederSubsystem,
                                 intakeSubsystem, 1.2)),
@@ -110,7 +110,7 @@ public class AutoSix extends SequentialCommandGroup {
                         shooterSubsystem),
                 new InstantCommand(() -> shooterSubsystem.setShooterRightRPM(3000),
                         shooterSubsystem),
-                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(37),
+                new InstantCommand(() -> pivotSubsystem.setPivotControllerSetpoint(33),
                         pivotSubsystem),
 
                 new DriveToDistanceCommand(swerveSubsystem, Units.inchesToMeters(-90), Units.inchesToMeters(50), 12,
