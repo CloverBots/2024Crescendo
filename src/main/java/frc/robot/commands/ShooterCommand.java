@@ -193,7 +193,7 @@ public class ShooterCommand extends Command {
                 break;
 
             case NONE:
-                ledConformToState("Green");
+                //ledConformToState("Green");
                 break;
 
             case CLIMB_MANUAL:
@@ -494,13 +494,13 @@ public class ShooterCommand extends Command {
     private void ledConformToState(String color) {
         if (blinkOn) {
             if (color.equals("Blue")) {
-                ledSubsystem.conformToState(State.FLASHING_BLUE);
+               ledSubsystem.conformToState(State.FLASHING_BLUE);
             } else if (color.equals("Red")) {
                 ledSubsystem.conformToState(State.FLASHING_RED);
             } else if (color.equals("Green")) {
                 ledSubsystem.conformToState(State.FLASHING_GREEN);
             }
-        } else {
+        } else { 
             if (color.equals("Blue")) {
                 ledSubsystem.conformToState(State.SOLID_BLUE);
             } else if (color.equals("Red")) {

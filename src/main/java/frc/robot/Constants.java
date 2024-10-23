@@ -28,16 +28,15 @@ public final class Constants {
         public static final double PHYSICAL_MAX_SPEED_METERS_PER_SECOND = (1 / DRIVE_GEAR_RATIO) * (FALCON_FREE_SPEED / 60)
                 * WHEEL_CIRCUMFERENCE; // Max is 5.5435
 
-        public static final double PHYSICAL_MAX_ROTATION_SPEED = PHYSICAL_MAX_SPEED_METERS_PER_SECOND / ModuleLocations.robotRaduius; // Max is 1.4448
-        // (1 / TURNING_GEAR_RATIO) * (NEO_FREE_SPEED / 60) * WHEEL_CIRCUMFERENCE
+        public static final double PHYSICAL_MAX_ROTATION_SPEED = PHYSICAL_MAX_SPEED_METERS_PER_SECOND / ModuleLocations.robotRaduius; // 
 
         // Speeds for the robot when moving, in Meters/Second
-        public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = 5;
+        public static final double TELEOP_MAX_SPEED_METERS_PER_SECOND = 3;
         public static final double AUTO_MAX_SPEED_METERS_PER_SECOND = 3;
 
         // Rotation speed multiplier to the (-1, 1) input given by the joystick
-        public static final double TELEOP_NORMAL_ANGULAR_SCALE_FACTOR = 0.1; // 0.8
-        public static final double TELEOP_SLOW_ANGULAR_SCALE_FACTOR = 0.01; // 0.4
+        public static final double TELEOP_NORMAL_ANGULAR_SCALE_FACTOR = 0.2; // 0.8
+        public static final double TELEOP_SLOW_ANGULAR_SCALE_FACTOR = 0.1; // 0.4
 
         public static final double DRIVE_ENCODER_TO_METERS = (WHEEL_CIRCUMFERENCE / (DRIVE_GEAR_RATIO * 2048.0));
         public static final double DRIVE_ENCODER_VELOCITY_TO_METERS_PER_SECOND = (600.0 * WHEEL_CIRCUMFERENCE)
@@ -101,8 +100,8 @@ public final class Constants {
         public static final int PIVOT_ENCODER = 37;
         public static final int PIVOT_LIMIT_SWITCH = 0; // digital input port
 
-        public final static double PIVOT_PHYSICAL_LOWER_ENDPOINT = 1;
-        public final static double PIVOT_LOWER_ENDPOINT = 2;
+        public final static double PIVOT_PHYSICAL_LOWER_ENDPOINT = 2;
+        public final static double PIVOT_LOWER_ENDPOINT = 3;
         public final static double PIVOT_UPPER_ENDPOINT = 100;
         public static final double CLIMBER_PIVOT_SPEED = 0.5;
         public final static double MAX_PIVOT_POWER_PID = 0.6;

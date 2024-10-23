@@ -14,7 +14,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import frc.robot.Constants;
 import frc.robot.Constants.*;
 
 public class PivotSubsystem extends PIDSubsystem {
@@ -41,8 +40,8 @@ public class PivotSubsystem extends PIDSubsystem {
         pivotLeadMotor.setIdleMode(IdleMode.kBrake);
         pivotFollowMotor.setIdleMode(IdleMode.kBrake);
 
-        pivotLeadMotor.setSmartCurrentLimit(Constants.CURRENT_LIMIT);
-        pivotFollowMotor.setSmartCurrentLimit(Constants.CURRENT_LIMIT);
+        pivotLeadMotor.setSmartCurrentLimit(10);
+        pivotFollowMotor.setSmartCurrentLimit(10);
 
         this.pivotEncoder = new CANcoder(PivotConstants.PIVOT_ENCODER);
     }

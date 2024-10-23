@@ -112,7 +112,7 @@ public class RobotContainer {
     }
 
     public void teleopInit() {
-        shooterSubsystem.setDefaultCommand(shooterCommand);
+        // shooterSubsystem.setDefaultCommand(shooterCommand);
     }
 
     public void teleopPeriodic() {
@@ -120,11 +120,11 @@ public class RobotContainer {
         if (driverController.getStartButton() == true) {
             resetGyro();
         }
+        ledSubsystem.conformToState(State.SOLID_PINK);
     }
 
     public void onAutonomousEnable() {
         resetGyro();
-        ledSubsystem.conformToState(State.RAINBOW);
     }
 
     public void resetGyro() {
@@ -136,9 +136,7 @@ public class RobotContainer {
     }
 
     /** Will run once any time the robot is disabled. */
-    public void disabledInit() {
-        ledSubsystem.conformToState(State.RAINBOW);
-    }
+    public void disabledInit() {}
 
     private void configureBindings() {
         // used during tuning
