@@ -6,8 +6,6 @@ package modulelib;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -15,12 +13,11 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.DriveConstants.SwervePID;
 
 /** Add your docs here. */
 public class SwerveModule {
-    private CANSparkMax turnMotor;
+    private TalonFX turnMotor;
     private TalonFX driveMotor;
     private PIDController pidController;
     private CANcoder encoder;
@@ -31,7 +28,7 @@ public class SwerveModule {
 
     public SwerveModule(int turnMotorId, int driveMotorId, int encoderId, boolean driveInverted,
             double maxVelocity) {
-        this.turnMotor = new CANSparkMax(turnMotorId, MotorType.kBrushless);
+        this.turnMotor = new TalonFX(turnMotorId);
         this.driveMotor = new TalonFX(driveMotorId);
         this.pidController = new PIDController(SwervePID.p, SwervePID.i, SwervePID.d);
         this.encoder = new CANcoder(encoderId);
@@ -51,8 +48,6 @@ public class SwerveModule {
                 config.encoderId,
                 config.drive_inverted,
                 maxVelocity);
-
-        turnMotor.setSmartCurrentLimit(DriveConstants.currentLimit);
     }
 
     private void drive(double speedMetersPerSecond, double angle) {

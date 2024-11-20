@@ -12,6 +12,7 @@ import limelight.LimelightConfiguration;
 public final class Constants {
     public static final int CONTROLLER_DRIVE_PORT = 0;
     public static final int CONTROLLER_OPERATOR_PORT = 1;
+    public static final int GYRO_ID = 5;
     public static final int LED_ID = 2;
     public static final int CURRENT_LIMIT = 100;
 
@@ -20,12 +21,11 @@ public final class Constants {
         public static final double WHEEL_CIRCUMFERENCE = Units.inchesToMeters(4) * Math.PI;
         public static final double DRIVE_GEAR_RATIO = (50.0 / 14.0) * (16.0 / 28.0) * (45.0 / 15.0);
         public static final double TURNING_GEAR_RATIO = 150.0 / 7.0;
-        public static final double FALCON_FREE_SPEED = 6380.0;
-        public static final double NEO_FREE_SPEED = 5820.0;;
+        public static final double KRAKEN_FREE_SPEED = 6000.0;
         public static final double wheelBase = Units.inchesToMeters(18.5);
         public static final double trackWidth = Units.inchesToMeters(18.5);
         
-        public static final double PHYSICAL_MAX_SPEED_METERS_PER_SECOND = (1 / DRIVE_GEAR_RATIO) * (FALCON_FREE_SPEED / 60)
+        public static final double PHYSICAL_MAX_SPEED_METERS_PER_SECOND = (1 / DRIVE_GEAR_RATIO) * (KRAKEN_FREE_SPEED / 60)
                 * WHEEL_CIRCUMFERENCE; // Max is 5.5435
 
         public static final double PHYSICAL_MAX_ROTATION_SPEED = PHYSICAL_MAX_SPEED_METERS_PER_SECOND / ModuleLocations.robotRaduius; // 

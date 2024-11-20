@@ -1,6 +1,6 @@
 package frc.robot;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -31,7 +31,7 @@ import limelight.LimelightTargetTracking;
 public class RobotContainer {
     public final LimelightTargetTracking visionTargetTracker = new LimelightTargetTracking(
             VisonConstants.visionConfiguration);
-    private final AHRS gyro = new AHRS();
+    private Pigeon2 gyro = new Pigeon2(Constants.GYRO_ID);
     private final Field2d field;
     private final SendableChooser<Command> autoChooser;
     private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem(gyro);
@@ -111,7 +111,7 @@ public class RobotContainer {
     }
 
     public void resetGyro() {
-        gyro.reset();
+        gyro.setYaw(0);
     }
 
     public Command getAutonomousCommand() {
@@ -156,12 +156,12 @@ public class RobotContainer {
     }
 
     private double scaleRotationAxis(double input) {
-        double rotation = -deadband(squared(input), DriveConstants.deadband) * swerveSubsystem.getMaxAngleVelocity();
+        double rotation = -deadband(squared(input), DriveConstants.deadband) * swerveSubsystem.getMaxAngleVelocity(); 
         if (driverController.getLeftTriggerAxis() > 0.5) {
             rotation = rotation * Constants.DriveConstants.TELEOP_SLOW_ANGULAR_SCALE_FACTOR;
         } else {
             rotation = rotation * Constants.DriveConstants.TELEOP_NORMAL_ANGULAR_SCALE_FACTOR;
-        }
+        } 
         return rotation;
     }
 

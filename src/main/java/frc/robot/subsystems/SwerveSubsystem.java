@@ -6,7 +6,7 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -39,7 +39,7 @@ import frc.robot.Constants.PathPlannerConstants.RotationPID;
 import frc.robot.Constants.PathPlannerConstants.TranslationPID;
 
 public class SwerveSubsystem extends SubsystemBase {
-  private AHRS gyro;
+  private Pigeon2 gyro;
   private static Rotation2d ppRotationOverride;
   public boolean rotationOverride = false;
 
@@ -70,12 +70,13 @@ public class SwerveSubsystem extends SubsystemBase {
   private BooleanEntry fieldOrientedEntry;
 
   /** Creates a new Drivebase. */
-  public SwerveSubsystem(AHRS gyro) {
+  public SwerveSubsystem(Pigeon2 gyro) {
     var inst = NetworkTableInstance.getDefault();
     var table = inst.getTable("SmartDashboard");
     this.fieldOrientedEntry = table.getBooleanTopic("Field Oriented").getEntry(true);
 
     this.gyro = gyro;
+
     odometry = new SwerveDriveOdometry(kinematics, gyro.getRotation2d(), getPositions());
 
     AutoBuilder.configureHolonomic(
@@ -124,7 +125,8 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public double getFieldAngle() {
-    return -gyro.getYaw();
+    double angle = wrapAngle(gyro.getAngle());
+    return angle;
   }
 
   public void fieldOrientedDrive(double speedX, double speedY, double rot) {
@@ -227,6 +229,16 @@ public class SwerveSubsystem extends SubsystemBase {
     setModuleStates(moduleStates);
   }
 
+  public double wrapAngle(double angle) {
+    while (angle < 0) {
+        angle += 360;
+    }
+    while (angle > 360) {
+        angle -= 360;
+    }
+    return angle;
+}
+
   @Override
   public void periodic() {
     var positions = getPositions();
@@ -235,7 +247,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     field.setRobotPose(getPose());
 
-    SmartDashboard.putNumber("Gyro", gyro.getYaw());
+    SmartDashboard.putNumber("Gyro", getFieldAngle());
   }
 
   public void setModuleStates(SwerveModuleState[] desiredStates) {
